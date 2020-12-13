@@ -1,5 +1,25 @@
 {
-    "name": "heng/open-platform",
-    "description": "open-platform",
+    "name": "heng/service",
+    "description": "service",
+    "version": "1.0.0",
+    "homepage": "https://gitee.com/LifeTimeNine/service.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lifetime",
+            "email": "2390904403@qq.com"
+        }
+    ],
+    "keywords": [
+        "WechatPay",
+        "AliPay"
+    ],
+    "autoload": {
+        "psr-4": {
+            "service\\ali\\": "ali",
+            "service\\config\\": "config",
+            "service\\exceptions\\": "exceptions"
+        }
+    },
     "require": {}
 }
