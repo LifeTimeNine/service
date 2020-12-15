@@ -3,7 +3,7 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-14 22:25:13
+ * @LastEditTime  2020-12-16 00:11:41
  * @LastEditors   lifetime
  */
 
@@ -82,7 +82,8 @@ abstract class Basic
             'version' => $this->config['version'],
             'format' => $this->config['format'],
             'sign_type' => $this->config['sign_type'],
-            'charset' => $this->config['charset']
+            'charset' => $this->config['charset'],
+            'timestamp' => date('Y-m-d H:i:s'),
         ]);
     }
 
