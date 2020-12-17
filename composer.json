@@ -2,7 +2,7 @@
     "name": "lifetime/service",
     "description": "service",
     "version": "1.0.0",
-    "homepage": "https://gitee.com/LifeTimeNine/service.git",
+    "homepage": "https://github.com/LifeTimeNine/service.git",
     "license": "MIT",
     "authors": [
         {
@@ -21,5 +21,7 @@
             "service\\exceptions\\": "exceptions"
         }
     },
-    "require": {}
+    "require": {
+        "php": ">=7.0"
+    }
 }
