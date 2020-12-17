@@ -1,15 +1,14 @@
 <?php
 /*
- * @Description   参数异常类
+ * @Description   返回数据异常类
  * @Author        lifetime
- * @Date          2020-12-13 22:37:17
- * @LastEditTime  2020-12-13 22:49:13
+ * @Date          2020-12-16 16:46:44
+ * @LastEditTime  2020-12-16 16:47:55
  * @LastEditors   lifetime
  */
-
 namespace service\exceptions;
 
-class InvalidArgumentException extends \InvalidArgumentException
+class InvalidResponseException extends \Exception
 {
     /**
      * @var array
@@ -17,7 +16,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     public $raw = [];
 
     /**
-     * InvalidArgumentException constructor.
+     * InvalidResponseException constructor.
      * @param string $message
      * @param integer $code
      * @param array $raw
