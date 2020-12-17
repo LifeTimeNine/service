@@ -3,7 +3,7 @@
  * @Description   阿里支付
  * @Author        lifetime
  * @Date          2020-12-13 21:39:22
- * @LastEditTime  2020-12-17 10:46:13
+ * @LastEditTime  2020-12-17 10:50:02
  * @LastEditors   lifetime
  */
 
@@ -30,7 +30,7 @@ class Pay extends Basic
         $this->options->set('notify_url', $notify_url);
         $this->options->set('return_url', $return_url);
         
-        return $this->buildPayHtml();
+        return $this->buildPayHtml($order);
     }
 
     /**
@@ -42,13 +42,15 @@ class Pay extends Basic
      */
     public function wap(array $order, string $notify_url, string $return_url = null)
     {
+        $this->checkOrder($order);
+
         $this->options->set('method', 'alipay.trade.wap.pay');
         $this->bizContent->set('product_code', 'FAST_INSTANT_TRADE_PAY');
 
         $this->options->set('notify_url', $notify_url);
         $this->options->set('return_url', $return_url);
 
-        return $this->buildPayHtml();
+        return $this->buildPayHtml($order);
     }
 
     /**
@@ -59,6 +61,8 @@ class Pay extends Basic
      */
     public function app(array $order, string $notify_url)
     {
+        $this->checkOrder($order);
+        
         $this->options->set('method', 'alipay.trade.app.pay');
         $this->options->set('alipay_sdk', 'alipay-sdk-php-20200415');
         $this->bizContent->set('product_code', 'QUICK_MSECURITY_PAY');

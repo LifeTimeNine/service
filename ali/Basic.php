@@ -3,7 +3,7 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-17 10:36:01
+ * @LastEditTime  2020-12-17 10:48:33
  * @LastEditors   lifetime
  */
 
@@ -169,9 +169,10 @@ abstract class Basic
 
     /**
      * 生成支付HTML代码
+     * @param   array   $order  订单参数
      * @return string
      */
-    protected function buildPayHtml()
+    protected function buildPayHtml($order)
     {
         $this->options->set('biz_content', json_encode($this->bizContent->merge($order, true), 256));
         $this->options->set('sign', $this->getSign());
