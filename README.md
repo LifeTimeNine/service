@@ -2,6 +2,8 @@
 
 **适用于thinkphp5+**
 
+## 支付宝支付
+
 ## 配置
 添加一个名称为`ali.php`的配置文件  
 添加必须配置
@@ -17,8 +19,6 @@ return [
 
 >
 ```
-
-## 支付宝支付
 
 #### 类 **`service\ali\Pay`**
 
@@ -84,3 +84,73 @@ Web页面支付
 参数  
 * 参数 `(array)`：查询参数， 参考 [支付宝支付API文档](https://opendocs.alipay.com/apis/api_1/alipay.trade.fastpay.refund.query#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)
 * 查询完成执行的函数 `(callable)`：可以接收两个参数，1.支付宝返回的信息，2.签名验证结果;
+
+---
+
+## 微信公众号
+
+## 配置
+添加一个名称为`ali.php`的配置文件  
+添加必须配置
+```php
+<?php
+
+return [
+  'official_appid' => '', // 公众号APPID
+  'official_app_secret' => '', // 公众号secert
+];
+
+>
+```
+
+#### 类 **`service\wechat\Official`**
+
+### 初始化
+```php
+  $official = service\wechat\Official::instance();
+```
+
+**`instance`**  
+参数  
+* 配置 `(array)`: , 参考 [微信公众号文档](https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html), 传入的配置会覆盖掉配置文件中的配置  
+
+返回 `Official` 对象
+
+公众号授权步骤参考 [公众号授权](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)
+
+### 方法
+
+#### 1. `getCode`
+获取code （授权第一步） 
+参数
+* 跳转地址 `(array)` ：确认授权之后跳转的地址
+* 是否获取用户详情信息 `(bool)`：scope参数(默认为`true`)
+* state参数 `(string)`：state参数
+
+#### 2. `getAccessToken`
+获取access_token （授权第二步） 
+
+返回: 微信返回的信息 `(array)`
+
+#### 3. `refreshAccessToken`
+刷新 access_token 
+参数：
+* refresh_token `(string)`  
+
+返回: 微信返回的信息 `(array)`
+
+#### 4. `getUserinfo`
+获取用户个人信息  
+参数：
+* accessToken `(string)`：调用凭证
+* openid  `(string)`：用户标识  
+
+返回: 微信返回的信息 `(array)`
+
+#### 5. `checkAccessToken`
+校验授权凭证是否有效  
+参数：
+* accessToken `(string)`：调用凭证
+* openid  `(string)`：用户标识  
+
+返回: 微信返回的信息 `(array)`

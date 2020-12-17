@@ -3,7 +3,7 @@
  * @Description   微信相关配置
  * @Author        lifetime
  * @Date          2020-12-17 15:50:38
- * @LastEditTime  2020-12-17 16:20:30
+ * @LastEditTime  2020-12-17 18:32:48
  * @LastEditors   lifetime
  */
 
@@ -18,7 +18,7 @@ class WechatConfig extends BasicConfig
         'kay' => '', // 商户支付秘钥
     ];
 
-    protected function __construct($config)
+    public function __construct($config)
     {
         parent::__construct(array_merge($this->config, $this->getUserConfig('wechat'), $config));
     }
