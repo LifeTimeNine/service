@@ -3,7 +3,7 @@
  * @Description   阿里相关配置
  * @Author        lifetime
  * @Date          2020-12-10 08:45:38
- * @LastEditTime  2020-12-15 23:38:10
+ * @LastEditTime  2020-12-17 17:27:12
  * @LastEditors   lifetime
  */
 
@@ -20,9 +20,6 @@ class AliConfig extends BasicConfig
     ];
     public function __construct($config = [])
     {
-        if (class_exists("think\\facade\\Config")) {
-            $config = \think\facade\Config::pull('ali');
-        }
-        parent::__construct(array_merge($this->config, $config));
+        parent::__construct(array_merge($this->config, $this->getUserConfig('ali'), $config));
     }
 }

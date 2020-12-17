@@ -3,7 +3,7 @@
  * @Description   配置基类
  * @Author        lifetime
  * @Date          2020-12-09 22:36:36
- * @LastEditTime  2020-12-13 22:05:38
+ * @LastEditTime  2020-12-17 15:53:20
  * @LastEditors   lifetime
  */
 
@@ -110,5 +110,19 @@ class BasicConfig implements ArrayAccess
             return $this->config;
         }
         return isset($this->config[$offset]) ? $this->config[$offset] : null;
+    }
+
+    /**
+     * 获取用户配置
+     * @param   string  $field  配置字段
+     * @return  array   配置信息
+     */
+    public function getUserConfig($field)
+    {
+        $config = [];
+        if (class_exists("think\\facade\\Config")) {
+            $config = \think\facade\Config::pull($field);
+        }
+        return $config;
     }
 }

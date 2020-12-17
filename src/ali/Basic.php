@@ -3,16 +3,17 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-17 14:26:05
+ * @LastEditTime  2020-12-17 16:56:09
  * @LastEditors   lifetime
  */
 
 namespace service\ali;
 
 use service\config\AliConfig;
+use service\DataArray;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
-use WeChat\Contracts\DataArray;
+use service\Tools;
 
 abstract class Basic
 {
@@ -55,6 +56,7 @@ abstract class Basic
     /**
      * 构造函数
      * @param   array   $config     配置信息
+     * @return server\ali\Pay
      */
     protected function __construct($config = [])
     {
@@ -221,51 +223,6 @@ abstract class Basic
     }
 
     /**
-     * CURL模拟网络请求
-     * @param string $method 请求方法
-     * @param string $url 请求方法
-     * @param array $options 请求参数[headers,data,ssl_cer,ssl_key]
-     * @return boolean|string
-     * @throws Exception
-     */
-    protected function curl($method, $url, $options = [])
-    {
-        $curl = curl_init();
-        // GET参数设置
-        if (!empty($options['query'])) {
-            $url .= (stripos($url, '?') !== false ? '&' : '?') . http_build_query($options['query']);
-        }
-        // CURL头信息设置
-        if (!empty($options['headers'])) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $options['headers']);
-        }
-        // POST数据设置
-        if (strtolower($method) === 'post') {
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $options['data']);
-        }
-        // 证书文件设置
-        if (!empty($options['ssl_cer'])) if (file_exists($options['ssl_cer'])) {
-            curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
-        } else throw new \Exception("Certificate files that do not exist. --- [ssl_cer]");
-        // 证书文件设置
-        if (!empty($options['ssl_key'])) if (file_exists($options['ssl_key'])) {
-            curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
-        } else throw new \Exception("Certificate files that do not exist. --- [ssl_key]");
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        $content = curl_exec($curl);
-        curl_close($curl);
-        return $content;
-    }
-
-    /**
      * 请求支付宝
      * @param  array    $options    请求参数
      * @return array    [相应数据， 验证签名结果]
@@ -276,7 +233,7 @@ abstract class Basic
         $this->options->set('sign', $this->getSign());
 
         try {
-            $res = $this->curl('get', $this->gateway, [
+            $res = Tools::request('get', $this->gateway, [
                 'query' => $this->options->get()
             ]);
         } catch (\Exception $e) {

@@ -4,21 +4,21 @@
     "version": "1.0.1",
     "homepage": "https://github.com/LifeTimeNine/service.git",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Lifetime",
-            "email": "2390904403@qq.com"
-        }
-    ],
+    "authors": [{
+        "name": "Lifetime",
+        "email": "2390904403@qq.com"
+    }],
     "keywords": [
         "WechatPay",
         "AliPay"
     ],
     "autoload": {
         "psr-4": {
-            "service\\ali\\": "ali",
-            "service\\config\\": "config",
-            "service\\exceptions\\": "exceptions"
+            "service\\": "src",
+            "service\\ali\\": "src/ali",
+            "service\\wechat\\": "src/wechat",
+            "service\\config\\": "src/config",
+            "service\\exceptions\\": "src/exceptions"
         }
     },
     "require": {
