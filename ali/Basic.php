@@ -3,7 +3,7 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-17 10:48:33
+ * @LastEditTime  2020-12-17 14:26:05
  * @LastEditors   lifetime
  */
 
@@ -56,7 +56,7 @@ abstract class Basic
      * 构造函数
      * @param   array   $config     配置信息
      */
-    public function __construct($config = [])
+    protected function __construct($config = [])
     {
         $this->config = new AliConfig($config);
 
@@ -138,7 +138,7 @@ abstract class Basic
      * @param boolean $needSignType 是否需要sign_type字段
      * @return bool|string
      */
-    private function getSignContent(array $data, $needSignType = false)
+    protected function getSignContent(array $data, $needSignType = false)
     {
         list($attrs,) = [[], ksort($data)];
         if (isset($data['sign'])) unset($data['sign']);
@@ -192,7 +192,7 @@ abstract class Basic
      * @param   string  $sign               sign
      * @param   string  $signType           sign类型
      */
-    public function checkSign($data, $sign, $signType = 'RSA')
+    protected function checkSign($data, $sign, $signType = 'RSA')
     {
         $alipayPublicKey = "-----BEGIN PUBLIC KEY-----\n" .
             wordwrap($this->config['alipay_public_key'], 64, "\n", true) .
@@ -228,7 +228,7 @@ abstract class Basic
      * @return boolean|string
      * @throws Exception
      */
-    public function curl($method, $url, $options = [])
+    protected function curl($method, $url, $options = [])
     {
         $curl = curl_init();
         // GET参数设置
@@ -294,7 +294,7 @@ abstract class Basic
      * @param   array   $resData    返回数据
      * @return  bool
      */
-    public function checkResponse($resData)
+    protected function checkResponse($resData)
     {
         if (empty($resData['sign'])) throw new InvalidResponseException("Missing Response data");
         $sign = $resData['sign'];
