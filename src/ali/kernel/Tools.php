@@ -3,13 +3,16 @@
  * @Description   常用工具类
  * @Author        lifetime
  * @Date          2020-12-17 16:43:54
- * @LastEditTime  2020-12-17 16:46:45
+ * @LastEditTime  2020-12-18 22:45:10
  * @LastEditors   lifetime
  */
-namespace service;
+namespace service\ali\kernel;
+
+use service\exceptions\CacheException;
 
 class Tools
 {
+
     /**
      * CURL模拟网络请求
      * @param string $method 请求方法

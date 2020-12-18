@@ -3,18 +3,17 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-18 21:26:38
- * @LastEditTime  2020-12-18 22:48:29
+ * @LastEditTime  2020-12-18 23:24:55
  * @LastEditors   lifetime
  */
 
-namespace service\wechat;
+namespace service\wechat\kernel;
 
 use service\config\WechatConfig;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
-use service\wechat\kernel\Tools;
 
-class Official
+class BasicWeChat
 {
     /**
      * 配置
@@ -47,6 +46,12 @@ class Official
     protected $request_url = '';
 
     /**
+     * access_token 失效返回的状态码
+     * @var array
+     */
+    protected $failure_code = ['40014', '40001', '41001', '42001'];
+
+    /**
      * 构造函数
      * @param   array   $config     配置参数
      */
@@ -66,7 +71,7 @@ class Official
     /**
      * 静态创建对象
      * @param   array   $config     配置参数
-     * @return  \service\wechat\Official
+     * @return  static
      */
     public static function instance(array $config = [])
     {
@@ -120,11 +125,32 @@ class Official
      */
     public function registerHttp($url, $method, $arguments)
     {
+        $this->currentMethod = ['method' => $method, 'arguments' => $arguments];
+        if (empty($this->access_token)) $this->access_token = $this->getAccessToken();
         
+        $this->request_url = str_replace('ACCESS_TOKEN', urlencode($this->access_token), $url);
     }
 
     /**
      * 以post发起http请求并将结果转换为数组
-     * 
+     * @param   array   $data   请求数据
+     * @param   bool    $buildToJson    是否转换为sson
+     * @return  array
      */
+    protected function httpPostForJson($data, $buildToJson = true)
+    {
+        $options = [
+            'headers' => ['Content-Type: application/json'],
+            'data' => $buildToJson ? Tools::arr2json($data) : $data,
+        ];
+
+        try {
+            return Tools::json2arr(Tools::request('post', $this->request_url, $options));
+        } catch (InvalidResponseException $e) {
+            if (in_array($e->getCode(), $this->failure_code)) {
+                return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+            }
+            throw new InvalidResponseException($e->getMessage(), $e->getCode());
+        }
+    }
 }

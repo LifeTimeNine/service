@@ -3,17 +3,16 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-17 16:56:09
+ * @LastEditTime  2020-12-18 22:44:57
  * @LastEditors   lifetime
  */
 
-namespace service\ali;
+namespace service\ali\kernel;
 
 use service\config\AliConfig;
 use service\DataArray;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
-use service\Tools;
 
 abstract class Basic
 {
