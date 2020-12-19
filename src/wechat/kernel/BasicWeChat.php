@@ -3,7 +3,7 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-18 21:26:38
- * @LastEditTime  2020-12-18 23:24:55
+ * @LastEditTime  2020-12-19 09:18:29
  * @LastEditors   lifetime
  */
 
@@ -130,6 +130,23 @@ class BasicWeChat
         
         $this->request_url = str_replace('ACCESS_TOKEN', urlencode($this->access_token), $url);
     }
+
+    /**
+     * 以get发起http请求并将结果转换为数组
+     * @return  array
+     */
+    public function httpGetForJson()
+    {
+        try {
+            return Tools::json2arr(Tools::request('get', $this->request_url));
+        } catch (InvalidResponseException $e) {
+            if (in_array($e->getCode(), $this->failure_code)) {
+                return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+            }
+            throw new InvalidResponseException($e->getMessage(), $e->getCode());
+        }
+    }
+
 
     /**
      * 以post发起http请求并将结果转换为数组

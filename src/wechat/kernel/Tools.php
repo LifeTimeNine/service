@@ -3,7 +3,7 @@
  * @Description   常用工具类
  * @Author        lifetime
  * @Date          2020-12-17 16:43:54
- * @LastEditTime  2020-12-18 23:12:09
+ * @LastEditTime  2020-12-19 09:46:17
  * @LastEditors   lifetime
  */
 namespace service\wechat\kernel;
@@ -169,7 +169,7 @@ class Tools
         if (empty($result)) {
             throw new InvalidResponseException('invalid response.', '0');
         }
-        if (!empty($result['errcode'])) {
+        if (!empty($result['errcode']) && $result['errcode'] !== 0) {
             throw new InvalidResponseException($result['errmsg'], $result['errcode'], $result);
         }
         return $result;

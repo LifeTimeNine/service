@@ -90,7 +90,7 @@ Web页面支付
 ## 微信公众号
 
 ## 配置
-添加一个名称为`ali.php`的配置文件  
+添加一个名称为`wechat.php`的配置文件  
 添加必须配置
 ```php
 <?php
@@ -102,55 +102,37 @@ return [
 
 >
 ```
-
-#### 类 **`service\wechat\Official`**
-
-### 初始化
+所有的类都可以使用 `instance` 方法初始化  
+比如
 ```php
-  $official = service\wechat\Official::instance();
+  <?php
+    
+    $oauth = Oauth::instance();
+  
+  >
 ```
 
-**`instance`**  
-参数  
-* 配置 `(array)`: , 参考 [微信公众号文档](https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html), 传入的配置会覆盖掉配置文件中的配置  
+## `Oauth`
+微信网页授权类
 
-返回 `Official` 对象
-
-公众号授权步骤参考 [公众号授权](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)
+参考 [微信公众号授权](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)
 
 ### 方法
+* `getCode` ：请求Code（授权第一步）
+* `getAccessToken` ：通过Code获取Access_token （授权第二步）
+* `refreshAccessToken` ：刷新Access_token
+* `getUserinfo` ：获取用户个人信息
+* `checkAccessToken` ：校验凭证是否有效
 
-#### 1. `getCode`
-获取code （授权第一步） 
-参数
-* 跳转地址 `(array)` ：确认授权之后跳转的地址
-* 是否获取用户详情信息 `(bool)`：scope参数(默认为`true`)
-* state参数 `(string)`：state参数
+## `Template`
+微信模板消息类
 
-#### 2. `getAccessToken`
-获取access_token （授权第二步） 
+参考 [微信公众号模板消息](https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Template_Message_Interface.html)
 
-返回: 微信返回的信息 `(array)`
-
-#### 3. `refreshAccessToken`
-刷新 access_token 
-参数：
-* refresh_token `(string)`  
-
-返回: 微信返回的信息 `(array)`
-
-#### 4. `getUserinfo`
-获取用户个人信息  
-参数：
-* accessToken `(string)`：调用凭证
-* openid  `(string)`：用户标识  
-
-返回: 微信返回的信息 `(array)`
-
-#### 5. `checkAccessToken`
-校验授权凭证是否有效  
-参数：
-* accessToken `(string)`：调用凭证
-* openid  `(string)`：用户标识  
-
-返回: 微信返回的信息 `(array)`
+### 方法
+* `setIndustry` ：设置所属行业
+* `getIndustry` ：获取所属行业
+* `addTemplate` ：获得模板ID
+* `getAllPrivateTemplate` : 获取模板列表
+* `delPrivateTemplate` ：删除模板
+* `send` ：发送模板消息

@@ -3,7 +3,7 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-18 22:44:57
+ * @LastEditTime  2020-12-19 08:55:25
  * @LastEditors   lifetime
  */
 
@@ -14,7 +14,7 @@ use service\DataArray;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
 
-abstract class Basic
+abstract class BasicPay
 {
     /**
      * 配置
@@ -55,7 +55,6 @@ abstract class Basic
     /**
      * 构造函数
      * @param   array   $config     配置信息
-     * @return server\ali\Pay
      */
     protected function __construct($config = [])
     {
@@ -98,6 +97,7 @@ abstract class Basic
     /**
      * 静态创建对象
      * @param   array   $config     配置信息
+     * @return  static
      */
     public static function instance(array $config = [])
     {

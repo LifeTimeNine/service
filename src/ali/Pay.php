@@ -3,16 +3,16 @@
  * @Description   阿里支付
  * @Author        lifetime
  * @Date          2020-12-13 21:39:22
- * @LastEditTime  2020-12-18 22:45:34
+ * @LastEditTime  2020-12-19 08:55:50
  * @LastEditors   lifetime
  */
 
 namespace service\ali;
 
-use service\ali\kernel\Basic;
+use service\ali\kernel\BasicPay;
 use service\exceptions\InvalidArgumentException;
 
-class Pay extends Basic
+class Pay extends BasicPay
 {
     /**
      * Web 页面支付
