@@ -3,8 +3,8 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-19 08:55:25
- * @LastEditors   lifetime
+ * @LastEditTime: 2020-12-20 12:54:03
+ * @LastEditors: Lifetime
  */
 
 namespace service\ali\kernel;
@@ -82,7 +82,7 @@ abstract class BasicPay
     /**
      * 整理请求公共参数
      */
-    protected function applyOptions()
+    private function applyOptions()
     {
         $this->options = new DataArray([
             'app_id' => $this->config['appid'],

@@ -3,7 +3,7 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-18 21:26:38
- * @LastEditTime  2020-12-19 09:18:29
+ * @LastEditTime  2020-12-19 14:18:50
  * @LastEditors   lifetime
  */
 
@@ -123,7 +123,7 @@ class BasicWeChat
      * @param   string  $method 当前方法名
      * @param   array   $arguments  当前方法参数
      */
-    public function registerHttp($url, $method, $arguments)
+    protected function registerHttp($url, $method, $arguments)
     {
         $this->currentMethod = ['method' => $method, 'arguments' => $arguments];
         if (empty($this->access_token)) $this->access_token = $this->getAccessToken();
@@ -135,7 +135,7 @@ class BasicWeChat
      * 以get发起http请求并将结果转换为数组
      * @return  array
      */
-    public function httpGetForJson()
+    protected function httpGetForJson()
     {
         try {
             return Tools::json2arr(Tools::request('get', $this->request_url));

@@ -1,7 +1,7 @@
 {
     "name": "lifetime/service",
     "description": "service",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "homepage": "https://github.com/LifeTimeNine/service.git",
     "license": "MIT",
     "authors": [{
@@ -22,6 +22,6 @@
         }
     },
     "require": {
-        "php": ">=5.6"
+        "php": ">=7.0"
     }
 }

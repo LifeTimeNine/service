@@ -3,7 +3,7 @@
  * @Description   微信公众号 网页授权
  * @Author        lifetime
  * @Date          2020-12-17 16:12:58
- * @LastEditTime  2020-12-19 09:32:06
+ * @LastEditTime  2020-12-19 14:54:20
  * @LastEditors   lifetime
  */
 
@@ -16,6 +16,12 @@ use service\wechat\kernel\Tools;
 
 class Oauth extends BasicWeChat
 {
+    /**
+     * JsApi_Ticket
+     * @var string
+     */
+    protected $ticket = '';
+    
     /**
      * 第一步
      * 请求code
@@ -32,17 +38,17 @@ class Oauth extends BasicWeChat
         }
 
         $scope = empty($scope) ? 'snsapi_userinfo' : 'snsapi_base';
-        
+
         $url = "Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->config['official_appid']}&redirect_uri={$redirectUri}&response_type=code&scope={$scope}&state={$state}#wechat_redirect";
         header($url);
         die;
     }
 
     /**
-     *  第二步 通过code获取access_token
+     *  第二步 通过code获取access_token, 注意：此access_token与基础支持的access_token不同
      * @return  array
      */
-    public function getAccessToken()
+    public function getUserAccessToken()
     {
         if (empty($_GET['code'])) throw new InvalidArgumentException("Missing Option [code]");
 
@@ -85,5 +91,46 @@ class Oauth extends BasicWeChat
     {
         $url = "https://api.weixin.qq.com/sns/auth?access_token={$accessToken}&openid={$openid}";
         return json_decode(Tools::request('get', $url), true);
+    }
+
+    /**
+     * 获取jsapi_ticket
+     * @return   array
+     */
+    protected function getJsApiTicket()
+    {
+        $this->ticket = Tools::getCache("{$this->config['official_appid']}_ticket");
+        if (!empty($this->ticket)) return $this->ticket;
+        $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
+        $this->registerHttp($url, __FUNCTION__, func_get_args());
+        $res = $this->httpGetForJson();
+        Tools::setCache("{$this->config['official_appid']}_ticket", $res['ticket'], $res['expires_in']);
+        return $this->ticket = $res['ticket'];
+    }
+    
+    /**
+     * 获取JS-SDK使用权限
+     * @param   string  $url    当前网页的URL，不包含#及其后面部分
+     * @return array
+     */
+    public function getJsSdkSign(string $url)
+    {
+        $data = [
+            'noncestr' => Tools::createNoncestr(16),
+            'jsapi_ticket' => empty($this->ticket) ? $this->getJsApiTicket() : $this->ticket,
+            'timestamp' => time(),
+            'utl' => $url
+        ];
+
+        ksort($data);
+
+        $sign = sha1(Tools::arrToUrl($data));
+
+        return [
+            'appId' => $this->config['official_appid'],
+            'timestamp' => $data['timestamp'],
+            'nonceStr' => $data['noncestr'],
+            'signature' => $sign,
+        ];
     }
 }
