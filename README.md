@@ -137,11 +137,34 @@ Pay::instance()->jsApi()->pay();
 * h5  H5支付  参考 [微信H5支付](https://pay.weixin.qq.com/wiki/doc/api/H5.php?chapter=15_1)
 * miniApp 小程序支付  参考 [微信小程序支付](https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=7_3&index=1)
 
-## `Oauth`
+每个场景都包含以下方法:  
+* `pay`：下单支付
+* `query`：查询订单
+* `refund`：退款申请
+* `refundQuery`：退款查询
+* `notify`：异步通知验签  
+
+具体参数请参考各场景的API文档
+
+## `Official`
+
+开放平台相关接口
 
 命名空间 `service\wechat`
 
-微信网页授权类
+使用示例：
+```php
+Official::instance()->oauth()->getCode();
+```
+`instance()`初始化类,`oauth()`切换网页授权场景,`getCode`：获取code
+
+目前支持的场景有:
+* `oauth`：网页授权 
+* `template`：模板消息 
+
+### `oauth`
+
+微信网页授权
 
 参考 [微信公众号授权](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)
 
@@ -152,8 +175,8 @@ Pay::instance()->jsApi()->pay();
 * `getUserinfo` ：获取用户个人信息
 * `checkAccessToken` ：校验凭证是否有效
 * `getJsSdkSign` ：获取JS-SDK使用权限
-## `Template`
-微信模板消息类
+### `template`
+微信模板消息
 
 参考 [微信公众号模板消息](https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Template_Message_Interface.html)
 
