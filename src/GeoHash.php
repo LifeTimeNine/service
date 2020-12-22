@@ -3,11 +3,11 @@
  * @Description   GeoHash 算法类
  * @Author        lifetime
  * @Date          2020-12-22 16:41:01
- * @LastEditTime  2020-12-22 17:44:19
+ * @LastEditTime  2020-12-22 17:47:47
  * @LastEditors   lifetime
  */
 
-namespace service\tools;
+namespace service;
 
 /**
  * GeoHash 算法
