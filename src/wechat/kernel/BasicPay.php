@@ -4,7 +4,7 @@
  * @Author: Lifetime
  * @Date: 2020-12-20 11:50:10
  * @LastEditors   lifetime
- * @LastEditTime  2020-12-22 09:20:48
+ * @LastEditTime  2020-12-22 13:58:37
  */
 
 namespace service\wechat\kernel;
@@ -282,7 +282,7 @@ class BasicPay
 
         $data = Tools::xml2arr($xml);
 
-        if (empty($data['sign_type']) || empty($data['sign'])) {
+        if (empty($data['sign'])) {
             $callback([], false);
             return Tools::arr2xml([
                 'return_code' => 'FAIL',
@@ -290,7 +290,7 @@ class BasicPay
             ]);
         };
 
-        $signType = $data['sign_type'];
+        $signType = $this->config['sign_type'];
 
         $sign = $this->getSign($data, $signType);
 

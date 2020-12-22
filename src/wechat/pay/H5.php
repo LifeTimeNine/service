@@ -1,17 +1,17 @@
 <?php
 /*
- * @Description   Native支付
+ * @Description   微信H5支付
  * @Author        lifetime
- * @Date          2020-12-21 16:27:38
- * @LastEditTime  2020-12-22 13:47:49
+ * @Date          2020-12-22 09:40:58
+ * @LastEditTime  2020-12-22 09:52:24
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;
 
-use Endroid\QrCode\QrCode;
 use service\wechat\kernel\BasicPay;
+use service\wechat\kernel\Tools;
 
-class Native extends BasicPay
+class H5 extends BasicPay
 {
     /**
      * 构造函数
@@ -27,26 +27,28 @@ class Native extends BasicPay
      * 下单支付
      * @param   array   $options    订单参数 [out_trade_no-订单编号,total_fee-订单金额，body-商品描述]
      * @param   string  $notify_url 通知地址
-     * @param   int     $qrcodeWith 二维码宽度,默认200
      * @return  array
      */
-    public function pay(array $options, string $notify_url, int $qrcodeWith = null)
+    public function pay(array $options, string $notify_url)
     {
         $this->options->set('notify_url', $notify_url);
 
-        $this->options->set('trade_type', 'NATIVE');
+        $this->options->set('trade_type', 'MWEB');
 
         $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 
-
         $order = $this->createOrder($url, $options);
 
-        $qrcode = new QrCode();
-        $qrcode->setText($order['code_url'])
-            ->setExtension('png')
-            ->setSize(is_null($qrcodeWith) ? 200 : (int)$qrcodeWith);
-        $order['qrcode'] = 'data:png;base64,' . base64_encode($qrcode->get('png'));
-        
-        return $order;
+        $data = [
+            'appid' => $order['appid'],
+            'partnerid' => $order['mch_id'],
+            'prepayid' => (string)$order['prepay_id'],
+            'package'   => 'Sign=WXPay',
+            'timestamp' => (string)time(),
+            'noncestr' => Tools::createNoncestr(),
+        ];
+        $data['sign'] = $this->getSign($data, $this->config['sign_type']);
+
+        return $data;
     }
 }

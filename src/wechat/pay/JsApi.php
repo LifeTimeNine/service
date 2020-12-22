@@ -3,7 +3,7 @@
  * @Description   JsApi支付
  * @Author        lifetime
  * @Date          2020-12-21 10:15:25
- * @LastEditTime  2020-12-21 16:33:15
+ * @LastEditTime  2020-12-22 09:44:57
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;

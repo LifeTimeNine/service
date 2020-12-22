@@ -3,11 +3,12 @@
  * @Description   微信支付
  * @Author        lifetime
  * @Date          2020-12-21 10:04:57
- * @LastEditTime  2020-12-21 16:48:50
+ * @LastEditTime  2020-12-22 09:54:55
  * @LastEditors   lifetime
  */
 namespace service\wechat;
 
+use service\wechat\pay\H5;
 use service\wechat\pay\JsApi;
 use service\wechat\pay\Native;
 
@@ -61,5 +62,14 @@ class Pay
     public function native()
     {
         return Native::instance($this->config);
+    }
+
+    /**
+     * H5支付
+     * @return  \service\wechat\pay\H5
+     */
+    public function h5()
+    {
+        return H5::instance($this->config);
     }
 }
