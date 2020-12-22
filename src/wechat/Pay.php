@@ -3,13 +3,15 @@
  * @Description   微信支付
  * @Author        lifetime
  * @Date          2020-12-21 10:04:57
- * @LastEditTime  2020-12-22 09:54:55
+ * @LastEditTime  2020-12-22 15:46:32
  * @LastEditors   lifetime
  */
 namespace service\wechat;
 
+use service\wechat\pay\App;
 use service\wechat\pay\H5;
 use service\wechat\pay\JsApi;
+use service\wechat\pay\MiniApp;
 use service\wechat\pay\Native;
 
 class Pay
@@ -47,7 +49,7 @@ class Pay
     }
 
     /**
-     * JSAPI支付
+     * JSAPi或小程序支付
      * @return  \service\wechat\pay\JsApi
      */
     public function jsApi()
@@ -71,5 +73,23 @@ class Pay
     public function h5()
     {
         return H5::instance($this->config);
+    }
+
+    /**
+     * APP支付
+     * @return  \service\wechat\pay\App
+     */
+    public function app()
+    {
+        return App::instance($this->config);
+    }
+
+    /**
+     * 小程序支付
+     * @return  \service\wechat\pay\MiniApp
+     */
+    public function miniApp()
+    {
+        return MiniApp::instance($this->config);
     }
 }

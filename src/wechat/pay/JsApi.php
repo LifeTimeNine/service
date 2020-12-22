@@ -1,9 +1,9 @@
 <?php
 /*
- * @Description   JsApi支付
+ * @Description   JsApi或小程序支付
  * @Author        lifetime
  * @Date          2020-12-21 10:15:25
- * @LastEditTime  2020-12-22 09:44:57
+ * @LastEditTime  2020-12-22 15:34:48
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;

@@ -17,7 +17,7 @@
 
 ## 支付宝支付
 
-## 配置
+### 配置
 添加一个名称为`ali.php`的配置文件  
 添加必须配置
 ```php
@@ -94,7 +94,7 @@ Web页面支付
 
 ## 微信
 
-## 配置
+### 配置
 添加一个名称为`wechat.php`的配置文件  
 添加必须配置
 ```php
@@ -187,3 +187,16 @@ Official::instance()->oauth()->getCode();
 * `getAllPrivateTemplate` : 获取模板列表
 * `delPrivateTemplate` ：删除模板
 * `send` ：发送模板消息
+
+## 常用工具
+
+### `Tools`
+
+包含的方法:  
+* `request`：CURL模拟网络请求
+* `getAge`: 根据出生年月日获取年龄
+* `createOrderSn`：生成订单编号
+* `isJson`：判断是否是JSON字符串
+* `getMillisecond`：获取毫秒级时间戳
+* `getMonthDay`：获取某个月的天数
+* `deldir`：删除文件夹及其所有子文件

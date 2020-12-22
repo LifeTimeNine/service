@@ -1,9 +1,9 @@
 <?php
 /*
- * @Description   微信H5支付
+ * @Description   微信 APP支付
  * @Author        lifetime
- * @Date          2020-12-22 09:40:58
- * @LastEditTime  2020-12-22 15:30:16
+ * @Date          2020-12-22 15:23:40
+ * @LastEditTime  2020-12-22 15:29:52
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;
@@ -11,7 +11,7 @@ namespace service\wechat\pay;
 use service\wechat\kernel\BasicPay;
 use service\wechat\kernel\Tools;
 
-class H5 extends BasicPay
+class App extends BasicPay
 {
     /**
      * 构造函数
@@ -20,33 +20,35 @@ class H5 extends BasicPay
     protected function __construct($config = [])
     {
         parent::__construct($config);
-        $this->setAppId('official_appid');
+        $this->setAppId('app_appid');
     }
 
     /**
      * 下单支付
      * @param   array   $options    订单参数 [out_trade_no-订单编号,total_fee-订单金额，body-商品描述]
-     * @param   string  $notify_url 通知地址
+     * @param   array   $notify_url 通知地址
      * @return  array
      */
     public function pay(array $options, string $notify_url)
     {
         $this->options->set('notify_url', $notify_url);
 
-        $this->options->set('trade_type', 'MWEB');
+        $this->options->set('trade_type', 'APP');
 
         $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 
         $order = $this->createOrder($url, $options);
 
         $data = [
-            'appId' => $order['appid'],
-            'timeStamp' => (string)time(),
-            'nonceStr' => Tools::createNoncestr(),
-            'package' => "prepay_id={$order['prepay_id']}",
-            'singType' => $this->options['sign_type'],
+            'appid' => $order['appid'],
+            'partnerid' => $order['mch_id'],
+            'prepayid' => (string)$order['prepay_id'],
+            'package'   => 'Sign=WXPay',
+            'timestamp' => (string)time(),
+            'noncestr' => Tools::createNoncestr(),
         ];
-        $data['paySign'] = $this->getSign($data, $this->options['sign_type']);
+        $data['sign'] = $this->getSign($data, $this->config['sign_type']);
+
         return $data;
     }
 }
