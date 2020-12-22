@@ -4,15 +4,16 @@
  * @Author: Lifetime
  * @Date: 2020-12-20 11:50:10
  * @LastEditors   lifetime
- * @LastEditTime  2020-12-22 13:58:37
+ * @LastEditTime  2020-12-22 17:43:38
  */
 
 namespace service\wechat\kernel;
 
-use service\DataArray;
+use service\tools\DataArray;
 use service\config\WechatConfig;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
+use service\tools\Tools;
 
 class BasicPay
 {
@@ -55,9 +56,6 @@ class BasicPay
         $this->options->set('mch_id', $this->config['mch_id']);
     
         if (empty($this->config['mch_key'])) throw new InvalidArgumentException('Missinng Config [mch_key]');
-
-        if (empty($this->config['cache_path'])) throw new InvalidArgumentException("Missing Config [cache_path]");
-        Tools::$cache_path = $this->config['cache_path'];
 
         if (empty($this->config['sign_type'])) throw new InvalidArgumentException("Missing Config [sign_type]");
         $this->options->set('sign_type', $this->config['sign_type']);

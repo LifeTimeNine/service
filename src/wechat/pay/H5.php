@@ -3,13 +3,13 @@
  * @Description   微信H5支付
  * @Author        lifetime
  * @Date          2020-12-22 09:40:58
- * @LastEditTime  2020-12-22 15:30:16
+ * @LastEditTime  2020-12-22 17:05:53
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;
 
+use service\tools\Tools;
 use service\wechat\kernel\BasicPay;
-use service\wechat\kernel\Tools;
 
 class H5 extends BasicPay
 {

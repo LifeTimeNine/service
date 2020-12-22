@@ -3,13 +3,13 @@
  * @Description   JsApi或小程序支付
  * @Author        lifetime
  * @Date          2020-12-21 10:15:25
- * @LastEditTime  2020-12-22 15:34:48
+ * @LastEditTime  2020-12-22 17:06:13
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;
 
+use service\tools\Tools;
 use service\wechat\kernel\BasicPay;
-use service\wechat\kernel\Tools;
 
 class JsApi extends BasicPay
 {

@@ -3,11 +3,11 @@
  * @Description   DataArray
  * @Author        lifetime
  * @Date          2020-12-17 16:54:05
- * @LastEditTime  2020-12-17 16:55:46
+ * @LastEditTime  2020-12-22 17:42:27
  * @LastEditors   lifetime
  */
 
-namespace service;
+namespace service\tools;
 
 use ArrayAccess;
 

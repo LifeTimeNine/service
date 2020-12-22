@@ -14,11 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "service\\": "src",
-            "service\\ali\\": "src/ali",
-            "service\\wechat\\": "src/wechat",
-            "service\\config\\": "src/config",
-            "service\\exceptions\\": "src/exceptions"
+            "service\\": "src"
         }
     },
     "require": {

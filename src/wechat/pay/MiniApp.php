@@ -3,13 +3,13 @@
  * @Description   小程序支付
  * @Author        lifetime
  * @Date          2020-12-22 15:44:33
- * @LastEditTime  2020-12-22 15:45:17
+ * @LastEditTime  2020-12-22 17:06:20
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;
 
+use service\tools\Tools;
 use service\wechat\kernel\BasicPay;
-use service\wechat\kernel\Tools;
 
 class MiniApp extends BasicPay
 {

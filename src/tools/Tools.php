@@ -1,45 +1,31 @@
 <?php
 /*
- * @Description   常用工具类
+ * @Description   工具类
  * @Author        lifetime
- * @Date          2020-12-17 16:43:54
- * @LastEditTime: 2020-12-20 18:38:27
- * @LastEditors: Lifetime
+ * @Date          2020-12-22 14:41:40
+ * @LastEditTime  2020-12-22 16:48:06
+ * @LastEditors   lifetime
  */
-namespace service\wechat\kernel;
 
-use service\exceptions\CacheException;
+namespace service\tools;
+
+use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
 
+/**
+ * 常用工具类
+ */
 class Tools
 {
-
-    /**
-     * 缓存路径
-     * @var null
-     */
-    public static $cache_path = null;
-
-    /**
-     * 缓存写入操作
-     * @var array
-     */
-    public static $cache_callable = [
-        'set' => null, // 写入缓存
-        'get' => null, // 获取缓存
-        'del' => null, // 删除缓存
-        'put' => null, // 写入文件
-    ];
-
     /**
      * CURL模拟网络请求
      * @param string $method 请求方法
      * @param string $url 请求方法
      * @param array $options 请求参数[headers,data,ssl_cer,ssl_key]
-     * @return boolean|string
+     * @return string
      * @throws Exception
      */
-    public static function request($method, $url, $options = [])
+    public static function request(string $method, string $url, array $options = [])
     {
         $curl = curl_init();
         // GET参数设置
@@ -77,77 +63,6 @@ class Tools
     }
 
     /**
-     * 缓存配置与存储
-     * @param string $name 缓存名称
-     * @param string $value 缓存内容
-     * @param int $expired 缓存时间(0表示永久缓存)
-     * @return string
-     * @throws CacheException
-     */
-    public static function setCache($name, $value = '', $expired = 3600)
-    {
-        if (is_callable(self::$cache_callable['set'])) {
-            return call_user_func_array(self::$cache_callable['set'], func_get_args());
-        }
-        $file = self::_getCacheName($name);
-        $data = ['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)];
-        if (!file_put_contents($file, serialize($data))) {
-            throw new CacheException('local cache error.', '0');
-        }
-        return $file;
-    }
-
-    /**
-     * 获取缓存内容
-     * @param string $name 缓存名称
-     * @return null|mixed
-     */
-    public static function getCache($name)
-    {
-        if (is_callable(self::$cache_callable['get'])) {
-            return call_user_func_array(self::$cache_callable['get'], func_get_args());
-        }
-        $file = self::_getCacheName($name);
-        if (file_exists($file) && ($content = file_get_contents($file))) {
-            $data = unserialize($content);
-            if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
-                return $data['value'];
-            }
-            self::delCache($name);
-        }
-        return null;
-    }
-
-    /**
-     * 移除缓存文件
-     * @param string $name 缓存名称
-     * @return boolean
-     */
-    public static function delCache($name)
-    {
-        if (is_callable(self::$cache_callable['del'])) {
-            return call_user_func_array(self::$cache_callable['del'], func_get_args());
-        }
-        $file = self::_getCacheName($name);
-        return file_exists($file) ? unlink($file) : true;
-    }
-
-    /**
-     * 应用缓存目录
-     * @param string $name
-     * @return string
-     */
-    private static function _getCacheName($name)
-    {
-        if (empty(self::$cache_path)) {
-            self::$cache_path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR;
-        }
-        self::$cache_path = rtrim(self::$cache_path, '/\\') . DIRECTORY_SEPARATOR;
-        file_exists(self::$cache_path) || mkdir(self::$cache_path, 0755, true);
-        return self::$cache_path . $name;
-    }
-
-    /**
      * 数组转xml内容
      * @param array $data
      * @return null|string
@@ -167,7 +82,7 @@ class Tools
     {
         $result = json_decode($json, true);
         if (empty($result)) {
-            throw new InvalidResponseException('invalid response.', '0');
+            throw new InvalidArgumentException('invalid response.', '0');
         }
         if (!empty($result['errcode']) && $result['errcode'] !== 0) {
             throw new InvalidResponseException($result['errmsg'], $result['errcode'], $result);
@@ -312,5 +227,96 @@ class Tools
         $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         libxml_disable_entity_loader($entity);
         return json_decode(json_encode($data), true);
+    }
+
+    /**
+     * 根据出生年月日获取年龄
+     * @param  string   $birthday   出生如期YYYY-mm-dd
+     * @return  int 年龄
+     */
+    public static function getAge(string $birth)
+    {
+        list($birthYear, $birthMonth, $birthDay) = explode('-', $birth);
+        list($currentYear, $currentMonth, $currentDay) = explode('-', date('Y-m-d'));
+        $age = $currentYear - $birthYear - 1;
+        if ($currentMonth > $birthMonth || $currentMonth == $birthMonth && $currentDay >= $birthDay)
+            $age++;
+        return $age;
+    }
+
+    /**
+     * 生成订单编号 (前缀+日期+用户id+随机数)
+     * @param   string     $uid        用户id
+     * @param   string  $prefix     前缀
+     * @param   int     $randLen    随机数长度
+     * @return  string
+     */
+    public static function createOrderSn(string $uid = null, string $prefix = null, int $randLen = null)
+    {
+        if ($randLen === null) $randLen = 3;
+        $date = date('YmdHis');
+        $rand = '';
+        while ($randLen-- > 0) $rand .= rand(0, 9);
+        return "$prefix$date$uid$rand";
+    }
+
+    /**
+     * 判断字符串是否是json字符串
+     * @param   string  $string     要检测的字符串
+     * @return  bool    判断结果
+     */
+    public static function isJson(string $string)
+    {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
+    /**
+     * 获取毫秒级时间戳
+     * @return  float
+     */
+    public static function getMillisecond()
+    {
+        list($s1, $s2) = explode(' ', microtime());
+        return (float) sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
+    }
+
+    /**
+     * 获取某个月的天数
+     * @param  string   $date       日期 （Y-m）
+     * @return  int     天数
+     */
+    public static function getMonthDay($date)
+    {
+        return date('t', strtotime($date));
+    }
+
+    /**
+     * 删除文件夹及其所有子文件
+     * @param  string   $path   文件目录
+     */
+    public static function deldir($path)
+    {
+        //如果是目录则继续
+        if (is_dir($path)) {
+            //扫描一个文件夹内的所有文件夹和文件并返回数组
+            $p = scandir($path);
+            foreach ($p as $val) {
+                //排除目录中的.和..
+                if ($val != "." && $val != "..") {
+                    //如果是目录则递归子目录，继续操作
+                    if (is_dir($path . '/' . $val)) {
+                        //子目录中操作删除文件夹和文件
+                        self::deldir($path . '/' . $val);
+                        //目录清空后删除空文件夹
+                        @rmdir($path . '/' . $val);
+                    } else {
+                        //如果是文件直接删除
+                        unlink($path . '/' . $val);
+                    }
+                }
+            }
+            @rmdir($path);
+        }
     }
 }

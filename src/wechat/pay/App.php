@@ -3,13 +3,13 @@
  * @Description   微信 APP支付
  * @Author        lifetime
  * @Date          2020-12-22 15:23:40
- * @LastEditTime  2020-12-22 15:29:52
+ * @LastEditTime  2020-12-22 17:05:27
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;
 
+use service\tools\Tools;
 use service\wechat\kernel\BasicPay;
-use service\wechat\kernel\Tools;
 
 class App extends BasicPay
 {

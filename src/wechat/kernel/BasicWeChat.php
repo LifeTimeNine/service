@@ -3,7 +3,7 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-18 21:26:38
- * @LastEditTime  2020-12-19 14:18:50
+ * @LastEditTime  2020-12-22 17:36:05
  * @LastEditors   lifetime
  */
 
@@ -12,6 +12,8 @@ namespace service\wechat\kernel;
 use service\config\WechatConfig;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
+use service\tools\Cache;
+use service\tools\Tools;
 
 class BasicWeChat
 {
@@ -64,8 +66,10 @@ class BasicWeChat
         if (empty($this->config['official_app_secret'])) throw new InvalidArgumentException("Missing Config [official_app_secret]");
 
         if (empty($this->config['cache_path'])) throw new InvalidArgumentException("Missing Config [cache_path]");
+        Cache::$cache_path = $this->config['cache_path'];
 
-        Tools::$cache_path = $this->config['cache_path'];
+        if (!empty($this->config['cache_callable'] && is_array($this->config['cache_callable']))) Cache::$cache_callable == array_merge(Cache::$cache_callable, $this->config['cache_callable']);
+
     }
 
     /**
@@ -86,7 +90,7 @@ class BasicWeChat
      */
     public function getAccessToken()
     {
-        $this->access_token = Tools::getCache($this->config['appid'] . '_access_token');
+        $this->access_token = Cache::getCache($this->config['appid'] . '_access_token');
 
         if (!empty($this->access_token)) return $this->access_token;
 
@@ -94,7 +98,7 @@ class BasicWeChat
         $res = json_decode(Tools::request('get', $url), true);
         if (!empty($res['errcode'])) throw new InvalidResponseException("errcode: [{$res['errcode']}]  errmsg: [{$res['errmsg']}]");
 
-        Tools::setCache($this->config['appid'] . '_access_token', $res['access_token'], $res['expires_in']);
+        Cache::setCache($this->config['appid'] . '_access_token', $res['access_token'], $res['expires_in']);
 
         return $this->access_token = $res['access_token'];
     }
@@ -102,10 +106,11 @@ class BasicWeChat
     /**
      * 设置access_token
      * @param   string  $access_token   access_token
+     * @param   int     $exp           有效期
      */
-    public function setAccessToken(string $access_token)
+    public function setAccessToken(string $access_token, $exp)
     {
-        Tools::setCache("{$this->config['appid']}_access_token", $this->access_token = $access_token);
+        Cache::setCache("{$this->config['appid']}_access_token", $this->access_token = $access_token, $exp);
     }
 
     /**
@@ -114,7 +119,7 @@ class BasicWeChat
     public function delAccessToken()
     {
         $this->access_token = '';
-        Tools::delCache("{$this->access_token['appid']}_access_token");
+        Cache::delCache("{$this->access_token['appid']}_access_token");
     }
 
     /**
