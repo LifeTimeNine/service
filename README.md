@@ -38,11 +38,6 @@ return [
 
 命名空间 `service\ali`
 
-### 初始化
-```php
-  $alipay = service\ali\Pay::instance();
-```
-
 ### 方法
 #### 1. `page`
 Web页面支付  

@@ -3,13 +3,12 @@
  * @Description   微信公众号 网页授权
  * @Author        lifetime
  * @Date          2020-12-17 16:12:58
- * @LastEditTime  2020-12-19 14:54:20
+ * @LastEditTime  2020-12-22 08:51:20
  * @LastEditors   lifetime
  */
 
-namespace service\wechat;
+namespace service\wechat\official;
 
-use service\config\WechatConfig;
 use service\exceptions\InvalidArgumentException;
 use service\wechat\kernel\BasicWeChat;
 use service\wechat\kernel\Tools;

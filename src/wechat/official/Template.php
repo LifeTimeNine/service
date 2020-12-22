@@ -3,11 +3,11 @@
  * @Description   微信公众平台 模板消息
  * @Author        lifetime
  * @Date          2020-12-19 08:53:10
- * @LastEditTime  2020-12-19 09:45:09
+ * @LastEditTime  2020-12-22 08:51:29
  * @LastEditors   lifetime
  */
 
-namespace service\wechat;
+namespace service\wechat\official;
 
 use service\wechat\kernel\BasicWeChat;
 
