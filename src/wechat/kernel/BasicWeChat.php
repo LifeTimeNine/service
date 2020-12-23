@@ -3,7 +3,7 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-18 21:26:38
- * @LastEditTime  2020-12-23 10:21:39
+ * @LastEditTime  2020-12-23 18:12:33
  * @LastEditors   lifetime
  */
 
@@ -90,7 +90,7 @@ class BasicWeChat
      */
     public function getAccessToken()
     {
-        $this->access_token = Cache::get($this->config['appid'] . '_access_token');
+        $this->access_token = Cache::get("wechat_access_token_{$this->config['appid']}");
 
         if (!empty($this->access_token)) return $this->access_token;
 
@@ -98,7 +98,7 @@ class BasicWeChat
         $res = json_decode(Tools::request('get', $url), true);
         if (!empty($res['errcode'])) throw new InvalidResponseException("errcode: [{$res['errcode']}]  errmsg: [{$res['errmsg']}]");
 
-        Cache::set($this->config['appid'] . '_access_token', $res['access_token'], $res['expires_in']);
+        Cache::set("wechat_access_token_{$this->config['appid']}", $res['access_token'], $res['expires_in']);
 
         return $this->access_token = $res['access_token'];
     }
@@ -110,7 +110,7 @@ class BasicWeChat
      */
     public function setAccessToken(string $access_token, $exp)
     {
-        Cache::set("{$this->config['appid']}_access_token", $this->access_token = $access_token, $exp);
+        Cache::set("wechat_access_token_{$this->config['appid']}", $this->access_token = $access_token, $exp);
     }
 
     /**
@@ -119,7 +119,7 @@ class BasicWeChat
     public function delAccessToken()
     {
         $this->access_token = '';
-        Cache::del("{$this->access_token['appid']}_access_token");
+        Cache::del("wechat_access_token_{$this->config['appid']}");
     }
 
     /**
