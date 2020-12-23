@@ -3,7 +3,7 @@
  * @Description   缓存类
  * @Author        lifetime
  * @Date          2020-12-22 17:07:22
- * @LastEditTime  2020-12-22 17:08:38
+ * @LastEditTime  2020-12-23 10:07:03
  * @LastEditors   lifetime
  */
 namespace service\tools;
@@ -40,7 +40,7 @@ class Cache
      * @return string
      * @throws CacheException
      */
-    public static function setCache($name, $value = '', $expired = 3600)
+    public static function set($name, $value = '', $expired = 3600)
     {
         if (is_callable(self::$cache_callable['set'])) {
             return call_user_func_array(self::$cache_callable['set'], func_get_args());
@@ -58,7 +58,7 @@ class Cache
      * @param string $name 缓存名称
      * @return null|mixed
      */
-    public static function getCache($name)
+    public static function get($name)
     {
         if (is_callable(self::$cache_callable['get'])) {
             return call_user_func_array(self::$cache_callable['get'], func_get_args());
@@ -69,7 +69,7 @@ class Cache
             if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
                 return $data['value'];
             }
-            self::delCache($name);
+            self::del($name);
         }
         return null;
     }
@@ -79,7 +79,7 @@ class Cache
      * @param string $name 缓存名称
      * @return boolean
      */
-    public static function delCache($name)
+    public static function del($name)
     {
         if (is_callable(self::$cache_callable['del'])) {
             return call_user_func_array(self::$cache_callable['del'], func_get_args());

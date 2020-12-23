@@ -3,7 +3,7 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-18 21:26:38
- * @LastEditTime  2020-12-22 17:36:05
+ * @LastEditTime  2020-12-23 10:21:39
  * @LastEditors   lifetime
  */
 
@@ -90,7 +90,7 @@ class BasicWeChat
      */
     public function getAccessToken()
     {
-        $this->access_token = Cache::getCache($this->config['appid'] . '_access_token');
+        $this->access_token = Cache::get($this->config['appid'] . '_access_token');
 
         if (!empty($this->access_token)) return $this->access_token;
 
@@ -98,7 +98,7 @@ class BasicWeChat
         $res = json_decode(Tools::request('get', $url), true);
         if (!empty($res['errcode'])) throw new InvalidResponseException("errcode: [{$res['errcode']}]  errmsg: [{$res['errmsg']}]");
 
-        Cache::setCache($this->config['appid'] . '_access_token', $res['access_token'], $res['expires_in']);
+        Cache::set($this->config['appid'] . '_access_token', $res['access_token'], $res['expires_in']);
 
         return $this->access_token = $res['access_token'];
     }
@@ -110,7 +110,7 @@ class BasicWeChat
      */
     public function setAccessToken(string $access_token, $exp)
     {
-        Cache::setCache("{$this->config['appid']}_access_token", $this->access_token = $access_token, $exp);
+        Cache::set("{$this->config['appid']}_access_token", $this->access_token = $access_token, $exp);
     }
 
     /**
@@ -119,7 +119,7 @@ class BasicWeChat
     public function delAccessToken()
     {
         $this->access_token = '';
-        Cache::delCache("{$this->access_token['appid']}_access_token");
+        Cache::del("{$this->access_token['appid']}_access_token");
     }
 
     /**
@@ -143,12 +143,16 @@ class BasicWeChat
     protected function httpGetForJson()
     {
         try {
-            return Tools::json2arr(Tools::request('get', $this->request_url));
+            $result = Tools::json2arr(Tools::request('get', $this->request_url));
+            if (!empty($result['errcode']) && $result['errcode'] !== 0) {
+                throw new InvalidResponseException($result['return_msg'], '0', $result);
+            }
+            return $result;
         } catch (InvalidResponseException $e) {
             if (in_array($e->getCode(), $this->failure_code)) {
                 return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
             }
-            throw new InvalidResponseException($e->getMessage(), $e->getCode());
+            throw new InvalidResponseException($e->getMessage(), $e->getCode(), $e->getRaw());
         }
     }
 
@@ -167,12 +171,16 @@ class BasicWeChat
         ];
 
         try {
-            return Tools::json2arr(Tools::request('post', $this->request_url, $options));
+            $result = Tools::json2arr(Tools::request('post', $this->request_url, $options));
+            if (!empty($result['errcode']) && $result['errcode'] !== 0) {
+                throw new InvalidResponseException($result['return_msg'], '0', $result);
+            }
+            return $result;
         } catch (InvalidResponseException $e) {
             if (in_array($e->getCode(), $this->failure_code)) {
                 return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
             }
-            throw new InvalidResponseException($e->getMessage(), $e->getCode());
+            throw new InvalidResponseException($e->getMessage(), $e->getCode(), $e->getRaw());
         }
     }
 }

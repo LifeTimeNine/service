@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2020-12-22 17:47:38
+ * @LastEditTime  2020-12-23 10:15:36
  * @LastEditors   lifetime
  */
 
@@ -13,7 +13,7 @@ use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
 
 /**
- * 常用工具类
+ * 工具类
  */
 class Tools
 {
@@ -81,11 +81,8 @@ class Tools
     public static function json2arr($json)
     {
         $result = json_decode($json, true);
-        if (empty($result)) {
+        if (empty($result)  || json_last_error() == JSON_ERROR_NONE) {
             throw new InvalidArgumentException('invalid response.', '0');
-        }
-        if (!empty($result['errcode']) && $result['errcode'] !== 0) {
-            throw new InvalidResponseException($result['errmsg'], $result['errcode'], $result);
         }
         return $result;
     }

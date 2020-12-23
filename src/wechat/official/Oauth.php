@@ -3,7 +3,7 @@
  * @Description   微信公众号 网页授权
  * @Author        lifetime
  * @Date          2020-12-17 16:12:58
- * @LastEditTime  2020-12-22 17:15:28
+ * @LastEditTime  2020-12-23 10:08:35
  * @LastEditors   lifetime
  */
 
@@ -99,12 +99,12 @@ class Oauth extends BasicWeChat
      */
     protected function getJsApiTicket()
     {
-        $this->ticket = Cache::getCache("{$this->config['official_appid']}_ticket");
+        $this->ticket = Cache::get("{$this->config['official_appid']}_ticket");
         if (!empty($this->ticket)) return $this->ticket;
         $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
         $this->registerHttp($url, __FUNCTION__, func_get_args());
         $res = $this->httpGetForJson();
-        Cache::setCache("{$this->config['official_appid']}_ticket", $res['ticket'], $res['expires_in']);
+        Cache::set("{$this->config['official_appid']}_ticket", $res['ticket'], $res['expires_in']);
         return $this->ticket = $res['ticket'];
     }
     

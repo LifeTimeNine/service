@@ -3,12 +3,15 @@
  * @Description   阿里相关配置
  * @Author        lifetime
  * @Date          2020-12-10 08:45:38
- * @LastEditTime  2020-12-17 17:27:12
+ * @LastEditTime  2020-12-23 09:11:13
  * @LastEditors   lifetime
  */
 
 namespace service\config;
 
+/**
+ * 阿里(支付宝)配置
+ */
 class AliConfig extends BasicConfig
 {
     protected $config = [

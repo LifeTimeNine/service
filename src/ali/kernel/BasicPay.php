@@ -3,7 +3,7 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2020-12-22 17:42:36
+ * @LastEditTime  2020-12-23 09:57:12
  * @LastEditors   lifetime
  */
 
@@ -22,6 +22,12 @@ abstract class BasicPay
      * @var DataArray
      */
     protected $config;
+
+    /**
+     * 必须的配置参数
+     * @var array
+     */
+    protected $mustConfig = ['appid', 'alipay_public_key', 'private_key'];
 
     /**
      * 当前请求数据
@@ -61,14 +67,10 @@ abstract class BasicPay
     {
         $this->config = new AliConfig($config);
 
-        if (empty($this->config['appid'])) {
-            throw new InvalidArgumentException("Miss Config [appid]");
-        }
-        if (empty($this->config['alipay_public_key'])) {
-            throw new InvalidArgumentException("Missing Config [alipay_public_key]");
-        }
-        if (empty($this->config['private_key'])) {
-            throw new InvalidArgumentException("Missing Config [private_key]");
+        foreach ($this->mustConfig as $v) {
+            if (empty($this->config[$v])) {
+                throw new InvalidArgumentException("Missing Config [{$v}]");
+            }
         }
 
         if ($this->config['sandbox']) {
@@ -165,7 +167,7 @@ abstract class BasicPay
         $sign = $data['sign'];
         $signType = $data['sign_type'];
         $signData = $this->getSignContent($data);
-        
+
         return $this->checkSign($signData, $sign, $signType);
     }
 
@@ -241,7 +243,7 @@ abstract class BasicPay
         }
 
         $resData = json_decode($res, true);
-        if (json_last_error() != JSON_ERROR_NONE) throw new InvalidResponseException("The request result resolution failed"); 
+        if (json_last_error() != JSON_ERROR_NONE) throw new InvalidResponseException("The request result resolution failed");
 
         return $this->checkResponse($resData);
     }
@@ -260,7 +262,7 @@ abstract class BasicPay
 
         if (empty($resData[$methodName])) throw new InvalidResponseException("Missing Response data");
         $data = $resData[$methodName];
-        
+
         return [$data, $this->checkSign(json_encode($data, 256), $sign, $this->options['sign_type'])];
     }
 }

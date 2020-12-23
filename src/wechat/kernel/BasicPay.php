@@ -4,7 +4,7 @@
  * @Author: Lifetime
  * @Date: 2020-12-20 11:50:10
  * @LastEditors   lifetime
- * @LastEditTime  2020-12-22 17:43:38
+ * @LastEditTime  2020-12-23 10:14:54
  */
 
 namespace service\wechat\kernel;
@@ -128,8 +128,8 @@ class BasicPay
         $option['data'] = Tools::arr2xml($data);
         
         $result = Tools::xml2arr(Tools::request('post', $url, $option));
-        if ($result['return_code'] !== 'SUCCESS') {
-            throw new InvalidResponseException($result['return_msg'], '0');
+        if (!empty($result['errcode']) && $result['errcode'] !== 0) {
+            throw new InvalidResponseException($result['return_msg'], '0', $result);
         }
         return $result;
     }

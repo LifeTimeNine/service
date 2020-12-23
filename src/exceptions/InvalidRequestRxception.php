@@ -3,7 +3,7 @@
  * @Description   请求异常类
  * @Author        lifetime
  * @Date          2020-12-17 08:46:00
- * @LastEditTime  2020-12-17 08:46:50
+ * @LastEditTime  2020-12-23 10:19:41
  * @LastEditors   lifetime
  */
 
@@ -26,5 +26,10 @@ class InvalidRequestException extends \Exception
     {
         parent::__construct($message, intval($code));
         $this->raw = $raw;
+    }
+
+    public function getRaw()
+    {
+        return $this->raw;
     }
 }

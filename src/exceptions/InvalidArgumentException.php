@@ -27,4 +27,9 @@ class InvalidArgumentException extends \InvalidArgumentException
         parent::__construct($message, intval($code));
         $this->raw = $raw;
     }
+
+    public function getRaw()
+    {
+        return $this->raw;
+    }
 }
