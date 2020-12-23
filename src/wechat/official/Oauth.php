@@ -3,7 +3,7 @@
  * @Description   微信公众号 网页授权
  * @Author        lifetime
  * @Date          2020-12-17 16:12:58
- * @LastEditTime  2020-12-23 10:08:35
+ * @LastEditTime  2020-12-23 14:53:50
  * @LastEditors   lifetime
  */
 
@@ -29,7 +29,7 @@ class Oauth extends BasicWeChat
      * @param   bool    $scope          是否获取用户详细信息
      * @param   string  $state          state参数
      */
-    public function getCode(string $redirectUri, bool $scope = null, string $state = null)
+    public function getCode(string $redirectUri, bool $scope = true, string $state = null)
     {
         if (empty($redirectUri)) {
             throw new InvalidArgumentException("Missing redirectUri empty");

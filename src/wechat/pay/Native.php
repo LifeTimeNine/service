@@ -3,7 +3,7 @@
  * @Description   Native支付
  * @Author        lifetime
  * @Date          2020-12-21 16:27:38
- * @LastEditTime  2020-12-22 13:47:49
+ * @LastEditTime  2020-12-23 14:55:26
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay;
@@ -30,7 +30,7 @@ class Native extends BasicPay
      * @param   int     $qrcodeWith 二维码宽度,默认200
      * @return  array
      */
-    public function pay(array $options, string $notify_url, int $qrcodeWith = null)
+    public function pay(array $options, string $notify_url, int $qrcodeWith = 200)
     {
         $this->options->set('notify_url', $notify_url);
 
@@ -44,7 +44,7 @@ class Native extends BasicPay
         $qrcode = new QrCode();
         $qrcode->setText($order['code_url'])
             ->setExtension('png')
-            ->setSize(is_null($qrcodeWith) ? 200 : (int)$qrcodeWith);
+            ->setSize($qrcodeWith);
         $order['qrcode'] = 'data:png;base64,' . base64_encode($qrcode->get('png'));
         
         return $order;

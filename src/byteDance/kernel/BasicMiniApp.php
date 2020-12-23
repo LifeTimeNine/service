@@ -3,7 +3,7 @@
  * @Description   字节小程序基类
  * @Author        lifetime
  * @Date          2020-12-23 09:46:54
- * @LastEditTime  2020-12-23 12:29:59
+ * @LastEditTime  2020-12-23 16:12:16
  * @LastEditors   lifetime
  */
 namespace service\byteDance\kernel;
@@ -32,6 +32,12 @@ class BasicMiniApp
      * @var array
      */
     protected $mustConfig = ['miniapp_appid', 'miniapp_secret', 'cache_path'];
+
+    /**
+     * access_token
+     * @var string
+     */
+    protected $access_token;
 
     /**
      * 构造函数
@@ -66,7 +72,8 @@ class BasicMiniApp
      */
     public function getAccessToken()
     {
-        if (Cache::get('toutiao_access_token')) return Cache::get('toutiao_access_token');
+        $this->access_token = Cache::get('toutiao_access_token');
+        if (!empty($this->access_token)) return $this->access_token;
         $requestData = Tools::request('get', 'https://developer.toutiao.com/api/apps/token', [
             'query' => [
                 'appid' => $this->config['appid'],
@@ -74,6 +81,10 @@ class BasicMiniApp
                 'grant_type' => 'client_credential'
             ],
         ]);
-        return Tools::json2arr($requestData);
+        $result = Tools::json2arr($requestData);
+        if (in_array($result['errcode'], [40002])) {
+            Cache::del('toutiao_access_token');
+        }
+        return $result;
     }
 }

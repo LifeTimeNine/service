@@ -4,7 +4,7 @@
  * @Author: Lifetime
  * @Date: 2020-12-20 11:50:10
  * @LastEditors   lifetime
- * @LastEditTime  2020-12-23 10:14:54
+ * @LastEditTime  2020-12-23 14:54:38
  */
 
 namespace service\wechat\kernel;
@@ -38,7 +38,7 @@ class BasicPay
 
     /**
      * 订单必须参数
-     * @var array
+     * @var DataArray
      */
     protected $mustOptions;
     
