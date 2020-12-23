@@ -190,6 +190,8 @@ Official::instance()->oauth()->getCode();
 * `delPrivateTemplate` ：删除模板
 * `send` ：发送模板消息
 
+---
+
 ## 字节跳动
 
 ### 配置
