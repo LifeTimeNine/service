@@ -3,13 +3,14 @@
  * @Description   字节小程序相关接口
  * @Author        lifetime
  * @Date          2020-12-23 10:29:46
- * @LastEditTime  2020-12-23 16:09:58
+ * @LastEditTime  2020-12-23 16:35:44
  * @LastEditors   lifetime
  */
 
 namespace service\byteDance;
 
 use service\byteDance\kernel\BasicMiniApp;
+use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidRequestException;
 use service\tools\Tools;
 
@@ -26,11 +27,11 @@ class MiniApp extends BasicMiniApp
      */
     public function code2Session(string $code = null, string $anonymous_code = null)
     {
-        if (empty($code) && empty($anonymous_code)) throw new \Exception("Code or anonymous_code should have at least one");
+        if (empty($code) && empty($anonymous_code)) throw new InvalidArgumentException("Code or anonymous_code should have at least one");
         $requestData = Tools::request('get', 'https://developer.toutiao.com/api/apps/jscode2session', [
             'query' => [
-                'appid' => $this->config['appid'],
-                'secret' => $this->config['secret'],
+                'appid' => $this->config['miniapp_appid'],
+                'secret' => $this->config['miniapp_secret'],
                 'code' => $code,
                 'anonymous_code' => $anonymous_code
             ],

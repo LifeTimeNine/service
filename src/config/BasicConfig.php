@@ -3,13 +3,14 @@
  * @Description   配置基类
  * @Author        lifetime
  * @Date          2020-12-09 22:36:36
- * @LastEditTime  2020-12-17 15:53:20
+ * @LastEditTime  2020-12-23 17:27:24
  * @LastEditors   lifetime
  */
 
 namespace service\config;
 
 use ArrayAccess;
+use service\tools\Cache;
 
 class BasicConfig implements ArrayAccess
 {
@@ -17,15 +18,18 @@ class BasicConfig implements ArrayAccess
      * 当前配置值
      * @var array
      */
-    private $config;
+    protected $config;
 
     /**
      * Config constructor.
-     * @param array $options
      */
-    public function __construct(array $options)
+    public function __construct()
     {
-        $this->config = $options;
+        $this->config = array_merge([], $this->getUserConfig('lifetime-service'));
+
+        if (!empty($this->config['cache_path'])) Cache::$cache_path = $this->config['cache_path'];
+
+        if (!empty($this->config['cache_callable']) && is_array($this->config['cache_callable'])) Cache::$cache_callable = array_merge(Cache::$cache_callable, $this->config['cache_callable']);
     }
 
     /**
@@ -90,7 +94,7 @@ class BasicConfig implements ArrayAccess
      * 清理配置项
      * @param string|null $offset
      */
-    public function offsetUnset($offset = null)
+    public function offsetUnset($offset)
     {
         if (is_null($offset)) {
             $this->config = [];
@@ -104,7 +108,7 @@ class BasicConfig implements ArrayAccess
      * @param string|null $offset
      * @return array|string|null
      */
-    public function offsetGet($offset = null)
+    public function offsetGet($offset)
     {
         if (is_null($offset)) {
             return $this->config;

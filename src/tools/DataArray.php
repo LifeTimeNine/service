@@ -3,7 +3,7 @@
  * @Description   DataArray
  * @Author        lifetime
  * @Date          2020-12-17 16:54:05
- * @LastEditTime  2020-12-22 17:42:27
+ * @LastEditTime  2020-12-23 17:07:58
  * @LastEditors   lifetime
  */
 
@@ -91,7 +91,7 @@ class DataArray implements ArrayAccess
      * 清理数据项
      * @param string|null $offset
      */
-    public function offsetUnset($offset = null)
+    public function offsetUnset($offset)
     {
         if (is_null($offset)) {
             $this->data = [];
@@ -105,7 +105,7 @@ class DataArray implements ArrayAccess
      * @param string|null $offset
      * @return array|string|null
      */
-    public function offsetGet($offset = null)
+    public function offsetGet($offset)
     {
         if (is_null($offset)) {
             return $this->data;

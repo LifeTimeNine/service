@@ -2,6 +2,29 @@
 
 **适用于thinkphp5+**
 
+添加配置文件 `lifetime-service.php`  
+添加配置
+```php
+<?php
+  'ali' => [ // 阿里（支付宝）相关配置
+    // ···
+  ],
+  'wechat' => [ // 微信相关配置
+    // ···
+  ],
+  'byteDance' => [ // 字节跳动相关配置
+    // ···
+  ],
+  'cache_path' => '', // 缓存目录
+  'cache_callable' => [ // 自定义缓存操作方法（如果设置了此参数，缓存目录将不再生效）
+        'set' => null, // 写入缓存
+        'get' => null, // 获取缓存
+        'del' => null, // 删除缓存
+        'put' => null, // 写入文件
+    ]
+>
+```
+
 所有的类都可以使用 `instance` 方法初始化  
 比如
 ```php
@@ -18,16 +41,18 @@
 ## 支付宝支付
 
 ### 配置
-添加一个名称为`ali.php`的配置文件  
+添加一个名称为`ali`的配置项  
 添加必须配置
 ```php
 <?php
 
 return [
-  'sandbox' => true, // 是否是沙箱环境,
-  'appid' => '', // 支付宝APPID
-  'private_key' => '', // 应用私钥,
-  'alipay_public_key' => '', // 支付宝公钥 
+  'ali' => [
+    'sandbox' => true, // 是否是沙箱环境,
+    'appid' => '', // 支付宝APPID
+    'private_key' => '', // 应用私钥,
+    'alipay_public_key' => '', // 支付宝公钥 
+  ]
 ];
 
 >
@@ -95,19 +120,21 @@ Web页面支付
 ## 微信
 
 ### 配置
-添加一个名称为`wechat.php`的配置文件  
+添加一个名称为`wechat`的配置项  
 添加必须配置
 ```php
 <?php
 
 return [
-  'cache_path' => '', // 缓存目录
-  'official_appid' => '', // 公众号APPID
-  'official_app_secret' => '', // 公众号secert
-  'mch_id' => '', // 商户ID
-  'mch_key' => '', // 商户支付密钥
-  'ssl_cer' => '', // 证书cert.pem路径
-  'ssl_key' => '', // 证书key.pem路径
+  'wechat' => [
+    'cache_path' => '', // 缓存目录
+    'official_appid' => '', // 公众号APPID
+    'official_app_secret' => '', // 公众号secert
+    'mch_id' => '', // 商户ID
+    'mch_key' => '', // 商户支付密钥
+    'ssl_cer' => '', // 证书cert.pem路径
+    'ssl_key' => '', // 证书key.pem路径
+  ]
 ];
 
 >
@@ -197,14 +224,16 @@ Official::instance()->oauth()->getCode();
 ## 字节跳动
 
 ### 配置
-添加一个名字为`byteDance.php`的配置文件
+添加一个名字为`byteDance`的配置项
 添加配置, 如:
 ```php
 <?php
   return [
-    'cache_path' => '', // 缓存目录
-    'miniapp_appid' => '', // 字节小程序APPID
-    'miniapp_secret' => '', // 字节小程序APP Secret
+    'byteDance' => [
+      'cache_path' => '', // 缓存目录
+      'miniapp_appid' => '', // 字节小程序APPID
+      'miniapp_secret' => '', // 字节小程序APP Secret
+    ]
   ];
 >
 ```

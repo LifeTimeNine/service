@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2020-12-23 10:15:36
+ * @LastEditTime  2020-12-23 16:32:29
  * @LastEditors   lifetime
  */
 
@@ -81,7 +81,7 @@ class Tools
     public static function json2arr($json)
     {
         $result = json_decode($json, true);
-        if (empty($result)  || json_last_error() == JSON_ERROR_NONE) {
+        if (empty($result)  || json_last_error() <> JSON_ERROR_NONE) {
             throw new InvalidArgumentException('invalid response.', '0');
         }
         return $result;
