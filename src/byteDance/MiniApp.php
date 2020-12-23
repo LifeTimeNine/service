@@ -3,7 +3,7 @@
  * @Description   字节小程序相关接口
  * @Author        lifetime
  * @Date          2020-12-23 10:29:46
- * @LastEditTime  2020-12-23 10:33:44
+ * @LastEditTime  2020-12-23 10:56:45
  * @LastEditors   lifetime
  */
 namespace service\byteDance;
@@ -17,7 +17,7 @@ use service\tools\Tools;
 class MiniApp extends BasicMiniApp
 {
     /**
-     * @description 获取 session_key 和 openId （code 和 anonymous_code 至少要有一个）
+     * 获取 session_key 和 openId （code 和 anonymous_code 至少要有一个）
      * @param   string  $code login 接口返回的登录凭证
      * @param   string  $anonymous_code login 接口返回的匿名登录凭证
      * @return array [session_key, openid]

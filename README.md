@@ -123,9 +123,9 @@ return [
 
 微信支付不同的场景所需要的参数不同，因此使用方法如下
 ```php
-
+<?php
 Pay::instance()->jsApi()->pay();
-
+>
 ```
 `Pay::instance()` 初始化支付类 `jsApi()` 切换至微信JSAPI场景 `pay()` 传入订单参数返回支付信息，呵！，一气呵成！！！
 
@@ -154,7 +154,9 @@ Pay::instance()->jsApi()->pay();
 
 使用示例：
 ```php
+<?php
 Official::instance()->oauth()->getCode();
+>
 ```
 `instance()`初始化类,`oauth()`切换网页授权场景,`getCode`：获取code
 
@@ -187,6 +189,33 @@ Official::instance()->oauth()->getCode();
 * `getAllPrivateTemplate` : 获取模板列表
 * `delPrivateTemplate` ：删除模板
 * `send` ：发送模板消息
+
+## 字节跳动
+
+### 配置
+添加一个名字为`byteDance.php`的配置文件
+添加配置, 如:
+```php
+<?php
+  return [
+    'miniapp_appid' => '', // 字节小程序APPID
+    'miniapp_secret' => '', // 字节小程序APP Secret
+  ];
+>
+```
+
+## `MiniApp`
+
+命名空间 `service\byteDance`
+
+字节小城相关接口类
+
+参考 [字节小程序文档](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/server/server-api-introduction)
+
+### 方法
+* `getAccessToken`：获取头条平台Access_token
+* `code2Session`：获取session_key和appId
+* `checkUserInfo`：验证用户信息
 
 ## 常用工具
 
