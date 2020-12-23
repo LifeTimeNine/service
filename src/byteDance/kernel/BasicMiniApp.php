@@ -3,7 +3,7 @@
  * @Description   字节小程序基类
  * @Author        lifetime
  * @Date          2020-12-23 09:46:54
- * @LastEditTime  2020-12-23 10:31:52
+ * @LastEditTime  2020-12-23 12:29:59
  * @LastEditors   lifetime
  */
 namespace service\byteDance\kernel;
@@ -31,7 +31,7 @@ class BasicMiniApp
      * 必须的配置参数
      * @var array
      */
-    protected $mustConfig = ['miniapp_appid', 'miniapp_secret'];
+    protected $mustConfig = ['miniapp_appid', 'miniapp_secret', 'cache_path'];
 
     /**
      * 构造函数

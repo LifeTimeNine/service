@@ -124,6 +124,7 @@ return [
 微信支付不同的场景所需要的参数不同，因此使用方法如下
 ```php
 <?php
+use service\wechat\Pay;
 Pay::instance()->jsApi()->pay();
 >
 ```
@@ -155,6 +156,7 @@ Pay::instance()->jsApi()->pay();
 使用示例：
 ```php
 <?php
+use service\wechat\Official;
 Official::instance()->oauth()->getCode();
 >
 ```
@@ -200,6 +202,7 @@ Official::instance()->oauth()->getCode();
 ```php
 <?php
   return [
+    'cache_path' => '', // 缓存目录
     'miniapp_appid' => '', // 字节小程序APPID
     'miniapp_secret' => '', // 字节小程序APP Secret
   ];
@@ -209,6 +212,14 @@ Official::instance()->oauth()->getCode();
 ## `MiniApp`
 
 命名空间 `service\byteDance`
+
+使用示例:
+```php
+<?php
+use service\byteDance\MiniApp;
+MiniApp::instance()->getAccessToken();
+>
+```
 
 字节小城相关接口类
 

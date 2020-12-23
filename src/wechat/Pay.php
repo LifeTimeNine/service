@@ -3,7 +3,7 @@
  * @Description   微信支付
  * @Author        lifetime
  * @Date          2020-12-21 10:04:57
- * @LastEditTime  2020-12-22 15:46:32
+ * @LastEditTime  2020-12-23 11:31:22
  * @LastEditors   lifetime
  */
 namespace service\wechat;
@@ -14,6 +14,9 @@ use service\wechat\pay\JsApi;
 use service\wechat\pay\MiniApp;
 use service\wechat\pay\Native;
 
+/**
+ * 微信支付
+ */
 class Pay
 {
     /**

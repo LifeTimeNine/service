@@ -3,7 +3,7 @@
  * @Description   字节小程序相关接口
  * @Author        lifetime
  * @Date          2020-12-23 10:29:46
- * @LastEditTime  2020-12-23 10:56:45
+ * @LastEditTime  2020-12-23 11:32:13
  * @LastEditors   lifetime
  */
 namespace service\byteDance;
@@ -12,7 +12,7 @@ use service\byteDance\kernel\BasicMiniApp;
 use service\tools\Tools;
 
 /**
- * 字节小程序相关接口
+ * 字节小程序
  */
 class MiniApp extends BasicMiniApp
 {

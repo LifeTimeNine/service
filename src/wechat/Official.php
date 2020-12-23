@@ -3,7 +3,7 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-22 08:51:49
- * @LastEditTime  2020-12-22 09:04:31
+ * @LastEditTime  2020-12-23 11:31:38
  * @LastEditors   lifetime
  */
 namespace service\wechat;
@@ -11,6 +11,9 @@ namespace service\wechat;
 use service\wechat\official\Oauth;
 use service\wechat\official\Template;
 
+/**
+ * 微信公众平台
+ */
 class Official
 {
     /**
