@@ -3,7 +3,7 @@
  * @Description   缓存类
  * @Author        lifetime
  * @Date          2020-12-22 17:07:22
- * @LastEditTime  2020-12-23 10:07:03
+ * @LastEditTime  2020-12-23 18:34:34
  * @LastEditors   lifetime
  */
 namespace service\tools;
@@ -96,10 +96,10 @@ class Cache
     private static function _getCacheName($name)
     {
         if (empty(self::$cache_path)) {
-            self::$cache_path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR;
+            self::$cache_path = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
         }
         self::$cache_path = rtrim(self::$cache_path, '/\\') . DIRECTORY_SEPARATOR;
-        file_exists(self::$cache_path) || mkdir(self::$cache_path, 0755, true);
+        file_exists(self::$cache_path) || mkdir(self::$cache_path, 0777, true);
         return self::$cache_path . $name;
     }
 }

@@ -3,7 +3,7 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-18 21:26:38
- * @LastEditTime  2020-12-23 18:12:33
+ * @LastEditTime  2020-12-23 18:30:27
  * @LastEditors   lifetime
  */
 
@@ -64,12 +64,6 @@ class BasicWeChat
         if (empty($this->config['official_appid'])) throw new InvalidArgumentException("Missing Config [official_appid]");
 
         if (empty($this->config['official_app_secret'])) throw new InvalidArgumentException("Missing Config [official_app_secret]");
-
-        if (empty($this->config['cache_path'])) throw new InvalidArgumentException("Missing Config [cache_path]");
-        Cache::$cache_path = $this->config['cache_path'];
-
-        if (!empty($this->config['cache_callable'] && is_array($this->config['cache_callable']))) Cache::$cache_callable == array_merge(Cache::$cache_callable, $this->config['cache_callable']);
-
     }
 
     /**
