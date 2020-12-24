@@ -3,13 +3,14 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-22 08:51:49
- * @LastEditTime  2020-12-23 11:31:38
+ * @LastEditTime  2020-12-24 09:30:28
  * @LastEditors   lifetime
  */
 namespace service\wechat;
 
 use service\wechat\official\Oauth;
 use service\wechat\official\Template;
+use service\wechat\official\User;
 
 /**
  * 微信公众平台
@@ -64,5 +65,14 @@ class Official
     public function template()
     {
         return Template::instance($this->config);
+    }
+
+    /**
+     * 用户管理
+     * @return  \service\wechat\official\User
+     */
+    public function user()
+    {
+        return User::instance($this->config);
     }
 }
