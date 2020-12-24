@@ -192,6 +192,7 @@ Official::instance()->oauth()->getCode();
 目前支持的场景有:
 * `oauth`：网页授权 
 * `template`：模板消息 
+* `user`：用户管理
 
 ### `oauth`
 
@@ -218,6 +219,29 @@ Official::instance()->oauth()->getCode();
 * `getAllPrivateTemplate` : 获取模板列表
 * `delPrivateTemplate` ：删除模板
 * `send` ：发送模板消息
+
+### `user`
+
+公众号用户管理
+
+参考 [微信公众号用户管理](https://developers.weixin.qq.com/doc/offiaccount/User_Management/User_Tag_Management.html)
+
+### 方法
+* `createTag` ：创建标签
+* `getTag`：获取已经创建的用户标签
+* `updateTag`：更新标签信息
+* `delTag`：删除标签
+* `getTagUser`：获取某个标签下的粉丝列表
+* `batchBindTag`：批量为用户打标签
+* `batchUnBindTag`：批量为用户取消标签
+* `getUserTag`：获取用户身上的标签
+* `updateRemark`：设置用户备注名
+* `getUserinfo`：获取用户基本信息(UnionID机制)
+* `batchGetUserInfo`：批量获取用户基本信息
+* `getUserList`：获取用户列表
+* `getBlackList`：获取黑名单列表
+* `bacthBlack`：批量拉黑用户
+* `bacthUnBlack`：批量取消拉黑用户
 
 ---
 
