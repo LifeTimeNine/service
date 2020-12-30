@@ -1,17 +1,17 @@
 <?php
 /*
- * @Description   JsApi或小程序支付
+ * @Description   小程序支付
  * @Author        lifetime
- * @Date          2020-12-21 10:15:25
- * @LastEditTime  2020-12-22 17:06:13
+ * @Date          2020-12-22 15:44:33
+ * @LastEditTime  2020-12-28 21:19:39
  * @LastEditors   lifetime
  */
-namespace service\wechat\pay;
+namespace service\wechat\pay\v2;
 
 use service\tools\Tools;
 use service\wechat\kernel\BasicPay;
 
-class JsApi extends BasicPay
+class MiniApp extends BasicPay
 {
     /**
      * 构造函数
@@ -20,7 +20,7 @@ class JsApi extends BasicPay
     protected function __construct($config = [])
     {
         parent::__construct($config);
-        $this->setAppId('official_appid');
+        $this->setAppId('miniapp_appid');
         $this->setMustOptions(['openid']);
     }
     /**

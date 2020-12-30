@@ -10,10 +10,11 @@ return [
     ],
     'wechat' => [
         'official_appid' => 'wx372', // 公众号appid(测试数据)
-        'official_app_secret' => '36831d9d4', // 工号sercet（测试数据）
+        'official_app_secret' => '36831d9d4', // 公众号sercet（测试数据）
 
         'mch_id' => '16032', // 商户ID （测试数据）
         'mch_key' => '3A099B87C5', // 商户支付密钥 （测试数据）
+        'mch_key_v3' => '4655e71652', // 商户支付密钥 v3(测试数据)
         'ssl_cer' => env('root_path') . '/config/cret/apiclient_cert.pem', // 证书cert.pem路径
         'ssl_key' => env('root_path') . '/config/cret/apiclient_key.pem', // 证书key.pem路径
     ],

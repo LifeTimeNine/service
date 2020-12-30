@@ -3,10 +3,10 @@
  * @Description   微信 APP支付
  * @Author        lifetime
  * @Date          2020-12-22 15:23:40
- * @LastEditTime  2020-12-22 17:05:27
+ * @LastEditTime  2020-12-28 20:34:00
  * @LastEditors   lifetime
  */
-namespace service\wechat\pay;
+namespace service\wechat\pay\v2;
 
 use service\tools\Tools;
 use service\wechat\kernel\BasicPay;

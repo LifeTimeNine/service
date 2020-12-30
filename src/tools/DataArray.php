@@ -3,7 +3,7 @@
  * @Description   DataArray
  * @Author        lifetime
  * @Date          2020-12-17 16:54:05
- * @LastEditTime  2020-12-23 17:07:58
+ * @LastEditTime  2020-12-29 15:17:58
  * @LastEditors   lifetime
  */
 
@@ -58,9 +58,9 @@ class DataArray implements ArrayAccess
     public function merge(array $data, $append = false)
     {
         if ($append) {
-            return $this->data = array_merge($this->data, $data);
+            return $this->data = $this->array_merge_deep($this->data, $data);
         }
-        return array_merge($this->data, $data);
+        return $this->array_merge_deep($this->data, $data);
     }
 
     /**
@@ -111,5 +111,26 @@ class DataArray implements ArrayAccess
             return $this->data;
         }
         return isset($this->data[$offset]) ? $this->data[$offset] : null;
+    }
+
+    /**
+     * 递归合并数组
+     * @param   array   $arr1
+     * @param   array   $arr2
+     * @return  array
+     */
+    public function array_merge_deep($arr1, $arr2)
+    {
+        $mergeArr = $arr1;
+        foreach ($arr2 as $k => $v) {
+            if (is_int($k) && !in_array($v, $arr1)) {
+                $mergeArr[] = $v;
+            } elseif (is_string($k) && (!isset($arr1[$k]) || !is_array($arr1[$k]))) {
+                $mergeArr[$k] = $v;
+            } elseif (is_string($k) && is_array($arr1[$k])) {
+                $mergeArr[$k] = $this->array_merge_deep($arr1[$k], $v);
+            }
+        }
+        return $mergeArr;
     }
 }

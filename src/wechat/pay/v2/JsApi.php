@@ -1,17 +1,17 @@
 <?php
 /*
- * @Description   微信H5支付
+ * @Description   JsApi或小程序支付
  * @Author        lifetime
- * @Date          2020-12-22 09:40:58
- * @LastEditTime  2020-12-22 17:05:53
+ * @Date          2020-12-21 10:15:25
+ * @LastEditTime  2020-12-28 21:35:49
  * @LastEditors   lifetime
  */
-namespace service\wechat\pay;
+namespace service\wechat\pay\v2;
 
 use service\tools\Tools;
 use service\wechat\kernel\BasicPay;
 
-class H5 extends BasicPay
+class JsApi extends BasicPay
 {
     /**
      * 构造函数
@@ -21,11 +21,11 @@ class H5 extends BasicPay
     {
         parent::__construct($config);
         $this->setAppId('official_appid');
+        $this->setMustOptions(['openid']);
     }
-
     /**
      * 下单支付
-     * @param   array   $options    订单参数 [out_trade_no-订单编号,total_fee-订单金额，body-商品描述]
+     * @param   array   $options    订单参数[openid-用户标识,out_trade_no-订单编号,total_fee-订单金额，body-商品描述]
      * @param   string  $notify_url 通知地址
      * @return  array
      */
@@ -33,9 +33,10 @@ class H5 extends BasicPay
     {
         $this->options->set('notify_url', $notify_url);
 
-        $this->options->set('trade_type', 'MWEB');
-
+        $this->options->set('trade_type', 'JSAPI');
+        
         $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+
 
         $order = $this->createOrder($url, $options);
 

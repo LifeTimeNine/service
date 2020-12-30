@@ -3,15 +3,15 @@
  * @Description   小程序支付
  * @Author        lifetime
  * @Date          2020-12-22 15:44:33
- * @LastEditTime  2020-12-22 17:06:20
+ * @LastEditTime  2020-12-30 10:41:20
  * @LastEditors   lifetime
  */
-namespace service\wechat\pay;
+namespace service\wechat\pay\v3;
 
 use service\tools\Tools;
-use service\wechat\kernel\BasicPay;
+use service\wechat\kernel\BasicPayV3;
 
-class MiniApp extends BasicPay
+class MiniApp extends BasicPayV3
 {
     /**
      * 构造函数
@@ -20,7 +20,7 @@ class MiniApp extends BasicPay
     protected function __construct($config = [])
     {
         parent::__construct($config);
-        $this->setAppId('official_appid');
+        $this->setAppId('miniapp_appid');
         $this->setMustOptions(['openid']);
     }
     /**
@@ -33,21 +33,21 @@ class MiniApp extends BasicPay
     {
         $this->options->set('notify_url', $notify_url);
 
-        $this->options->set('trade_type', 'JSAPI');
-        
-        $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+        $url = '/v3/pay/transactions/jsapi';
 
 
         $order = $this->createOrder($url, $options);
 
-        $data = [
-            'appId' => $order['appid'],
-            'timeStamp' => (string)time(),
-            'nonceStr' => Tools::createNoncestr(),
+        $time = time();
+        $nonce_str = Tools::createNoncestr();
+        $sign = $this->getSign([$this->options['appid'], $time, $nonce_str, "prepay_id={$order['prepay_id']}"], 1);
+        return [
+            'appId' => $this->options['appid'],
+            'timeStamp' => $time,
+            'onoceStr' => $nonce_str,
             'package' => "prepay_id={$order['prepay_id']}",
-            'singType' => $this->options['sign_type'],
+            'signType' => 'RSA',
+            'paySign' => $sign
         ];
-        $data['paySign'] = $this->getSign($data, $this->options['sign_type']);
-        return $data;
     }
 }

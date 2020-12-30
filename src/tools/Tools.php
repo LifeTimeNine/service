@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2020-12-24 11:10:07
+ * @LastEditTime  2020-12-29 15:41:49
  * @LastEditors   lifetime
  */
 
@@ -42,10 +42,10 @@ class Tools
             curl_setopt($curl, CURLOPT_POSTFIELDS, $options['data']);
         }
         // 证书文件设置
-        if (!empty($options['ssl_cer'])) if (file_exists($options['ssl_cer'])) {
+        if (!empty($options['ssl_cert'])) if (file_exists($options['ssl_cert'])) {
             curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
-        } else throw new \Exception("Certificate files that do not exist. --- [ssl_cer]");
+            curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cert']);
+        } else throw new \Exception("Certificate files that do not exist. --- [ssl_cert]");
         // 证书文件设置
         if (!empty($options['ssl_key'])) if (file_exists($options['ssl_key'])) {
             curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
@@ -58,6 +58,7 @@ class Tools
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $content = curl_exec($curl);
+        // dump(curl_getinfo($curl));
         curl_close($curl);
         return $content;
     }

@@ -158,7 +158,6 @@ Pay::instance()->jsApi()->pay();
 `Pay::instance()` 初始化支付类 `jsApi()` 切换至微信JSAPI场景 `pay()` 传入订单参数返回支付信息，呵！，一气呵成！！！
 
 微信支付的场景有  
-* micropay 付款码支付 参考 [微信付款码支付](https://pay.weixin.qq.com/wiki/doc/api/micropay.php?chapter=5_1)
 * jsapi   JSAPI支付 参考 [微信JSAPI支付](https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_1)
 * native  Native支付 参考 [微信Native支付](https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=6_1)
 * app APP支付 参考 [微信APP支付](https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_1)
@@ -168,11 +167,39 @@ Pay::instance()->jsApi()->pay();
 每个场景都包含以下方法:  
 * `pay`：下单支付
 * `query`：查询订单
+* `reverse`：撤销订单
 * `refund`：退款申请
 * `refundQuery`：退款查询
 * `notify`：异步通知验签  
 
+> `notify`方法返回的数据是可以直接返回微信服务器的消息；回调方法中可以接收两个参数，第一个是微信返回的数据，第二个是签名验证结果；如果回调方法返回值为false则直接给微信返回失败的消息
+
+## `PayV3`
+
+命名空间 `service\wechat`
+
+微信支付类 V3.0
+
+参考 [微信支付开发文档](https://pay.weixin.qq.com/wiki/doc/apiv3/wxpay/pages/index.shtml)
+
+使用方法和v2.0的一致
+
+支持的场景有
+* jsapi   JSAPI支付 参考 [微信JSAPI支付](https://pay.weixin.qq.com/wiki/doc/apiv3/open/pay/chapter1_1_1.shtml)
+* native  Native支付 参考 [微信Native支付](https://pay.weixin.qq.com/wiki/doc/apiv3/open/pay/chapter2_7_0.shtml1)
+* app APP支付 参考 [微信APP支付](https://pay.weixin.qq.com/wiki/doc/apiv3/open/pay/chapter2_5_0.shtml)
+* h5  H5支付  参考 [微信H5支付](https://pay.weixin.qq.com/wiki/doc/apiv3/open/pay/chapter2_6_0.shtml)
+* miniApp 小程序支付  参考 [微信小程序支付](https://pay.weixin.qq.com/wiki/doc/apiv3/open/pay/chapter2_8_0.shtml)
+
 具体参数请参考各场景的API文档
+
+每个场景都包含以下方法:  
+* `pay`：下单支付
+* `query`：查询订单
+* `close`：关闭订单
+* `notify`：异步通知验签  
+
+> `异步通知验签`方法使用同v2.0
 
 ## `Official`
 

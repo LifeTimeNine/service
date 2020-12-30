@@ -1,23 +1,23 @@
 <?php
 /*
- * @Description   微信支付
+ * @Description   微信支付 V3.0
  * @Author        lifetime
- * @Date          2020-12-21 10:04:57
- * @LastEditTime  2020-12-30 10:51:11
+ * @Date          2020-12-28 21:48:10
+ * @LastEditTime  2020-12-30 10:52:10
  * @LastEditors   lifetime
  */
 namespace service\wechat;
 
-use service\wechat\pay\v2\App;
-use service\wechat\pay\v2\H5;
-use service\wechat\pay\v2\JsApi;
-use service\wechat\pay\v2\MiniApp;
-use service\wechat\pay\v2\Native;
+use service\wechat\pay\v3\App;
+use service\wechat\pay\v3\H5;
+use service\wechat\pay\v3\JsApi;
+use service\wechat\pay\v3\MiniApp;
+use service\wechat\pay\v3\Native;
 
 /**
- * 微信支付
+ * 微信支付 V3.0
  */
-class Pay
+class PayV3
 {
     /**
      * 配置
@@ -53,7 +53,7 @@ class Pay
 
     /**
      * JSAPi支付
-     * @return  \service\wechat\pay\v2\JsApi
+     * @return  \service\wechat\pay\v3\JsApi
      */
     public function jsApi()
     {
@@ -62,7 +62,7 @@ class Pay
 
     /**
      * Native支付
-     * @return  \service\wechat\pay\v2\Native
+     * @return  \service\wechat\pay\v3\Native
      */
     public function native()
     {
@@ -71,7 +71,7 @@ class Pay
 
     /**
      * H5支付
-     * @return  \service\wechat\pay\v2\H5
+     * @return  \service\wechat\pay\v3\H5
      */
     public function h5()
     {
@@ -80,7 +80,7 @@ class Pay
 
     /**
      * APP支付
-     * @return  \service\wechat\pay\v2\App
+     * @return  \service\wechat\pay\v3\App
      */
     public function app()
     {
@@ -89,7 +89,7 @@ class Pay
 
     /**
      * 小程序支付
-     * @return  \service\wechat\pay\v2\MiniApp
+     * @return  \service\wechat\pay\v3\MiniApp
      */
     public function miniApp()
     {

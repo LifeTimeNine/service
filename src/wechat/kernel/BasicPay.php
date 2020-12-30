@@ -4,7 +4,7 @@
  * @Author: Lifetime
  * @Date: 2020-12-20 11:50:10
  * @LastEditors   lifetime
- * @LastEditTime  2020-12-23 17:33:15
+ * @LastEditTime  2020-12-30 10:47:24
  */
 
 namespace service\wechat\kernel;
@@ -104,14 +104,14 @@ class BasicPay
         $option = [];
         if ($isCert) {
             
-            if (empty($this->config['ssl_cer']) || !file_exists($this->config['ssl_cer'])) {
+            if (empty($this->config['ssl_cert']) || !file_exists($this->config['ssl_cert'])) {
                 throw new InvalidArgumentException("Missing Config [ssl_cer]");
             }
             if (empty($this->config['ssl_key']) || !file_exists($this->config['ssl_key'])) {
                 throw new InvalidArgumentException("Missing Config [ssl_key]");
             }
 
-            $option['ssl_cer'] = $this->config->get('ssl_cer');
+            $option['ssl_cert'] = $this->config->get('ssl_cert');
             $option['ssl_key'] = $this->config->get('ssl_key');
         }
 
@@ -209,6 +209,22 @@ class BasicPay
 
         $res = $this->postApi($url, $this->options->get());
 
+        return $res;
+    }
+
+    /**
+     * 撤销订单
+     * @param   array   $options    参数 二选一：[transaction_id-微信订单号,out_trade_no-商户订单号]
+     * @return  array
+     */
+    public function reverse(array $options)
+    {
+        if (empty($options['transaction_id']) && empty($options['out_trade_no'])) {
+            throw new InvalidArgumentException("Missing Options [transaction_id  OR out_trade_no]");
+        }
+        $this->options->merge($options, true);
+        $url = 'https://api.mch.weixin.qq.com/secapi/pay/reverse';
+        $res = $this->postApi($url, $this->options->get(), true);
         return $res;
     }
 
