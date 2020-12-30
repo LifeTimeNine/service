@@ -3,7 +3,7 @@
  * @Description   字节小程序相关接口
  * @Author        lifetime
  * @Date          2020-12-23 10:29:46
- * @LastEditTime  2020-12-23 16:35:44
+ * @LastEditTime  2020-12-30 14:19:00
  * @LastEditors   lifetime
  */
 
@@ -49,6 +49,35 @@ class MiniApp extends BasicMiniApp
     public function checkUserInfo(string $sign, array $rawData, string $session_key)
     {
         return sha1("{$rawData}{$session_key}") == $sign;
+    }
+
+    /**
+     * 获取支付订单信息
+     * @param   array   $options    订单参数 ['out_order_no', 'uid', 'total_amount', 'subject', 'body', 'trade_time', 'valid_time', 'notify_url', 'service']
+     * @return  array
+     */
+    public function getPayOrderInfo(array $options)
+    {
+        $mustOptions = ['out_order_no', 'uid', 'total_amount', 'subject', 'body', 'trade_time', 'valid_time', 'notify_url', 'service'];
+        $options = array_merge([
+            'merchant_id' => $this->config['miniapp_pay_mch_id'],
+            'app_id' => $this->config['miniapp_pay_appid'],
+            'sign_type' => 'MD5',
+            'timestamp' => (string)time(),
+            'version' => '2.0',
+            'trade_type' => 'H5',
+            'product_code' => 'pay',
+            'payment_type' => 'direct',
+            'currency' => 'CNY',
+            'alipay_url' => '',
+            'wx_url' => '',
+            'wx_type' => 'MWEB',
+        ], $options);
+        Tools::checkOptions($options, $mustOptions);
+        $options['sign'] = $this->getPaySign($options, $this->config['miniapp_secret']);
+        $options['risk_info'] = json_encode(['ip' => $_SERVER['REMOTE_ADDR']]);
+
+        return $options;
     }
 
     /**

@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2020-12-29 15:41:49
+ * @LastEditTime  2020-12-30 13:53:10
  * @LastEditors   lifetime
  */
 
@@ -42,15 +42,23 @@ class Tools
             curl_setopt($curl, CURLOPT_POSTFIELDS, $options['data']);
         }
         // 证书文件设置
-        if (!empty($options['ssl_cert'])) if (file_exists($options['ssl_cert'])) {
-            curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cert']);
-        } else throw new \Exception("Certificate files that do not exist. --- [ssl_cert]");
+        if (!empty($options['ssl_cert'])) {
+            if (file_exists($options['ssl_cert'])) {
+                curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
+                curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cert']);
+            } else {
+                throw new \Exception("Certificate files that do not exist. --- [ssl_cert]");
+            }
+        }
         // 证书文件设置
-        if (!empty($options['ssl_key'])) if (file_exists($options['ssl_key'])) {
-            curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
-        } else throw new \Exception("Certificate files that do not exist. --- [ssl_key]");
+        if (!empty($options['ssl_key'])) {
+            if (file_exists($options['ssl_key'])) {
+                curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
+                curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
+            } else {
+                throw new \Exception("Certificate files that do not exist. --- [ssl_key]");
+            }
+        }
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_HEADER, false);
@@ -225,5 +233,28 @@ class Tools
         $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         libxml_disable_entity_loader($entity);
         return json_decode(json_encode($data), true);
+    }
+
+    /**
+     * 验证订单参数是否足够
+     * @param   array   $data   要验证的数据
+     * @param   array   $field  必须的字段
+     * @param   array   $msg    消息
+     */
+    public static function checkOptions($data = [], $field = [], $msg = [])
+    {
+        foreach ($field as $k => $v) {
+            if (is_string($v) && empty($data[$v])) {
+                $msg[] = $v;
+                throw new InvalidArgumentException("Missing Options [". implode('.', $msg) ."]");
+            } elseif (is_array($v)) {
+                if (empty($data[$k])) {
+                    $msg[] = $k;
+                    throw new InvalidArgumentException("Missing Options [". implode('.', $msg) ."]");
+                } else {
+                    self::checkOptions($data[$k], $field[$k], array_merge($msg, [$k]));
+                }
+            }
+        }
     }
 }

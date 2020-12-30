@@ -3,7 +3,7 @@
  * @Description   微信支付V3基类
  * @Author        lifetime
  * @Date          2020-12-28 10:33:06
- * @LastEditTime  2020-12-30 10:35:44
+ * @LastEditTime  2020-12-30 13:52:09
  * @LastEditors   lifetime
  */
 
@@ -105,6 +105,9 @@ class BasicPayV3
 
     /**
      * 验证订单参数是否足够
+     * @param   array   $data   要验证的数据
+     * @param   array   $field  必须的字段
+     * @param   array   $msg    消息
      */
     protected function checkOrder($data = [], $field = [], $msg = [])
     {

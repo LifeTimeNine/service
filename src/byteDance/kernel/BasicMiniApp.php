@@ -3,9 +3,10 @@
  * @Description   字节小程序基类
  * @Author        lifetime
  * @Date          2020-12-23 09:46:54
- * @LastEditTime  2020-12-23 18:32:48
+ * @LastEditTime  2020-12-30 13:58:18
  * @LastEditors   lifetime
  */
+
 namespace service\byteDance\kernel;
 
 use service\config\ByteDanceConfig;
@@ -22,7 +23,7 @@ class BasicMiniApp
      */
     protected $config;
 
-     /**
+    /**
      * 缓存
      * @var static
      */
@@ -108,5 +109,21 @@ class BasicMiniApp
             throw new InvalidRequestException($e->getMessage(), $e->getCode(), $e->getRaw());
         }
         return $result;
+    }
+
+    /**
+     * 计算支付签名
+     * @param   array   $options    参与签名数据
+     * @param   string  $appSecret  支付secret
+     * @return  string
+     */
+    protected function getPaySign($options, $appSecret)
+    {
+        ksort($options);
+        $data = [];
+        foreach ($options as $k => $v) $data[] = "{$k}={$v}";
+        $dataStr = implode('&', $data);
+
+        return md5("{$dataStr}{$appSecret}");
     }
 }
