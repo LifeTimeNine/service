@@ -3,7 +3,7 @@
  * @Description   字节小程序基类
  * @Author        lifetime
  * @Date          2020-12-23 09:46:54
- * @LastEditTime  2020-12-30 13:58:18
+ * @LastEditTime  2020-12-30 15:32:42
  * @LastEditors   lifetime
  */
 
@@ -121,9 +121,12 @@ class BasicMiniApp
     {
         ksort($options);
         $data = [];
-        foreach ($options as $k => $v) $data[] = "{$k}={$v}";
+        foreach ($options as $k => $v) {
+            if ($k <> 'sign' && $k <> 'risk_info' && !empty($v)) {
+                $data[] = "{$k}={$v}";
+            }
+        }
         $dataStr = implode('&', $data);
-
         return md5("{$dataStr}{$appSecret}");
     }
 }

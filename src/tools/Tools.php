@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2020-12-30 13:53:10
+ * @LastEditTime  2020-12-30 14:57:01
  * @LastEditors   lifetime
  */
 
@@ -255,6 +255,21 @@ class Tools
                     self::checkOptions($data[$k], $field[$k], array_merge($msg, [$k]));
                 }
             }
+        }
+    }
+
+    /**
+     * 获取客户端设备类型
+     * @return  string
+     */
+    public static function getClientType()
+    {
+        if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
+            return 'IOS';
+        }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
+            return 'Android';
+        }else{
+            return 'Wap';
         }
     }
 }

@@ -3,16 +3,18 @@
  * @Description   字节小程序相关接口
  * @Author        lifetime
  * @Date          2020-12-23 10:29:46
- * @LastEditTime  2020-12-30 14:19:00
+ * @LastEditTime  2020-12-30 15:27:58
  * @LastEditors   lifetime
  */
 
 namespace service\byteDance;
 
+use service\ali\Pay as AliPay;
 use service\byteDance\kernel\BasicMiniApp;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidRequestException;
 use service\tools\Tools;
+use service\wechat\Pay;
 
 /**
  * 字节小程序
@@ -53,12 +55,13 @@ class MiniApp extends BasicMiniApp
 
     /**
      * 获取支付订单信息
-     * @param   array   $options    订单参数 ['out_order_no', 'uid', 'total_amount', 'subject', 'body', 'trade_time', 'valid_time', 'notify_url', 'service']
+     * @param   array   $options    订单参数 ['out_order_no', 'uid', 'total_amount', 'subject', 'body', 'trade_time', 'valid_time', 'notify_url']
+     * @param   int     $options    支付类型
      * @return  array
      */
-    public function getPayOrderInfo(array $options)
+    public function getPayOrderInfo(array $options, int $service = 1)
     {
-        $mustOptions = ['out_order_no', 'uid', 'total_amount', 'subject', 'body', 'trade_time', 'valid_time', 'notify_url', 'service'];
+        $mustOptions = ['out_order_no', 'uid', 'total_amount', 'subject', 'body', 'trade_time', 'valid_time', 'notify_url'];
         $options = array_merge([
             'merchant_id' => $this->config['miniapp_pay_mch_id'],
             'app_id' => $this->config['miniapp_pay_appid'],
@@ -72,10 +75,30 @@ class MiniApp extends BasicMiniApp
             'alipay_url' => '',
             'wx_url' => '',
             'wx_type' => 'MWEB',
+            'risk_info' => json_encode(['ip' => $_SERVER['REMOTE_ADDR']])
         ], $options);
         Tools::checkOptions($options, $mustOptions);
-        $options['sign'] = $this->getPaySign($options, $this->config['miniapp_secret']);
-        $options['risk_info'] = json_encode(['ip' => $_SERVER['REMOTE_ADDR']]);
+        switch($service) {
+            case 1:
+            break;
+            case 3:
+                $options['wx_url'] = Pay::instance()->h5()->pay([
+                    'out_trade_no' => $options['out_order_no'],
+                    'total_fee' => $options['total_amount'],
+                    'body' => $options['subject'],
+                    'scene_info' => json_encode(['h5_info' => ['type' => Tools::getClientType()]]),
+                ], $options['notify_url']);
+            break;
+            case 4:
+                $options['alipay_url'] = AliPay::instance()->app([
+                    'out_trade_no' => $options['out_order_no'],
+                    'subject' => $options['subject'],
+                    'total_amount' => $options['total_amount'],
+                    'body' => $options['body'],
+                ], $options['notify_url']);
+            break;
+        }
+        $options['sign'] = $this->getPaySign($options, $this->config['miniapp_pay_secret']);
 
         return $options;
     }

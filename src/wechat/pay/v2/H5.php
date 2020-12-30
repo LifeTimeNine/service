@@ -3,7 +3,7 @@
  * @Description   微信H5支付
  * @Author        lifetime
  * @Date          2020-12-22 09:40:58
- * @LastEditTime  2020-12-30 11:21:04
+ * @LastEditTime  2020-12-30 15:08:24
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v2;
@@ -27,7 +27,7 @@ class H5 extends BasicPay
 
     /**
      * 下单支付
-     * @param   array   $options    订单参数 [out_trade_no-订单编号,total_fee-订单金额，body-商品描述]
+     * @param   array   $options    订单参数 [out_trade_no-订单编号,total_fee-订单金额，body-商品描述, scene_info-场景信息]
      * @param   string  $notify_url 通知地址
      * @return  array
      */
@@ -41,7 +41,7 @@ class H5 extends BasicPay
 
         $order = $this->createOrder($url, $options);
 
-        if (!empty($order['return_code ']) && !empty($order['result_code '])  && $order['return_code '] == "SUCCESS" && $order['result_code '] == "SUCCESS") {
+        if (!empty($order['return_code']) && !empty($order['result_code'])  && $order['return_code'] == "SUCCESS" && $order['result_code'] == "SUCCESS") {
             return $order['mweb_url'];
         } else {
             throw new InvalidResponseException("Response Fail", 0, $order);

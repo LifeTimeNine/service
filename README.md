@@ -309,6 +309,7 @@ MiniApp::instance()->getAccessToken();
 * `getAccessToken`：获取头条平台Access_token
 * `code2Session`：获取session_key和appId
 * `checkUserInfo`：验证用户信息
+* `getPayOrderInfo`：获取支付订单信息 参考[字节小程序支付文档](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/api/open-interface/payment/tt-pay)
 
 ## 常用工具
 
