@@ -3,7 +3,7 @@
  * @Description   字节小程序基类
  * @Author        lifetime
  * @Date          2020-12-23 09:46:54
- * @LastEditTime  2020-12-30 15:32:42
+ * @LastEditTime  2020-12-31 08:45:13
  * @LastEditors   lifetime
  */
 
@@ -11,7 +11,7 @@ namespace service\byteDance\kernel;
 
 use service\config\ByteDanceConfig;
 use service\exceptions\InvalidArgumentException;
-use service\exceptions\InvalidRequestException;
+use service\exceptions\InvalidResponseException;
 use service\tools\Cache;
 use service\tools\Tools;
 
@@ -76,23 +76,12 @@ class BasicMiniApp
     {
         $this->access_token = Cache::get("byteDance_miniApp_access_token_{$this->config['miniapp_appid']}");
         if (!empty($this->access_token)) return $this->access_token;
-        $requestData = Tools::request('get', 'https://developer.toutiao.com/api/apps/token', [
-            'query' => [
-                'appid' => $this->config['appid'],
-                'secret' => $this->config['secret'],
-                'grant_type' => 'client_credential'
-            ],
-        ]);
-        $result = Tools::json2arr($requestData);
-        if (in_array($result['errcode'], [40002])) {
-            Cache::del("byteDance_miniApp_access_token_{$this->config['miniapp_appid']}");
-        }
 
         try {
             $result = Tools::json2arr(Tools::request('get', 'https://developer.toutiao.com/api/apps/token', [
                 'query' => [
-                    'appid' => $this->config['appid'],
-                    'secret' => $this->config['secret'],
+                    'appid' => $this->config['miniapp_appid'],
+                    'secret' => $this->config['miniapp_secret'],
                     'grant_type' => 'client_credential'
                 ],
             ]));
@@ -101,14 +90,14 @@ class BasicMiniApp
                 $this->access_token = '';
                 return $this->getAccessToken();
             } elseif (!empty($result['errcode']) && $result['errcode'] <> 0) {
-                throw new InvalidRequestException($result['errmsg'], $result['errcode'], $result);
+                throw new InvalidResponseException($result['errmsg'], $result['errcode'], $result);
             } else {
                 Cache::set("byteDance_miniApp_access_token_{$this->config['miniapp_appid']}", $result['access_token'], $result['expires_in']);
+                return $this->access_token = $result['access_token'];
             }
-        } catch (InvalidRequestException $e) {
-            throw new InvalidRequestException($e->getMessage(), $e->getCode(), $e->getRaw());
+        } catch (InvalidResponseException $e) {
+            throw new InvalidResponseException($e->getMessage(), $e->getCode(), $e->getRaw());
         }
-        return $result;
     }
 
     /**

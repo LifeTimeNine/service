@@ -3,7 +3,7 @@
  * @Description   字节小程序相关接口
  * @Author        lifetime
  * @Date          2020-12-23 10:29:46
- * @LastEditTime  2020-12-30 15:27:58
+ * @LastEditTime  2020-12-31 10:22:13
  * @LastEditors   lifetime
  */
 
@@ -12,7 +12,7 @@ namespace service\byteDance;
 use service\ali\Pay as AliPay;
 use service\byteDance\kernel\BasicMiniApp;
 use service\exceptions\InvalidArgumentException;
-use service\exceptions\InvalidRequestException;
+use service\exceptions\InvalidResponseException;
 use service\tools\Tools;
 use service\wechat\Pay;
 
@@ -86,6 +86,8 @@ class MiniApp extends BasicMiniApp
                     'out_trade_no' => $options['out_order_no'],
                     'total_fee' => $options['total_amount'],
                     'body' => $options['subject'],
+                    'time_start' => date('YmdHis', $options['trade_time']),
+                    'time_expire' => date('YmdHis', $options['trade_time'] + $options['valid_time']),
                     'scene_info' => json_encode(['h5_info' => ['type' => Tools::getClientType()]]),
                 ], $options['notify_url']);
             break;
@@ -95,6 +97,7 @@ class MiniApp extends BasicMiniApp
                     'subject' => $options['subject'],
                     'total_amount' => $options['total_amount'],
                     'body' => $options['body'],
+                    'time_expire' => date('Y-m-d H:i', $options['trade_time'] + $options['valid_time']),
                 ], $options['notify_url']);
             break;
         }
@@ -114,19 +117,23 @@ class MiniApp extends BasicMiniApp
      * @param   bool    $setIcon    是否展示小程序/小游戏 icon，默认不展示
      * @return 
      */
-    public function createQRCode(string $savePath, string $appname = 'toutiao', string $path = null, int $width = 430, array $lineColor = [], array $backround = [], bool $setIcon = false)
+    public function createQRCode(string $savePath, string $appname = 'toutiao', string $path = '', int $width = 430, array $lineColor = [], array $backround = [], bool $setIcon = false)
     {
         $url = 'https://developer.toutiao.com/api/apps/qrcode';
+        $data = [
+            'access_token' => $this->getAccessToken(),
+            'appname' => $appname,
+            'with' => $width,
+            'set_icon' => $setIcon
+        ];
+        if (!empty($path)) $data['path'] = $path;
+        if (!empty($lineColor)) $data['line_color'] = $lineColor;
+        if (!empty($backround)) $data['background'] = $backround;
         $result = Tools::request('post', $url, [
-            'data' => [
-                'access_token' => $this->getAccessToken(),
-                'appname' => $appname,
-                'path' => $path,
-                'width' => $width,
-                'line_color' => $lineColor,
-                'background' => $backround,
-                'set_icon' => $setIcon
-            ]
+            'headers' => [
+                'Content-Type: application/json'
+            ],
+            'data' => Tools::arr2json($data)
         ]);
 
         if (strpos($result, 'errcode') === false) {
@@ -137,7 +144,7 @@ class MiniApp extends BasicMiniApp
             }
         } else {
             $result = Tools::json2arr($result);
-            if ($result['errcode'] <> 0) throw new InvalidRequestException($result['errmsg'], $result['errcode'], $result);
+            if ($result['errcode'] <> 0) throw new InvalidResponseException($result['errmsg'], $result['errcode'], $result);
         }
     }
 }

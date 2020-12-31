@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2020-12-30 14:57:01
+ * @LastEditTime  2020-12-31 09:02:16
  * @LastEditors   lifetime
  */
 
@@ -21,7 +21,7 @@ class Tools
      * CURL模拟网络请求
      * @param string $method 请求方法
      * @param string $url 请求方法
-     * @param array $options 请求参数[headers,data,ssl_cer,ssl_key]
+     * @param array $options 请求参数[headers,query,data,ssl_cer,ssl_key]
      * @return string
      * @throws Exception
      */
