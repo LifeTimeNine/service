@@ -3,7 +3,7 @@
  * @Description   配置基类
  * @Author        lifetime
  * @Date          2020-12-09 22:36:36
- * @LastEditTime  2020-12-23 17:27:24
+ * @LastEditTime  2021-01-09 19:49:03
  * @LastEditors   lifetime
  */
 
@@ -47,9 +47,9 @@ class BasicConfig implements ArrayAccess
      * @param string|null $offset
      * @return array|string|null
      */
-    public function get($offset = null)
+    public function get($offset = null, $default = null)
     {
-        return $this->offsetGet($offset);
+        return $this->offsetGet($offset, $default);
     }
 
     /**
@@ -106,14 +106,15 @@ class BasicConfig implements ArrayAccess
     /**
      * 获取配置项参数
      * @param string|null $offset
+     * @pram  mixed       $default
      * @return array|string|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset, $default = null)
     {
         if (is_null($offset)) {
             return $this->config;
         }
-        return isset($this->config[$offset]) ? $this->config[$offset] : null;
+        return isset($this->config[$offset]) ? $this->config[$offset] : $default;
     }
 
     /**

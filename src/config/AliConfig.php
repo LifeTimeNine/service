@@ -3,7 +3,7 @@
  * @Description   阿里相关配置
  * @Author        lifetime
  * @Date          2020-12-10 08:45:38
- * @LastEditTime  2020-12-23 17:26:07
+ * @LastEditTime  2021-01-09 19:49:27
  * @LastEditors   lifetime
  */
 
@@ -24,6 +24,6 @@ class AliConfig extends BasicConfig
     public function __construct($config = [])
     {
         parent::__construct();
-        $this->config = array_merge($this->defauleConfig, $this->get('ali'), $config);
+        $this->config = array_merge($this->defauleConfig, $this->get('ali', []), $config);
     }
 }
