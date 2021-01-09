@@ -1,7 +1,7 @@
 {
     "name": "lifetime/service",
     "description": "service",
-    "version": "1.4.2",
+    "version": "1.4.3",
     "homepage": "https://github.com/LifeTimeNine/service.git",
     "license": "MIT",
     "authors": [{
@@ -24,10 +24,5 @@
     "require": {
         "php": ">=7.1",
         "endroid/qr-code": "^1.9"
-    },
-    "extra": {
-        "think-config": {
-            "lifetime-service": "test/config/lifetime-service.php"
-        }
     }
 }
