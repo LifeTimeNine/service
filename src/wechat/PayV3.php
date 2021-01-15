@@ -3,7 +3,7 @@
  * @Description   微信支付 V3.0
  * @Author        lifetime
  * @Date          2020-12-28 21:48:10
- * @LastEditTime  2020-12-30 10:52:10
+ * @LastEditTime  2021-01-15 17:10:00
  * @LastEditors   lifetime
  */
 namespace service\wechat;
