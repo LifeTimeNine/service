@@ -3,18 +3,18 @@
  * @Description   字节小程序相关接口
  * @Author        lifetime
  * @Date          2020-12-23 10:29:46
- * @LastEditTime  2020-12-31 10:22:13
+ * @LastEditTime  2021-01-17 00:03:39
  * @LastEditors   lifetime
  */
 
 namespace service\byteDance;
 
-use service\ali\Pay as AliPay;
+use service\Ali;
 use service\byteDance\kernel\BasicMiniApp;
 use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
 use service\tools\Tools;
-use service\wechat\Pay;
+use service\WeChat;
 
 /**
  * 字节小程序
@@ -82,7 +82,7 @@ class MiniApp extends BasicMiniApp
             case 1:
             break;
             case 3:
-                $options['wx_url'] = Pay::instance()->h5()->pay([
+                $options['wx_url'] = WeChat::pay()->h5()->pay([
                     'out_trade_no' => $options['out_order_no'],
                     'total_fee' => $options['total_amount'],
                     'body' => $options['subject'],
@@ -92,7 +92,7 @@ class MiniApp extends BasicMiniApp
                 ], $options['notify_url']);
             break;
             case 4:
-                $options['alipay_url'] = AliPay::instance()->app([
+                $options['alipay_url'] = Ali::pay()->app([
                     'out_trade_no' => $options['out_order_no'],
                     'subject' => $options['subject'],
                     'total_amount' => $options['total_amount'],

@@ -3,7 +3,7 @@
  * @Description   微信公众号 网页授权
  * @Author        lifetime
  * @Date          2020-12-17 16:12:58
- * @LastEditTime  2020-12-24 09:10:10
+ * @LastEditTime  2021-01-16 22:58:07
  * @LastEditors   lifetime
  */
 
@@ -14,6 +14,10 @@ use service\tools\Cache;
 use service\tools\Tools;
 use service\wechat\kernel\BasicWeChat;
 
+/**
+ * 网页授权
+ * @class   Oauth
+ */
 class Oauth extends BasicWeChat
 {
     /**

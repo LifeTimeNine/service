@@ -3,12 +3,13 @@
  * @Description   微信相关接口
  * @Author        lifetime
  * @Date          2021-01-15 17:13:59
- * @LastEditTime  2021-01-15 17:17:22
+ * @LastEditTime  2021-01-16 19:51:52
  * @LastEditors   lifetime
  */
 
 namespace service;
 
+use service\wechat\MiniApp;
 use service\wechat\Official;
 use service\wechat\Pay;
 use service\wechat\PayV3;
@@ -46,5 +47,15 @@ class WeChat
     public static function official(array $config = [])
     {
         return Official::instance($config);
+    }
+
+    /**
+     * 微信小程序
+     * @param   array   $config     配置
+     * @return  MiniApp
+     */
+    public static function miniapp()
+    {
+        return MiniApp::instance();
     }
 }

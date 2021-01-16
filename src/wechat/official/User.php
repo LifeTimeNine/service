@@ -3,7 +3,7 @@
  * @Description   用户管理
  * @Author        lifetime
  * @Date          2020-12-24 09:13:03
- * @LastEditTime  2020-12-24 15:29:41
+ * @LastEditTime  2021-01-16 23:05:19
  * @LastEditors   lifetime
  */
 namespace service\wechat\official;
@@ -12,6 +12,7 @@ use service\wechat\kernel\BasicWeChat;
 
 /**
  * 用户管理
+ * @class User
  */
 class User extends BasicWeChat
 {

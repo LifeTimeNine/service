@@ -3,7 +3,7 @@
  * @Description   微信公众平台 模板消息
  * @Author        lifetime
  * @Date          2020-12-19 08:53:10
- * @LastEditTime  2020-12-22 08:51:29
+ * @LastEditTime  2021-01-16 23:01:19
  * @LastEditors   lifetime
  */
 
@@ -11,6 +11,10 @@ namespace service\wechat\official;
 
 use service\wechat\kernel\BasicWeChat;
 
+/**
+ * 模板消息
+ * @class   Template
+ */
 class Template extends BasicWeChat
 {
     /**
@@ -19,7 +23,7 @@ class Template extends BasicWeChat
      * @param string $industry_id2 公众号模板消息所属行业编号
      * @return array
      */
-    public function setIndustry($industry_id1, $industry_id2)
+    public function setIndustry(string $industry_id1, string $industry_id2)
     {
         $url = "https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token=ACCESS_TOKEN";
         $this->registerHttp($url, __FUNCTION__, func_get_args());
@@ -38,7 +42,7 @@ class Template extends BasicWeChat
     }
 
     /**
-     * 获得模板ID
+     * 添加模板
      * @param string $tpl_id 板库中模板的编号，有“TM**”和“OPENTMTM**”等形式
      * @return array
      */
