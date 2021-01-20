@@ -3,11 +3,12 @@
  * @Description   微信公众平台相关接口
  * @Author        lifetime
  * @Date          2020-12-22 08:51:49
- * @LastEditTime  2021-01-15 17:09:51
+ * @LastEditTime  2021-01-19 13:48:04
  * @LastEditors   lifetime
  */
 namespace service\wechat;
 
+use service\tools\BasicBusiness;
 use service\wechat\official\Oauth;
 use service\wechat\official\Template;
 use service\wechat\official\User;
@@ -15,64 +16,35 @@ use service\wechat\official\User;
 /**
  * 微信公众平台
  */
-class Official
+class Official extends BasicBusiness
 {
     /**
-     * 配置
-     * @var array
-     */
-    protected $config;
-    /**
-     * 缓存
-     * @var static
-     */
-    protected static $cache;
-
-    /**
-     * 构造函数
-     * @param   array   $config     配置参数
-     */
-    protected function __construct($config = [])
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * 静态创建对象
-     * @param   array   $config     配置信息
-     * @return  $this
-     */
-    public static function instance(array $config = [])
-    {
-        $key = md5(get_called_class() . serialize($config));
-        if (isset(self::$cache[$key])) return self::$cache[$key];
-        return self::$cache[$key] = new static($config);
-    }
-
-    /**
      * 网页授权
+     * @param   array   $config     配置
      * @return  \service\wechat\official\Oauth
      */
-    public function oauth()
+    public function oauth(array $config = [])
     {
-        return Oauth::instance($this->config);
+        return Oauth::instance($config);
     }
 
     /**
      * 模板消息
+     * @param   array   $config     配置
      * @return \service\wechat\official\Template
      */
-    public function template()
+    public function template(array $config = [])
     {
-        return Template::instance($this->config);
+        return Template::instance($config);
     }
 
     /**
      * 用户管理
+     * @param   array   $config     配置
      * @return  \service\wechat\official\User
      */
-    public function user()
+    public function user(array $config = [])
     {
-        return User::instance($this->config);
+        return User::instance($config);
     }
 }
