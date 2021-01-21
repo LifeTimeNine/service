@@ -18,7 +18,7 @@ class Worm extends BasicOss
      * @param   int     $day        保留天数(正整数)
      * @return  boolean
      */
-    public function initateBucketWorm(string $name = '', string $endpoint = '', int $day)
+    public function init(string $name = '', string $endpoint = '', int $day)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -42,7 +42,7 @@ class Worm extends BasicOss
      * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return boolean
      */
-    public function abortBucketWorm(string $name = '', string $endpoint = '')
+    public function abort(string $name = '', string $endpoint = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -63,7 +63,7 @@ class Worm extends BasicOss
      * @param   string  $wormId     wormID
      * @return  boolean
      */
-    public function completeBucketWorm(string $name = '', string $endpoint = '', string $wormId)
+    public function complete(string $name = '', string $endpoint = '', string $wormId)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -84,7 +84,7 @@ class Worm extends BasicOss
      * @param   int     $day        延长的天数
      * @return  boolean
      */
-    public function exendBucketWorm(string $name = '', string $endpoint = '', string $wormId, int $day)
+    public function exend(string $name = '', string $endpoint = '', string $wormId, int $day)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -108,7 +108,7 @@ class Worm extends BasicOss
      * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return  mixed
      */
-    public function getBucketWorm(string $name = '', string $endpoint = '', string $wormId)
+    public function get(string $name = '', string $endpoint = '', string $wormId)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);

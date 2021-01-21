@@ -19,7 +19,7 @@ class Referer extends BasicOss
      * @param   array   $refererList    Referer访问白名单
      * @return  boolean
      */
-    public function putBucketReferer(string $name = '', string $endpoint = '', bool $emptyReferer = true, array $refererList = [])
+    public function put(string $name = '', string $endpoint = '', bool $emptyReferer = true, array $refererList = [])
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -35,13 +35,11 @@ class Referer extends BasicOss
 
         $this->setData(self::OSS_BODY, Tools::arr2xml([
             'RefererConfiguration' => [
-                'AllowEmptyReferer' => $emptyReferer,
+                'AllowEmptyReferer' => $emptyReferer ? 'true' : 'false',
                 'RefererList' => $referer
             ]
         ], false));
-        debug('begin');
-        $res = $this->request();
-        dump(debug('begin', 'end') . 's----------------------------------');
+        $this->request();
         return $this->getData(self::OSS_RESPONSE_CODE) == '200' ? true : false;
     }
 
@@ -51,7 +49,7 @@ class Referer extends BasicOss
      * @param   string  $endpoint       区域节点(传空，表示从配置中获取)
      * @return  mixed
      */
-    public function getBucketReferer(string $name = '', string $endpoint = '')
+    public function get(string $name = '', string $endpoint = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);

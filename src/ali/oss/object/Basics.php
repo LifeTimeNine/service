@@ -55,6 +55,49 @@ class Basics extends BasicOss
     }
 
     /**
+     * Web端上传数据 (url-请求地址，body-请求体(在最后插入file))
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
+     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
+     * @param   string  $fileName           文件名称
+     * @param   string  $success_redirect   上传成功后跳转的地址
+     * @param   string  $success_status     未指定success_action_redirect表单域时，该参数指定了上传成功后返回给客户端的状态码
+     * @param   string  $acl                访问权限[private-私有，public-read-公共读，public-read-write-公共读写]
+     * @param   boolean $overwrite          是否覆盖同名Object
+     * @param   array
+     */
+    public function webPut(string $name = '', string $endpoint = '', string $fileName,string $success_redirect = '',string $success_status = '200',string $acl = '', bool $overwrite = null)
+    {
+        $name = $this->getName($name);
+        $endpoint = $this->getEndponit($endpoint);
+        $time = time() + 3600;
+        $date = date('Y-m-d', $time) . 'T' . date('H:i:s', $time) . '.000Z';
+        $policyData = [
+            'expiration' => $date,
+            'conditions' => [
+                ['bucket' => $name],
+                ["content-length-range", 0, 1048576000],
+            ]
+        ];
+        $policy = base64_encode(json_encode($policyData));
+        $signature = $this->getSign($policy);
+        $data = [
+            'url' => "{$this->getProtocol()}{$name}.{$endpoint}",
+            'body' => [
+                'OSSAccessKeyId' => $this->config['accessKey_id'],
+                'policy' => $policy,
+                'Signature' => $signature,
+                'x-oss-content-type' => Tools::getMimetype($fileName),
+                'key' => $fileName,
+            ]
+        ];
+        if (!empty($success_redirect)) $data['data']['success_action_redirect'] = $success_redirect;
+        if (!empty($success_status)) $data['data']['success_action_status'] = $success_status;
+        if (!empty($acl) && $this->checkAcl($acl)) $data['data'][self::OSS_OBJECT_ACL] = $acl;
+        if (!empty($overwrite)) $data['data'][self::OSS_FORBID_OVERWIRTE] = $overwrite ? 'true' : 'false';
+        return $data;
+    }
+
+    /**
      * 获取某个文件（Object）
      * @param   string  $name            Bucket名称(传空，表示从配置中获取)
      * @param   string  $endpoint        区域节点(传空，表示从配置中获取)

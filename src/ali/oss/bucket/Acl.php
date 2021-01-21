@@ -18,7 +18,7 @@ class Acl extends BasicOss
      * @param   string  $acl        访问权限[private-私有，public-read-公共读，public-read-write-公共读写]
      * @return  boolean
      */
-    public function putBucketAcl(string $name = '', string $endpoint = '', string $acl)
+    public function put(string $name = '', string $endpoint = '', string $acl)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -41,7 +41,7 @@ class Acl extends BasicOss
      * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return  mixed
      */
-    public function getBucketAcl(string $name = '', string $endpoint = '')
+    public function get(string $name = '', string $endpoint = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);

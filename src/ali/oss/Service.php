@@ -18,7 +18,7 @@ class Service extends BasicOss
      * @param   int     $max_key    指定最大数
      * @return  array
      */
-    public function getService(string $endpoint = '', string $prexfix = '', string $marker = '', int $max_kays = 100)
+    public function get(string $endpoint = '', string $prexfix = '', string $marker = '', int $max_kays = 100)
     {
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_GET);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_HTML);

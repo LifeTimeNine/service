@@ -46,16 +46,166 @@ class Multipart extends BasicOss
     }
 
     /**
-     * 分块（Part）上传数据
+     * 分块（Part）上传数据 (保存$partNumber和响应头中ETag)
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
      * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @param   int     $partNumber         Part标识
      * @param   string  $uploadId           上传唯一标识
      * @param   string  $data               数据
+     * @return  mixed
      */
-    public function part($name='',$endpoint='',$fileName,$partNumber,$uploadId,$data)
+    public function part(string $name='',string $endpoint='',string $fileName,string $partNumber,string $uploadId,$data)
     {
+        $name = $this->getName($name);
+        $this->setData(self::OSS_BUCKET_NAME, $name);
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
+        $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_URLENCODEED);
+        $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?partNumber={$partNumber}&uploadId={$uploadId}");
+        $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
+        $this->setData(self::OSS_BODY, $data);
+        $res = $this->request([
+            'partNumber' => $partNumber,
+            'uploadId' => $uploadId
+        ], false);
+        return $this->getData(self::OSS_RESPONSE_CODE) == '200' ? Tools::header2arr($res) : false;
+    }
 
+    /**
+     * 从一个已存在的Object中拷贝数据来上传一个Part
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
+     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
+     * @param   string  $fileName           文件名称
+     * @param   int     $partNumber         Part标识
+     * @param   string  $uploadId           上传唯一标识
+     * @param   string  $sourceBucket       源Bucket名称(传空，表示当前Bucket)
+     * @param   string  $sourceFileName     源文件名称
+     * @param   int     $start              开始位置
+     * @param   int     $end                结束位置
+     * @return  mixed
+     */
+    public function copy(string $name='',string $endpoint='',string $fileName,string $partNumber,string $uploadId,string $sourceBucket='',string $sourceFileName,int $start, int $end)
+    {
+        $name = $this->getName($name);
+        $this->setData(self::OSS_BUCKET_NAME, $name);
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
+        $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?partNumber={$partNumber}&uploadId={$uploadId}");
+        $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
+        if (empty($sourceBucket)) $sourceBucket = $name;
+        $this->setData(self::OSS_OSS_HEADER, [
+            'x-oss-copy-source'=> "/{$sourceBucket}/{$sourceFileName}",
+            'x-oss-copy-source-range' => "bytes={$start}-{$end}"
+        ]);
+        $res = $this->request([
+            'partNumber' => $partNumber,
+            'uploadId' => $uploadId
+        ]);
+        return $this->getData(self::OSS_RESPONSE_CODE) == '200' ? $res : false;
+    }
+
+    /**
+     * 完成分片上传
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
+     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
+     * @param   string  $fileName           文件名称
+     * @param   string  $uploadId           上传唯一标识
+     * @param   array   $uploadData         上传数据[{partNumber} => {ETag},{partNumber} => {ETag}...]
+     * @return  mixed
+     */
+    public function complete(string $name='',string $endpoint='',string $fileName,string $uploadId,array $uploadData)
+    {
+        $name = $this->getName($name);
+        $this->setData(self::OSS_BUCKET_NAME, $name);
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_METHOD, self::OSS_HTTP_POST);
+        $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_URLENCODEED);
+        $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?uploadId={$uploadId}");
+        $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
+        $data = [];
+        foreach($uploadData as $k => $v) $data[] = ['PartNumber' => $k, 'ETag' => $v];
+        $this->setData(self::OSS_BODY, Tools::arr2xml([
+            'CompleteMultipartUpload' => [
+                'Part' => $data
+            ]
+            ], false));
+        $res = $this->request([
+            'uploadId' =>$uploadId
+        ]);
+        return $this->getData(self::OSS_RESPONSE_CODE) == '200' ? $res : false;
+    }
+
+    /**
+     * 取消取消MultipartUpload事件并删除对应的Part数据
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
+     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
+     * @param   string  $fileName           文件名称
+     * @param   string  $uploadId           上传唯一标识
+     * @return  mixed
+     */
+    public function abort(string $name='',string $endpoint='',string $fileName,string $uploadId)
+    {
+        $name = $this->getName($name);
+        $this->setData(self::OSS_BUCKET_NAME, $name);
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_METHOD, self::OSS_HTTP_DELETE);
+        $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
+        $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?uploadId={$uploadId}");
+        $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
+        $this->request([
+            'uploadId' => $uploadId
+        ]);
+        return $this->getData(self::OSS_RESPONSE_CODE) == '204' ? true : false;
+    }
+
+    /**
+     * 列举所有执行中的Multipart Upload事件
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
+     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
+     * @param   string  $delimiter          对Object名字进行分组
+     * @paarm   int     $max_uploads        此次返回Multipart Uploads事件的最大数目,默认为1000，max-uploads取值不能大于1000
+     * @param   string  $key_marker         返回结果的起始位置
+     * @param   string  $prefix             前缀
+     * @return  mixed
+     */
+    public function list(string $name='',string $endpoint='',string $delimiter='',string $max_uploads='',string $key_marker='',string $prefix='')
+    {
+        $name = $this->getName($name);
+        $this->setData(self::OSS_BUCKET_NAME, $name);
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_METHOD, self::OSS_HTTP_GET);
+        $this->setData(self::OSS_RESOURCE, "/{$name}/?uploads");
+        $this->setData(self::OSS_URL_PARAM, "?uploads");
+        $query = [];
+        if (!empty($delimiter)) $query['delimiter'] = $delimiter;
+        if (!empty($max_uploads)) $query['max-uploads'] = $max_uploads;
+        if (!empty($key_marker)) $query['key-marker'] = $key_marker;
+        if (!empty($prefix)) $query['prefix'] = $prefix;
+        $res = $this->request($query);
+        return $this->getData(self::OSS_RESPONSE_CODE) == '200' ? $res : false;
+    }
+
+    /**
+     * 指定Upload ID所属的所有已经上传成功Part
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
+     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
+     * @param   string  $fileName           文件名称
+     * @param   string  $uploadId           上传唯一标识
+     * @return  mixed
+     */
+    public function listParts(string $name='',string $endpoint='',string $fileName,string $uploadId)
+    {
+        $name = $this->getName($name);
+        $this->setData(self::OSS_BUCKET_NAME, $name);
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_METHOD, self::OSS_HTTP_GET);
+        $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
+        $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?uploadId={$uploadId}");
+        $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
+        $res = $this->request([
+            'uploadId' => $uploadId
+        ]);
+        return $this->getData(self::OSS_RESPONSE_CODE) == '200' ? $res : false;
     }
 }

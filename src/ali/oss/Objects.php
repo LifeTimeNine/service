@@ -2,8 +2,10 @@
 
 namespace service\ali\oss;
 
+use service\ali\oss\object\Acl;
 use service\ali\oss\object\Basics;
 use service\ali\oss\object\Multipart;
+use service\ali\oss\object\Tagging;
 use service\tools\BasicBusiness;
 
 /**
@@ -30,5 +32,25 @@ class Objects extends BasicBusiness
     public function multipart(array $config = [])
     {
         return Multipart::instance($config);
+    }
+
+    /**
+     * 权限控制
+     * @param   array   $config     配置
+     * @return  Acl
+     */
+    public function acl(array $cofnig = [])
+    {
+        return Acl::instance($cofnig);
+    }
+
+    /**
+     * 标签
+     * @param   array   $config     配置
+     * @return  Tagging
+     */
+    public function tagging(array $config = [])
+    {
+        return Tagging::instance($config);
     }
 }

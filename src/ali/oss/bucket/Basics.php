@@ -27,7 +27,7 @@ class Basics extends BasicOss
      * @param   string  $disaster       容灾类型[LRS(本地容灾,默认值) ZRS(同城容灾)]
      * @return  boolean
      */
-    public function putBucket(string $name, string $endpoint = '', string $acl = 'private', string $storageClass = 'Standard', string $disaster = 'LRS')
+    public function put(string $name, string $endpoint = '', string $acl = 'private', string $storageClass = 'Standard', string $disaster = 'LRS')
     {
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
@@ -55,7 +55,7 @@ class Basics extends BasicOss
      * @param   string  $endpoint   区域节点
      * @return  boolean
      */
-    public function deleteBucket(string $name, string $endpoint = '')
+    public function delete(string $name, string $endpoint = '')
     {
         if (empty($name)) throw new InvalidArgumentException("Missing Options [name]");
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -79,7 +79,7 @@ class Basics extends BasicOss
      * @param   string  $encoding_type  对返回的内容进行编码并指定编码的类型
      * @return  mixed
      */
-    public function getBucket(string $name = '', string $endpoint='', string $delimiter='', string $marker='', int $max_keys = 100, string $prefix = '', string $encoding_type = 'url')
+    public function get(string $name = '', string $endpoint='', string $delimiter='', string $marker='', int $max_keys = 100, string $prefix = '', string $encoding_type = 'url')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -111,7 +111,7 @@ class Basics extends BasicOss
      * @param   string  $fetch_owner        指定是否在返回结果中包含owner信息
      * @return  mixed
      */
-    public function getBucketV2(string $name='', string $endpoint = '', string $delimiter = '', string $start_after='', string $continuation_token='', int $max_keys=100, string $prefix='', string $encoding_type = 'url', bool $fetch_owner = false)
+    public function getV2(string $name='', string $endpoint = '', string $delimiter = '', string $start_after='', string $continuation_token='', int $max_keys=100, string $prefix='', string $encoding_type = 'url', bool $fetch_owner = false)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -139,7 +139,7 @@ class Basics extends BasicOss
      * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return  mixed
      */
-    public function getBucketInfo(string $name = '', string $endpoint = '')
+    public function getInfo(string $name = '', string $endpoint = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -159,7 +159,7 @@ class Basics extends BasicOss
      * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return  mixed
      */
-    public function getBucketLocation(string $name = '', string $endpoint = '')
+    public function getLocation(string $name = '', string $endpoint = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);

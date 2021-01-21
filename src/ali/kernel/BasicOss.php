@@ -60,6 +60,7 @@ class BasicOss extends Basic
     const OSS_CONTENT_TYPE_HTML = 'text/html';
     const OSS_CONTENT_TYPE_XML = 'application/xml';
     const OSS_CONTENT_TYPE_PLAIN = 'text/plain';
+    const OSS_CONTENT_TYPE_URLENCODEED = 'application/x-www-form-urlencoded';
 
     /**
      * emdpoint list
@@ -104,7 +105,7 @@ class BasicOss extends Basic
     protected function __construct($config = [])
     {
         parent::__construct($config);
-        $this->setData(self::OSS_DATE, gmdate("D, d M Y H:i:s") . " GMT");
+        $this->setData(self::OSS_DATE, $this->getDate());
     }
 
     /**
@@ -113,6 +114,15 @@ class BasicOss extends Basic
      */
     private $data = [];
 
+    /**
+     * 获取指定时间戳的时间
+     * @param   int     $timestamp      时间戳
+     * @return  string
+     */
+    protected function getDate($timestamp = null)
+    {
+        return (empty($timestamp) ? gmdate("D, d M Y H:i:s") : gmdate("D, d M Y H:i:s", $timestamp)) . " GMT";
+    }
     /**
      * 设置数据
      * @param   string  $name   名
@@ -142,10 +152,11 @@ class BasicOss extends Basic
     /**
      * 验证ACL权限
      * @param   string     $acl
+     * @param   boolean    $hasDefault
      * @return  true
      */
-    protected function checkAcl($acl) {
-        if(!in_array($acl, self::OSS_ALLOW_ACL)) {
+    protected function checkAcl($acl, $hasDefault = false) {
+        if(!in_array($acl, self::OSS_ALLOW_ACL) && $hasDefault && $acl <> 'default') {
             throw new InvalidArgumentException("Unknown acl {$acl}");
         }
         return true;
@@ -175,12 +186,12 @@ class BasicOss extends Basic
 
     /**
      * 获取签名字符串
-     * @param   array   $data   签名数据
+     * @param   array|string   $data   签名数据
      * @return   string
      */
     protected function getSign($data)
     {
-        $signData = implode('', $data);
+        $signData = is_array($data) ? implode('', $data) : $data;
         return base64_encode(hash_hmac("sha1", $signData, $this->config['accessKey_secret'], true));
     }
 
