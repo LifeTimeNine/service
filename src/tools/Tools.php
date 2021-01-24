@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2021-01-20 16:57:11
+ * @LastEditTime  2021-01-24 15:33:47
  * @LastEditors   lifetime
  */
 
@@ -106,8 +106,9 @@ class Tools
      */
     public static function json2arr($json)
     {
+        if ($json === '') return null;
         $result = json_decode($json, true);
-        if (empty($result)  || json_last_error() <> JSON_ERROR_NONE) {
+        if (json_last_error() <> JSON_ERROR_NONE) {
             throw new InvalidArgumentException('invalid response.', '0');
         }
         return $result;
@@ -199,7 +200,7 @@ class Tools
     {
         $buff = [];
         foreach ($arr as $key => $value) {
-            if ($key <> "sign" && $key <> ''&& !is_array($value)) {
+            if ($key <> ''&& !is_array($value)) {
                 $buff[] = "{$key}={$value}";
             }
         }
@@ -375,6 +376,23 @@ class Tools
         return in_array($mimeType, self::$mime_types);
     }
 
+    /**
+     * 数组转Key，Value形式
+     * @param   array   $data
+     * @return  array
+     */
+    public static function arrToKeyVal($data)
+    {
+        $newData = [];
+        foreach($data as $k => $v)
+        {
+            if (!empty($k)) {
+                $newData[] = ['key' => $k, 'value' => $v];
+            }
+        }
+        return $newData;
+    }
+
     private static $mime_types = array(
         'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
@@ -535,7 +553,7 @@ class Tools
         'jp2' => 'image/jp2',
         'jpe' => 'image/jpeg',
         'jpeg' => 'image/jpeg',
-        'jpg' => 'image/jpeg',
+        'jpg' => 'image/jpg',
         'kar' => 'audio/midi',
         'lha' => 'application/octet-stream',
         'lzh' => 'application/octet-stream',

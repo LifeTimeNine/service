@@ -13,16 +13,15 @@ class Worm extends BasicOss
 {
     /**
      * 新建一条合规保留策略
-     * @param   string  $name       名称(传空，表示从配置中获取)
-     * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @param   int     $day        保留天数(正整数)
      * @return  boolean
      */
-    public function init(string $name = '', string $endpoint = '', int $day)
+    public function init(string $name = '', int $day)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_POST);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
@@ -38,15 +37,14 @@ class Worm extends BasicOss
 
     /**
      * 删除未锁定的合规保留策略
-     * @param   string  $name       名称(传空，表示从配置中获取)
-     * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @return boolean
      */
-    public function abort(string $name = '', string $endpoint = '')
+    public function abort(string $name = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_DELETE);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
@@ -58,16 +56,15 @@ class Worm extends BasicOss
 
     /**
      * 锁定合规保留策略
-     * @param   string  $name       名称(传空，表示从配置中获取)
-     * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @param   string  $wormId     wormID
      * @return  boolean
      */
-    public function complete(string $name = '', string $endpoint = '', string $wormId)
+    public function complete(string $name = '', string $wormId)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_POST);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
@@ -78,17 +75,16 @@ class Worm extends BasicOss
 
     /**
      * 延长已锁定的合规保留策略对应Bucket中Object的保留天数
-     * @param   string  $name       名称(传空，表示从配置中获取)
-     * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @param   string  $wormId     wormID
      * @param   int     $day        延长的天数
      * @return  boolean
      */
-    public function exend(string $name = '', string $endpoint = '', string $wormId, int $day)
+    public function exend(string $name = '', string $wormId, int $day)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_POST);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
@@ -104,15 +100,14 @@ class Worm extends BasicOss
 
     /**
      * 获取指定存储空间（Bucket）的合规保留策略信息
-     * @param   string  $name       名称(传空，表示从配置中获取)
-     * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @return  mixed
      */
-    public function get(string $name = '', string $endpoint = '', string $wormId)
+    public function get(string $name = '', string $wormId)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_GET);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);

@@ -3,6 +3,7 @@
 namespace service\ali\kernel;
 
 use service\exceptions\InvalidArgumentException;
+use service\exceptions\InvalidResponseException;
 use service\tools\Tools;
 
 /**
@@ -61,6 +62,7 @@ class BasicOss extends Basic
     const OSS_CONTENT_TYPE_XML = 'application/xml';
     const OSS_CONTENT_TYPE_PLAIN = 'text/plain';
     const OSS_CONTENT_TYPE_URLENCODEED = 'application/x-www-form-urlencoded';
+    const OSS_CONTENT_TYPE_FORMDATA = 'multipart/form-data';
 
     /**
      * emdpoint list
@@ -273,7 +275,7 @@ class BasicOss extends Basic
      * @param   string  $endpoint   输入的地域节点
      * @return  string
      */
-    protected function getEndponit($endpoint)
+    protected function getEndponit($endpoint = null)
     {
         if (empty($endpoint)) $endpoint = $this->config['oss_endpoint'];
         if (empty($endpoint)) throw new InvalidArgumentException("Missing Options [endpoint]");
@@ -353,8 +355,10 @@ class BasicOss extends Basic
             'data' => $this->getData(self::OSS_BODY),
         ];
         $result = $this->sendRequest($method, $url, $options);
-        dump($result);
-        // if (!empty($result['Code'])) throw new InvalidResponseException($result['Message'], $result['Code'], $result);
+        if (strpos($result, 'Code') !== false) {
+            $result = Tools::xml2arr($result);
+            throw new InvalidResponseException($result['Message'], $result['Code'], $result);
+        } 
         return $format ? Tools::xml2arr($result) : $result;
     }
 
@@ -368,9 +372,6 @@ class BasicOss extends Basic
      */
     protected function sendRequest(string $method, string $url, array $options = [])
     {
-        dump($url);
-        dump($options['headers']);
-        dump($options['data']);
         $curl = curl_init();
         // GET参数设置
         if (!empty($options['query'])) {

@@ -3,7 +3,6 @@
 namespace service\ali\oss\bucket;
 
 use service\ali\kernel\BasicOss;
-use service\exceptions\InvalidArgumentException;
 
 /**
  * 权限控制
@@ -14,15 +13,14 @@ class Acl extends BasicOss
     /**
      * 设置或修改存储空间（Bucket）的访问权限（ACL）
      * @param   string  $name       Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @param   string  $acl        访问权限[private-私有，public-read-公共读，public-read-write-公共读写]
      * @return  boolean
      */
-    public function put(string $name = '', string $endpoint = '', string $acl)
+    public function put(string $name = '', string $acl)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->checkAcl($acl);
 
@@ -38,14 +36,13 @@ class Acl extends BasicOss
     /**
      * 获取某个存储空间（Bucket）的访问权限（ACL）
      * @param   string  $name       Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return  mixed
      */
-    public function get(string $name = '', string $endpoint = '')
+    public function get(string $name = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_GET);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);

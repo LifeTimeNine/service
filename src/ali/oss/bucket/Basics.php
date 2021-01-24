@@ -20,18 +20,17 @@ class Basics extends BasicOss
 
     /**
      * 创建Bucket
-     * @param   string  $name           名称
-     * @param   string  $endpoint       地域节点 (传空，表示从配置中获取)
+     * @param   string  $name           Bucket名称
      * @param   string  $acl            访问权限[private-私有，public-read-公共读，public-read-write-公共读写]
      * @param   string  $storageClass   储存类型[Standard（标准存储，默认值）IA（低频访问）Archive（归档存储）ColdArchive（冷归档存储）]
      * @param   string  $disaster       容灾类型[LRS(本地容灾,默认值) ZRS(同城容灾)]
      * @return  boolean
      */
-    public function put(string $name, string $endpoint = '', string $acl = 'private', string $storageClass = 'Standard', string $disaster = 'LRS')
+    public function put(string $name, string $acl = 'private', string $storageClass = 'Standard', string $disaster = 'LRS')
     {
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         if (empty($name)) throw new InvalidArgumentException("Missing Options [name]");
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_RESOURCE, "/{$name}/");
@@ -51,15 +50,14 @@ class Basics extends BasicOss
 
     /**
      * 删除Bucket
-     * @param   string  $name       名称
-     * @param   string  $endpoint   区域节点
+     * @param   string  $name       Bucket名称
      * @return  boolean
      */
-    public function delete(string $name, string $endpoint = '')
+    public function delete(string $name)
     {
         if (empty($name)) throw new InvalidArgumentException("Missing Options [name]");
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_DELETE);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
@@ -70,7 +68,7 @@ class Basics extends BasicOss
 
     /**
      * 获取Bucket中所有的Object
-     * @param   string  $name           名称 (传空，表示从配置中获取)
+     * @param   string  $name           Bucket名称 (传空，表示从配置中获取)
      * @param   string  $endpoint       区域节点 (传空，表示从配置中获取)
      * @param   string  $delimiter      对Object名字进行分组的字符
      * @param   string  $marker         设定从marker之后按字母排序开始返回Object
@@ -100,7 +98,7 @@ class Basics extends BasicOss
     
     /**
      * 获取Bucket中获取所有的Object(V2)
-     * @param   string  $name               名称(传空，表示从配置中获取)
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
      * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $delimiter          对Object名字进行分组的字符
      * @param   string  $start_after        设定从Start-after之后按字母排序开始返回Object
@@ -135,7 +133,7 @@ class Basics extends BasicOss
 
     /**
      * 获取Bucket相关信息
-     * @param   string  $name       名称(传空，表示从配置中获取)
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return  mixed
      */
@@ -155,7 +153,7 @@ class Basics extends BasicOss
 
     /**
      * 获取Bucket位置信息
-     * @param   string  $name       名称(传空，表示从配置中获取)
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @param   string  $endpoint   区域节点(传空，表示从配置中获取)
      * @return  mixed
      */

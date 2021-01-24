@@ -4,7 +4,6 @@ namespace service\ali\kernel;
 
 use service\config\AliConfig;
 use service\exceptions\InvalidArgumentException;
-use service\exceptions\InvalidRequestException;
 
 /**
  * 阿里云基类
@@ -33,7 +32,7 @@ class Basic
         $this->config = new AliConfig($config);
 
         if (empty($this->config['accessKey_id'])) throw new InvalidArgumentException("Missing Config [accessKey_id]");
-        if (empty($this->config['accessKey_secret'])) throw new InvalidRequestException("Missing Config [accessKey_secret]");
+        if (empty($this->config['accessKey_secret'])) throw new InvalidArgumentException("Missing Config [accessKey_secret]");
     }
 
     /**

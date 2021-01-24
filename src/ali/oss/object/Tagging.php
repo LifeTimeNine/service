@@ -14,16 +14,15 @@ class Tagging extends BasicOss
     /**
      * 设置或更新对象（Object）的标签（Tagging）信息
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @param   array   $tagData            标签数据[{key}=>{value}]
      * @return  mixed
      */
-    public function put(string $name='',string $endpoint='',string $fileName,array $tagData)
+    public function put(string $name='',string $fileName,array $tagData)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?tagging");
@@ -44,15 +43,14 @@ class Tagging extends BasicOss
     /**
      * 获取对象（Object）的标签（Tagging）信息
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @return  mixed
      */
-    public function get(string $name='',string $endpoint='',string $fileName)
+    public function get(string $name='',string $fileName)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_GET);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?tagging");
@@ -64,15 +62,14 @@ class Tagging extends BasicOss
     /**
      * 删除指定对象（Object）的标签（Tagging）信息
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @return  mixed
      */
-    public function delete(string $name='',string $endpoint='',string $fileName)
+    public function delete(string $name='',string $fileName)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_DELETE);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?tagging");

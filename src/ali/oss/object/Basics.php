@@ -15,8 +15,7 @@ class Basics extends BasicOss
     /**
      * 上传文件(Object)
      * @param   string  $name           Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint       区域节点(传空，表示从配置中获取)
-     * @param   string  $file           文件路径(绝对路径)
+     * @param   string  $data           数据
      * @param   string  $fileName       文件名称
      * @param   string  $acl            访问权限[private-私有，public-read-公共读，public-read-write-公共读写]
      * @param   string  $storageClass   储存类型[Standard（标准存储，默认值）IA（低频访问）Archive（归档存储）ColdArchive（冷归档存储）]
@@ -28,18 +27,17 @@ class Basics extends BasicOss
      * @param   boolean $overwrite      是否禁止覆盖同名Object
      * @return  boolean
      */
-    public function put(string $name = '', string $endpoint = '', string $file, string $fileName, string $acl='', string $storageClass='', string $disposition = '', string $cache = '', int $expires = null, string $etag = '', string $encode = '', bool $overwrite = null)
+    public function put(string $name = '', string $data, string $fileName, string $acl='', string $storageClass='', string $disposition = '', string $cache = '', int $expires = null, string $etag = '', string $encode = '', bool $overwrite = null)
     {
-        if (!file_exists($file)) throw new InvalidArgumentException("The file {$file} does not exist");
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
 
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
         $this->setData(self::OSS_CONTENT_TYPE, Tools::getMimetype($fileName));
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}");
         $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
-        $this->setData(self::OSS_BODY, file_get_contents($file));
+        $this->setData(self::OSS_BODY, $data);
         if (!empty($disposition)) $this->setData(self::OSS_DISPOSITION, $disposition);
         if (!empty($cache)) $this->setData(self::OSS_CACHE_CONTROL, $cache);
         if ($expires !== null) $this->setData(self::OSS_EXPIRES, $expires);
@@ -57,19 +55,19 @@ class Basics extends BasicOss
     /**
      * Web端上传数据 (url-请求地址，body-请求体(在最后插入file))
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @param   string  $success_redirect   上传成功后跳转的地址
      * @param   string  $success_status     未指定success_action_redirect表单域时，该参数指定了上传成功后返回给客户端的状态码
      * @param   string  $acl                访问权限[private-私有，public-read-公共读，public-read-write-公共读写]
+     * @param   int     $expire             有效时间(默认3600)
      * @param   boolean $overwrite          是否覆盖同名Object
      * @param   array
      */
-    public function webPut(string $name = '', string $endpoint = '', string $fileName,string $success_redirect = '',string $success_status = '200',string $acl = '', bool $overwrite = null)
+    public function webPut(string $name = '', string $fileName,string $success_redirect = '',string $success_status = '200',string $acl = '',int $expire=3600, bool $overwrite = null)
     {
         $name = $this->getName($name);
-        $endpoint = $this->getEndponit($endpoint);
-        $time = time() + 3600;
+        $endpoint = $this->getEndponit();
+        $time = time() + $expire;
         $date = date('Y-m-d', $time) . 'T' . date('H:i:s', $time) . '.000Z';
         $policyData = [
             'expiration' => $date,
@@ -80,27 +78,30 @@ class Basics extends BasicOss
         ];
         $policy = base64_encode(json_encode($policyData));
         $signature = $this->getSign($policy);
-        $data = [
-            'url' => "{$this->getProtocol()}{$name}.{$endpoint}",
-            'body' => [
-                'OSSAccessKeyId' => $this->config['accessKey_id'],
-                'policy' => $policy,
-                'Signature' => $signature,
-                'x-oss-content-type' => Tools::getMimetype($fileName),
-                'key' => $fileName,
-            ]
+        $header = [
+            self::OSS_CONTENT_TYPE => self::OSS_CONTENT_TYPE_FORMDATA
         ];
-        if (!empty($success_redirect)) $data['data']['success_action_redirect'] = $success_redirect;
-        if (!empty($success_status)) $data['data']['success_action_status'] = $success_status;
-        if (!empty($acl) && $this->checkAcl($acl)) $data['data'][self::OSS_OBJECT_ACL] = $acl;
-        if (!empty($overwrite)) $data['data'][self::OSS_FORBID_OVERWIRTE] = $overwrite ? 'true' : 'false';
-        return $data;
+        $body = [
+            'OSSAccessKeyId' => $this->config['accessKey_id'],
+            'policy' => $policy,
+            'Signature' => $signature,
+            'x-oss-content-type' => Tools::getMimetype($fileName),
+            'key' => $fileName,
+        ];
+        if (!empty($success_redirect)) $body['success_action_redirect'] = $success_redirect;
+        if (!empty($success_status)) $body['success_action_status'] = $success_status;
+        if (!empty($acl) && $this->checkAcl($acl)) $body[self::OSS_OBJECT_ACL] = $acl;
+        if (!empty($overwrite)) $body[self::OSS_FORBID_OVERWIRTE] = $overwrite ? 'true' : 'false';
+        return [
+            'url' => "{$this->getProtocol()}{$name}.{$endpoint}",
+            'header' => Tools::arrToKeyVal($header),
+            'body' => Tools::arrToKeyVal($body)
+        ];
     }
 
     /**
      * 获取某个文件（Object）
      * @param   string  $name            Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint        区域节点(传空，表示从配置中获取)
      * @param   string  $fileName        文件名称
      * @param   string  $saveDir         保存文件夹(绝对路径,如果参数为空，则直接返回内容)
      * @param   string  $range           指定文件传输的范围
@@ -112,11 +113,11 @@ class Basics extends BasicOss
      * @param   string  $encodeing       指定OSS返回请求的content-encoding头
      * @return  mixed
      */
-    public function get(string $name='', string $endpoint='', string $fileName, string $saveDir='', string $range='', string $content_type='', string $content_lanuage='', string $expires='', string $cache_control='', string $disposition='', string $encodeing = '')
+    public function get(string $name='', string $fileName, string $saveDir='', string $range='', string $content_type='', string $content_lanuage='', string $expires='', string $cache_control='', string $disposition='', string $encodeing = '')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_GET);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_PLAIN);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}");
@@ -139,7 +140,6 @@ class Basics extends BasicOss
     /**
      * 拷贝文件（Object）
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $sourceBucket       源Bucket(传空，表示当Bucket)
      * @param   string  $sourceFileName     源文件名称
      * @param   string  $putFileName        保存的文件名称
@@ -148,11 +148,11 @@ class Basics extends BasicOss
      * @param   boolean $overwrite          是否禁止覆盖同名Object
      * @return  mixed
      */
-    public function copy(string $name='',string $endpoint='',string $sourceBucket = '',string $sourceFileName,string $putFileName,string $acl='',string $storageClass='',string $overwrite=null)
+    public function copy(string $name='',string $sourceBucket = '',string $sourceFileName,string $putFileName,string $acl='',string $storageClass='',string $overwrite=null)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_PLAIN);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$putFileName}");
@@ -170,7 +170,6 @@ class Basics extends BasicOss
     /**
      * 以追加写的方式上传文件（Object）
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @param   string  $position           指定从何处进行追加
      * @param   string  $data               追加的内容
@@ -183,11 +182,11 @@ class Basics extends BasicOss
      * @param   int     $expires            过期时间
      * @return  mixed
      */
-    public function append(string $name='',string $endpoint='',string $fileName,string $position,string $data,string $mimeType, string $acl='',string $storageClass='',string $cache='',string $disposition='',string $encode='',string $expires='')
+    public function append(string $name='',string $fileName,string $position,string $data,string $mimeType, string $acl='',string $storageClass='',string $cache='',string $disposition='',string $encode='',string $expires='')
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_POST);
         if (!Tools::checkMimeType($mimeType)) throw new InvalidArgumentException("Unknown file type {$mimeType}");
         $this->setData(self::OSS_CONTENT_TYPE, $mimeType);
@@ -211,15 +210,14 @@ class Basics extends BasicOss
     /**
      * 删除某个文件（Object）
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @return  mixed
      */
-    public function delete(string $name='',string $endpoint='',string $fileName)
+    public function delete(string $name='',string $fileName)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_DELETE);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}");
@@ -231,16 +229,15 @@ class Basics extends BasicOss
     /**
      * 删除同一个存储空间（Bucket）中的多个文件（Object）
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   array   $fileNameList       要删除的文件名称列表
      * @param   array   $quiet              简单相应模式
      * @return  mixed
      */
-    public function deleteMultiple(string $name='',string $endpoint='',array $fileNameList,bool $quiet = false)
+    public function deleteMultiple(string $name='',array $fileNameList,bool $quiet = false)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_POST);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_RESOURCE, "/{$name}/?delete");
@@ -259,15 +256,14 @@ class Basics extends BasicOss
     /**
      * 获取某个文件（Object）的元信息
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @return  mixed
      */
-    public function head(string $name='',string $endpoint='',string $fileName)
+    public function head(string $name='',string $fileName)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_HEAD);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}");
@@ -279,15 +275,14 @@ class Basics extends BasicOss
     /**
      * 获取一个文件（Object）的元数据信息，包括该Object的ETag、Size、LastModified信息
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
-     * @param   string  $endpoint           区域节点(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
      * @return  mixed
      */
-    public function getMeta(string $name='',string $endpoint='',string $fileName)
+    public function getMeta(string $name='',string $fileName)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
-        $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
+        $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_HEAD);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?objectMeta");

@@ -2,6 +2,12 @@
 
 return [
     'ali' => [
+
+        'accessKey_id' => '',
+        'accessKey_secret' => '',
+        'oss_endpoint' => 'oss-cn-beijing.aliyuncs.com',
+        'oss_bucketName' => 'lifetime-tpadmin',
+
         'sandbox' => true, // 是否是沙箱环境
         'appid' => '20210001166', // 支付宝APPID (测试数据)
         'public_key' => 'MIGfMA0GCSqGHdfVBoCNZ5mubSSYX69tkGd97og+DrR2E0v0WsJ2NVewz8hFrLXSFg6frHWj0vrF+JOXTWrVJRjvyCtAeHUZSV668fqdyBqIGmb9umNDdfPZBlkMi2Oa7MAC6UOjXDruWBEKR+MJUqSijhqBDhICGQOrtyIawIDAQAB', // 应用公钥
@@ -25,7 +31,7 @@ return [
         'miniapp_pay_appid' => '', // 字节小程序支付APPPID
         'miniapp_pay_secret' => '', // 字节小程序支付secret
     ],
-    'cache_path' => env('runtime_path') . 'wechat' . DIRECTORY_SEPARATOR, // 缓存目录
+    'cache_path' => env('runtime_path') . 'service' . DIRECTORY_SEPARATOR, // 缓存目录
     'cache_callable' => [ // 自定义缓存操作方法（如果设置了此参数，缓存目录将不再生效）
         'set' => null, // 写入缓存
         'get' => null, // 获取缓存
