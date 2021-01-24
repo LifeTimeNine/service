@@ -27,7 +27,7 @@ class Basics extends BasicOss
      * @param   boolean $overwrite      是否禁止覆盖同名Object
      * @return  boolean
      */
-    public function put(string $name = '', string $data, string $fileName, string $acl='', string $storageClass='', string $disposition = '', string $cache = '', int $expires = null, string $etag = '', string $encode = '', bool $overwrite = null)
+    public function put(string $name = '',$data, string $fileName, string $acl='', string $storageClass='', string $disposition = '', string $cache = '', int $expires = null, string $etag = '', string $encode = '', bool $overwrite = null)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -95,7 +95,8 @@ class Basics extends BasicOss
         return [
             'url' => "{$this->getProtocol()}{$name}.{$endpoint}",
             'header' => Tools::arrToKeyVal($header),
-            'body' => Tools::arrToKeyVal($body)
+            'body' => Tools::arrToKeyVal($body),
+            'fileFieldName' => 'file'
         ];
     }
 

@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2021-01-24 15:33:47
+ * @LastEditTime  2021-01-24 17:14:09
  * @LastEditors   lifetime
  */
 
@@ -391,6 +391,39 @@ class Tools
             }
         }
         return $newData;
+    }
+
+    /**
+     * 生成Form-data参数
+     * @param   array   $param          参数
+     * @param   string  $fileName       文件名称
+     * @param   mixed   $fileData       文件数据
+     * @param   string  $fileFieldName  文件字段名称
+     * @param   string
+     */
+    public static function buildFormData($param, $fileName = null, $fileData = null, $fileFiledName = 'file')
+    {
+        $data = [];
+        $mimeBoundary = md5(uniqid());
+        foreach($param as $k => $v)
+        {
+            $data[] = "--{$mimeBoundary}";
+            $data[] = "Content-Disposition: form-data; name=\"{$k}\"";
+            $data[] = "";
+            $data[] = $v;
+        }
+        if (!empty($fileName) && !empty($fileData)) {
+            $mimeType = self::getMimetype($fileName);
+            if (empty($mimeType)) $mimeType = 'application/octet-stream';
+            $data[] = "--{$mimeBoundary}";
+            $data[] = "Content-Disposition: form-data; name=\"{$fileFiledName}\"; filename=\"{$fileName}\"";
+            $data[] = "Content-Type: {$mimeType}";
+            $data[] = "";
+            $data[] = $fileData;
+        }
+        $data[] = "--{$mimeBoundary}--";
+        $data[] = '';
+        return ["multipart/form-data; boundary={$mimeBoundary}", implode("\r\n", $data)];
     }
 
     private static $mime_types = array(

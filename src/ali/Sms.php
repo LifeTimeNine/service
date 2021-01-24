@@ -25,9 +25,9 @@ class Sms extends BasicSms
     {
         $this->setParam('Action', 'SendSms');
         $this->setParam('PhoneNumbers', $phones);
-        if (!empty($signName)) $signName = $this->config['sms_signName'];
+        if (empty($signName)) $signName = $this->config['sms_signName'];
         $this->setParam('SignName', $signName);
-        if (!empty($templateCode)) $templateCode = $this->config['sms_templateCode'];
+        if (empty($templateCode)) $templateCode = $this->config['sms_templateCode'];
         $this->setParam('TemplateCode', $templateCode);
         $this->setParam('TemplateParam', json_encode($param));
         if (!empty($extendCode)) $this->setParam('SmsUpExtendCode', $extendCode);
@@ -59,7 +59,6 @@ class Sms extends BasicSms
         $this->setParam('TemplateCode', empty($templateCode) ? $this->config['sms_templateCode'] : $templateCode);
         $this->setParam('TemplateParamJson', json_encode($param));
         if (!empty($extendCode)) $this->setParam('SmsUpExtendCodeJson', $extendCode);
-        $this->signTemplateCode = true;
         return $this->request();
     }
 

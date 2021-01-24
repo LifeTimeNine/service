@@ -212,6 +212,45 @@ class Objects extends Storage
     }
 
     /**
+     * 上传文件
+     * @param   string  $bucketName     空间名称(传空表示从配置中获取[storage_bucketName])
+     * @param   string  $fileName       文件名
+     * @param   mixed   $data           数据
+     * @param   int     $storageType    存储类型
+     * @return  mixed
+     */
+    public function upload(string $bucketName='',string $fileName,$data,int $storageType=0)
+    {
+        $this->checkRegion($this->config['storage_region']);
+        $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
+        $this->checkStorageType($storageType);
+        $this->setData(self::S_METHOD, self::S_POST);
+        $this->setData(self::S_HOST, $region);
+        $this->setData(self::S_UPLOAD_STARTEGY, [
+            'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
+            'deadline' => time() + 60,
+            'returnBody' => Tools::arr2json([
+                'name' => "$(fname)",
+                'size' => "$(fsize)",
+                "w" => "$(imageInfo.width)",
+                'h' => "$(imageInfo.height)",
+                'hash' => '$(etag)',
+            ]),
+            'fileType' => $storageType,
+        ]);
+        $upToken = $this->buildUploadSign();
+        list($contentType, $body) = Tools::buildFormData([
+            'token' => $upToken,
+            'key' => $fileName,
+            'fileName' => $fileName,
+        ], $fileName, $data);
+        // dump($body);exit;
+        $this->setData(self::S_CONTENT_TYPE, $contentType);
+        $this->setData(self::S_BODY, $body);
+        return $this->request('');
+    }
+
+    /**
      * 直传文件
      * @param   string  $bucketName     空间名称(传空表示从配置中获取[storage_bucketName])
      * @param   string  $fileName       文件名
@@ -241,12 +280,14 @@ class Objects extends Storage
         ];
         $body = [
             'token' => $this->buildUploadSign(),
+            'key' => "{$fileName}",
             'fileName' => $fileName
         ];
         return [
             'url' => "{$this->getProtocol()}{$region}",
             'header' => $this->formatWebData($header),
-            'body' => $this->formatWebData($body)
+            'body' => $this->formatWebData($body),
+            'fileFieldName' => 'file'
         ];
     }
 

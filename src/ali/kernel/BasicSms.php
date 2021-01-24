@@ -59,7 +59,6 @@ class BasicSms extends Basic
         $urlArr = [];
         foreach($data as $k => $v)
         {
-            if (in_array($k, ['TemplateCode', 'SignName']) && !$this->signTemplateCode) continue;
             $urlArr[] = "{$k}=" . urlencode($v);
         }
         return implode('&', $urlArr);
@@ -75,7 +74,6 @@ class BasicSms extends Basic
         ksort($data);
         $signData = strtr($this->arrToUrl($data), ['+' => '%20', '*' => '%2A', '%7E' => '~']);
         $signData = "GET&%2F&" . urlencode($signData);
-        // dump($signData);
         return base64_encode(hash_hmac("sha1", $signData, "{$this->config['accessKey_secret']}&", true));
     }
 
@@ -101,7 +99,7 @@ class BasicSms extends Basic
         $result = Tools::json2arr(Tools::request('GET', $this->endpoint, [
             'query' => $this->params
         ]));
-        // if ($result['Code'] <> 'OK') throw new InvalidResponseException($result['Message'], $result['Code'], $result);
+        if ($result['Code'] <> 'OK') throw new InvalidResponseException($result['Message'], $result['Code'], $result);
         return $result;
     }
 }
