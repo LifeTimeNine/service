@@ -18,12 +18,6 @@ class Basic
     protected $config;
 
     /**
-     * 缓存
-     * @var static
-     */
-    protected static $cache;
-
-    /**
      * 构造函数
      * @param   array   $config     配置
      */
@@ -42,9 +36,7 @@ class Basic
      */
     public static function instance(array $config = [])
     {
-        $key = md5(get_called_class() . serialize($config));
-        if (isset(self::$cache[$key])) return self::$cache[$key];
-        return self::$cache[$key] = new static($config);
+        return new static($config);
     }
 
     /**
