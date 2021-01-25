@@ -221,7 +221,7 @@ class BasicOss extends Basic
         $resource = $this->getData(self::OSS_RESOURCE, true);
         $signData[] = $resource;
 
-        dump($signData);
+        // dump($signData);
 
         return "OSS {$this->config['accessKey_id']}:{$this->getSign($signData)}";
     }
@@ -372,6 +372,7 @@ class BasicOss extends Basic
      */
     protected function sendRequest(string $method, string $url, array $options = [])
     {
+        // dump($options['data']);
         $curl = curl_init();
         // GET参数设置
         if (!empty($options['query'])) {

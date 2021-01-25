@@ -4,6 +4,7 @@ namespace service\ali\oss;
 
 use service\ali\oss\bucket\Acl;
 use service\ali\oss\bucket\Basics;
+use service\ali\oss\bucket\Cors;
 use service\ali\oss\bucket\Referer;
 use service\ali\oss\bucket\Worm;
 use service\tools\BasicBusiness;
@@ -51,5 +52,15 @@ class Bucket extends BasicBusiness
     public function referer(array $config = [])
     {
         return Referer::instance($config);
+    }
+
+    /**
+     * 跨域资源共享
+     * @param   array   $config     配置
+     * @param   Cors
+     */
+    public function cors(array $config = [])
+    {
+        return Cors::instance($config);
     }
 }

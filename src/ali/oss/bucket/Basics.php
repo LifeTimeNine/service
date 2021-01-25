@@ -50,7 +50,7 @@ class Basics extends BasicOss
 
     /**
      * 删除Bucket
-     * @param   string  $name       Bucket名称
+     * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @return  boolean
      */
     public function delete(string $name)
