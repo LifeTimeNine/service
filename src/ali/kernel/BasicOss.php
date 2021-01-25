@@ -355,6 +355,7 @@ class BasicOss extends Basic
             'data' => $this->getData(self::OSS_BODY),
         ];
         $result = $this->sendRequest($method, $url, $options);
+        // dump($result);
         if (strpos($result, 'Code') !== false) {
             $result = Tools::xml2arr($result);
             throw new InvalidResponseException($result['Message'], $result['Code'], $result);
@@ -372,7 +373,6 @@ class BasicOss extends Basic
      */
     protected function sendRequest(string $method, string $url, array $options = [])
     {
-        // dump($options['data']);
         $curl = curl_init();
         // GET参数设置
         if (!empty($options['query'])) {

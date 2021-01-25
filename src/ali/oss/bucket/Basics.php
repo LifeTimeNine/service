@@ -38,9 +38,11 @@ class Basics extends BasicOss
         $this->checkStorageClass($storageClass);
         $this->checkDisaster($disaster);
         $this->setData(self::OSS_BODY, Tools::arr2xml([
-            'StorageClass' => $storageClass,
-            'DataRedundancyType' => $disaster
-        ]));
+            'CreateBucketConfiguration' => [
+                'StorageClass' => $storageClass,
+                'DataRedundancyType' => $disaster
+            ],
+        ], false));
         $this->setData(self::OSS_OSS_HEADER, [
             'x-oss-acl' => $acl,
         ]);
