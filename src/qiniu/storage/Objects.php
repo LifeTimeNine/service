@@ -283,7 +283,7 @@ class Objects extends Storage
             'header' => $this->formatWebData($header),
             'body' => $this->formatWebData($body),
             'fileFieldName' => 'file',
-            'filePath' => "{$this->getProtocol()}{$this->getDomain()}{$fileName}",
+            'filePath' => "{$this->getProtocol()}{$this->getBucketName($bucketName)}.{$this->getDomain()}/{$fileName}",
         ];
     }
 

@@ -98,7 +98,7 @@ class Basics extends BasicOss
             'header' => Tools::arrToKeyVal($header),
             'body' => Tools::arrToKeyVal($body),
             'fileFieldName' => 'file',
-            'filePath' => "{$this->getProtocol()}{$this->getEndponit()}{$fileName}",
+            'filePath' => "{$this->getProtocol()}{$this->getName($name)}.{$this->getEndponit()}/{$fileName}",
         ];
     }
 
