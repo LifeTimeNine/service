@@ -232,8 +232,6 @@ class Objects extends Storage
             'returnBody' => Tools::arr2json([
                 'name' => "$(fname)",
                 'size' => "$(fsize)",
-                "w" => "$(imageInfo.width)",
-                'h' => "$(imageInfo.height)",
                 'hash' => '$(etag)',
             ]),
             'fileType' => $storageType,
@@ -244,7 +242,6 @@ class Objects extends Storage
             'key' => $fileName,
             'fileName' => $fileName,
         ], $fileName, $data);
-        // dump($body);exit;
         $this->setData(self::S_CONTENT_TYPE, $contentType);
         $this->setData(self::S_BODY, $body);
         return $this->request('');
@@ -269,8 +266,6 @@ class Objects extends Storage
             'returnBody' => Tools::arr2json([
                 'name' => "$(fname)",
                 'size' => "$(fsize)",
-                "w" => "$(imageInfo.width)",
-                'h' => "$(imageInfo.height)",
                 'hash' => '$(etag)',
             ]),
             'fileType' => $storageType,

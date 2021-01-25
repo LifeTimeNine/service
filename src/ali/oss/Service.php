@@ -31,4 +31,13 @@ class Service extends BasicOss
         ]);
         return $result;
     }
+
+    /**
+     * 返回所有区域节点信息
+     * @retrun array
+     */
+    public function endponitList()
+    {
+        return self::OSS_ENDPOINT_LIST;
+    }
 }

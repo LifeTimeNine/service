@@ -74,6 +74,7 @@ class Basics extends BasicOss
             'conditions' => [
                 ['bucket' => $name],
                 ["content-length-range", 0, 1048576000],
+                ['success_action_status'=> $success_status]
             ]
         ];
         $policy = base64_encode(json_encode($policyData));
