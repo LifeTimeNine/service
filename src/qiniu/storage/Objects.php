@@ -282,7 +282,8 @@ class Objects extends Storage
             'url' => "{$this->getProtocol()}{$region}",
             'header' => $this->formatWebData($header),
             'body' => $this->formatWebData($body),
-            'fileFieldName' => 'file'
+            'fileFieldName' => 'file',
+            'filePath' => "{$this->getProtocol()}{$this->getDomain()}{$fileName}",
         ];
     }
 

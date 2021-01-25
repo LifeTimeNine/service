@@ -97,7 +97,8 @@ class Basics extends BasicOss
             'url' => "{$this->getProtocol()}{$name}.{$endpoint}",
             'header' => Tools::arrToKeyVal($header),
             'body' => Tools::arrToKeyVal($body),
-            'fileFieldName' => 'file'
+            'fileFieldName' => 'file',
+            'filePath' => "{$this->getProtocol()}{$this->getEndponit()}{$fileName}",
         ];
     }
 

@@ -75,6 +75,16 @@ class Storage extends Basic
     }
 
     /**
+     * 获取访问域名
+     * @return string
+     */
+    protected function getDomain()
+    {
+        $domain = $this->config['storage_domain'];
+        if (empty($domain)) throw new InvalidArgumentException("Missing Config [storage_domain]");
+        return $domain;
+    }
+    /**
      * 验证区域
      * @param   string  @region
      * @return  boolean
