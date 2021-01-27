@@ -6,8 +6,6 @@ use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
 use service\tools\Tools;
 
-use function Qiniu\base64_urlSafeEncode;
-
 /**
  * 七牛云对象存储基类
  * @class   Storage
