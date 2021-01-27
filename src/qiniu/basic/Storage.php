@@ -127,7 +127,7 @@ class Storage extends Basic
     {
         $signStr = $this->urlBase64(Tools::arr2json($this->getData(self::S_UPLOAD_STARTEGY, true)));
         $sign = $this->urlBase64(hash_hmac('sha1', $signStr, $this->config['secretKey'], true));
-        return "{$this->config['accessKey']}:{$sign}:{$signStr}";
+        return "UpToken {$this->config['accessKey']}:{$sign}:{$signStr}";
     }
 
     /**

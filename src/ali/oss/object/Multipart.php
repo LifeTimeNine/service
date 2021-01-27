@@ -78,7 +78,7 @@ class Multipart extends BasicOss
      * @param   string  $uploadId           上传唯一标识
      * @return  array
      */
-    public function webUploadParams(string $name='',string $fileName,string $partNumber,string $uploadId)
+    public function webParams(string $name='',string $fileName,string $partNumber,string $uploadId)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);

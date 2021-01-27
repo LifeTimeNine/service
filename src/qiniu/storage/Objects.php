@@ -334,7 +334,38 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 3600,
         ]);
-        return $this->request("UpToken {$this->buildUploadSign()}");
+        return $this->request($this->buildUploadSign());
+    }
+
+    /**
+     * web端分块上传数据
+     * @param   string  $bucketName     空间名称(传空表示从配置中获取[storage_bucketName])
+     * @param   string  $fileName       文件名
+     * @param   string  $uploadId       任务Id
+     * @param   int     $partNumber     上传标记(0-1000,大小1MB-1GB)
+     * @param   mixed   $data           长传的数据
+     * @return  array
+     */
+    public function webPartParams(string $bucketName='',string $fileName,string $uploadId,int $partNumber)
+    {
+        $this->checkRegion($this->config['storage_region']);
+        $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
+        $this->setData(self::S_METHOD, self::S_PUT);
+        $this->setData(self::S_HOST, $region);
+        $this->setData(self::S_PATH, "/buckets/{$this->getBucketName($bucketName)}/objects/{$this->urlBase64($fileName)}/uploads/{$uploadId}/{$partNumber}");
+        $this->setData(self::S_CONTENT_TYPE, self::S_CONTENT_TYPE_OCTETSTREAM);
+        $this->setData(self::S_UPLOAD_STARTEGY, [
+            'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
+            'deadline' => time() + 3600,
+        ]);
+        $header = $this->bulidHeader($this->buildUploadSign());
+        $url = "{$this->getProtocol()}{$this->getData(self::S_HOST)}{$this->getData(self::S_PATH)}";
+        $filePath = "{$this->getProtocol()}{$this->getDomain()}/{$fileName}";
+        return [
+            'url' => $url,
+            'header' => Tools::arrToKeyVal($header),
+            'filePath' => $filePath,
+        ];
     }
 
     /**
@@ -360,7 +391,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 10,
         ]);
-        return $this->request("UpToken {$this->buildUploadSign()}");
+        return $this->request($this->buildUploadSign());
     }
 
     /**
@@ -389,7 +420,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 10,
         ]);
-        return $this->request("UpToken {$this->buildUploadSign()}");
+        return $this->request($this->buildUploadSign());
     }
 
     /**
@@ -409,7 +440,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 10,
         ]);
-        $this->request("UpToken {$this->buildUploadSign()}");
+        $this->request($this->buildUploadSign());
         return true;
     }
 
