@@ -71,6 +71,34 @@ class Multipart extends BasicOss
     }
 
     /**
+     * 获取web端分块上传参数
+     * @param   string  $name               Bucket名称(传空，表示从配置中获取)
+     * @param   string  $fileName           文件名称
+     * @param   int     $partNumber         Part标识
+     * @param   string  $uploadId           上传唯一标识
+     * @return  array
+     */
+    public function webUploadParams(string $name='',string $fileName,string $partNumber,string $uploadId)
+    {
+        $name = $this->getName($name);
+        $this->setData(self::OSS_BUCKET_NAME, $name);
+        $endpoint = $this->getEndponit();
+        $this->setData(self::OSS_ENDPOINT, $endpoint);
+        $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
+        $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_URLENCODEED);
+        $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?partNumber={$partNumber}&uploadId={$uploadId}");
+        $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
+        $header = $this->buildHeader();
+        $url = "{$this->getProtocol()}{$name}.{$endpoint}{$this->getData(self::OSS_URL_PARAM)}";
+        $filePath = "{$this->getProtocol()}{$name}.{$endpoint}/{$fileName}";
+        return [
+            'url' => $url,
+            'header' => Tools::arrToKeyVal($header),
+            'filePath' => $filePath
+        ];
+    }
+
+    /**
      * 从一个已存在的Object中拷贝数据来上传一个Part
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
      * @param   string  $fileName           文件名称
