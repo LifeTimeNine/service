@@ -371,7 +371,7 @@ class Objects extends Storage
      * @param   array   $data           参数[{partNumber} => {etag}...]
      * @return  array
      */
-    public function complatePart(string $bucketName='',string $fileName,string $uploadId,array $data)
+    public function completePart(string $bucketName='',string $fileName,string $uploadId,array $data)
     {
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
