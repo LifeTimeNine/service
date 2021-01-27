@@ -94,6 +94,7 @@ class Multipart extends BasicOss
         return [
             'url' => $url,
             'header' => Tools::arrToKeyVal($header),
+            'partNumber' => $partNumber,
             'filePath' => $filePath
         ];
     }

@@ -364,6 +364,7 @@ class Objects extends Storage
         return [
             'url' => $url,
             'header' => Tools::arrToKeyVal($header),
+            'partNumber' => $partNumber,
             'filePath' => $filePath,
         ];
     }
