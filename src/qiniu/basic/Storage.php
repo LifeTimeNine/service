@@ -49,7 +49,7 @@ class Storage extends Basic
      */
     protected function getProtocol()
     {
-        return empty($this->config['isSsl']) ? 'http://' : 'https://';
+        return empty($this->config['stroage_isSsl']) ? 'http://' : 'https://';
     }
 
     /**
