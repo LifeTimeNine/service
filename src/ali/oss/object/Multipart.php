@@ -88,7 +88,7 @@ class Multipart extends BasicOss
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_URLENCODEED);
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?partNumber={$partNumber}&uploadId={$uploadId}");
         $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
-        $header = $this->buildHeader();
+        $header = $this->buildHeader(false);
         $url = "{$this->getProtocol()}{$name}.{$endpoint}{$this->getData(self::OSS_URL_PARAM)}";
         $filePath = "{$this->getProtocol()}{$name}.{$endpoint}/{$fileName}";
         return [

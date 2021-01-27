@@ -228,8 +228,9 @@ class BasicOss extends Basic
 
     /**
      * 构建header
+     * @param   boolean     $format
      */
-    protected function buildHeader()
+    protected function buildHeader($format = true)
     {
         $headers = [self::OSS_AUTHORIZATION => $this->buildSign()];
         $headers[self::OSS_CONTENT_MD5] = $this->getContentMd5();
@@ -254,6 +255,7 @@ class BasicOss extends Basic
         if ($this->getData(self::OSS_RESPONSE_ENCODE) !== null) $headers[self::OSS_RESPONSE_ENCODE] = $this->getData(self::OSS_RESPONSE_ENCODE);
         if ($this->getData(self::OSS_RESPONSE_DISPONSITON) !== null) $headers[self::OSS_RESPONSE_DISPONSITON] = $this->getData(self::OSS_RESPONSE_DISPONSITON);
         if ($this->getData(self::OSS_RANGE) !== null) $headers[self::OSS_RANGE] = $this->getData(self::OSS_RANGE);
+        if (!$format) return $headers;
         $headerData = [];
         foreach($headers as $k => $v) {
             $headerData[] = "{$k}: {$v}";

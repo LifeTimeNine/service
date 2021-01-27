@@ -133,9 +133,10 @@ class Storage extends Basic
     /**
      * 构建header
      * @param   string  $authorization  认证信息
+     * @param   boolean $format         格式化
      * @return  array
      */
-    protected function bulidHeader($authorization)
+    protected function bulidHeader($authorization, $format = true)
     {
         $header = [
             self::S_DATE => $this->getDate(),
@@ -144,7 +145,7 @@ class Storage extends Basic
         ];
         if ($this->getData(self::S_CONTENT_TYPE) !== null) $header[self::S_CONTENT_TYPE] = $this->getData(self::S_CONTENT_TYPE);
         if ($this->getData(self::S_BODY) !== null) $header[self::S_CONTENT_LENGTH] = strlen($this->getData(self::S_BODY));
-
+        if (!$format) return $header;
         $headerData = [];
         foreach($header as $k => $v) $headerData[] = "{$k}: {$v}";
 

@@ -17,7 +17,7 @@ class Cors extends BasicOss
      * @param   string  $name       Bucket名称(传空，表示从配置中获取)
      * @param   array   $data       共享策略[
      *          [
-     *              'orign'(允许的跨域请求来源)=>[],
+     *              'origin'(允许的跨域请求来源)=>[],
      *              'method'(允许的跨域请求方法,大写)=>[],
      *              'allowHeader'(允许的Headers)=>[],
      *              'exposeHeader'(暴露的Headers) => [],
