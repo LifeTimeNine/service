@@ -1,7 +1,7 @@
 {
     "name": "lifetime/service",
     "description": "service",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "homepage": "https://github.com/LifeTimeNine/service.git",
     "license": "MIT",
     "authors": [{
@@ -11,7 +11,8 @@
     "keywords": [
         "Wechat",
         "Ali",
-        "ByteDance"
+        "ByteDance",
+        "Qiniu"
     ],
     "autoload": {
         "psr-4": {
