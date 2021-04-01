@@ -233,7 +233,7 @@ class Basics extends BasicOss
      * 删除同一个存储空间（Bucket）中的多个文件（Object）
      * @param   string  $name               Bucket名称(传空，表示从配置中获取)
      * @param   array   $fileNameList       要删除的文件名称列表
-     * @param   array   $quiet              简单相应模式
+     * @param   boolean $quiet              简单相应模式
      * @return  mixed
      */
     public function deleteMultiple(string $name='',array $fileNameList,bool $quiet = false)

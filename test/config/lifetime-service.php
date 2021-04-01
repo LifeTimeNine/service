@@ -15,8 +15,13 @@ return [
         'alipay_public_key' => 'MIIBIgKCAQEA6+UTiewfpDdU5p1f7Je6LLeWK2toKJzk6WV4ZVXBmxhzfwKzPgyqXOfugAdwSkU0VnVfRMEVUtoxuUlsMuBM0FriuOgyjkoXBS0sxk1AGRzfVGt8sOBNAnINpAek7hyctWcw+4t5FmWBOF/lZCpMdZMFQ4b375SL9d2HYCN6RK+/xLXYz3F1lK1bNINwrnZqToKlJ1YboawJznJo5ZzkdfTXzolXGyBazYjcAs10AUyKXnfQYGAKgEqhtatgtKxMz8q44n4m6vffkgmyHbnFbEPDHgEo9UBSZX/z9wjSBxduFn7seY0yJ5Ur4bhQQIDAQAB', // 支付宝公钥
     ],
     'wechat' => [
+        // 公众号
         'official_appid' => 'wx372', // 公众号appid(测试数据)
         'official_app_secret' => '36831d9d4', // 公众号sercet（测试数据）
+
+        // 小程序
+        'miniapp_appid' => '',
+        'miniapp_app_secret' => '',
 
         'mch_id' => '16032', // 商户ID （测试数据）
         'mch_key' => '3A099B87C5', // 商户支付密钥 （测试数据）

@@ -111,7 +111,7 @@ class Multipart extends BasicOss
      * @param   int     $end                结束位置
      * @return  mixed
      */
-    public function copy(string $name='',string $fileName,string $partNumber,string $uploadId,string $sourceBucket='',string $sourceFileName,int $start, int $end)
+    public function copy(string $name='',string $fileName,string $partNumber,string $uploadId,string $sourceBucket='',string $sourceFileName,int $start = 0, int $end = null)
     {
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
@@ -120,10 +120,13 @@ class Multipart extends BasicOss
         $this->setData(self::OSS_RESOURCE, "/{$name}/{$fileName}?partNumber={$partNumber}&uploadId={$uploadId}");
         $this->setData(self::OSS_URL_PARAM, "/{$fileName}");
         if (empty($sourceBucket)) $sourceBucket = $name;
-        $this->setData(self::OSS_OSS_HEADER, [
+        $headerData = [
             'x-oss-copy-source'=> "/{$sourceBucket}/{$sourceFileName}",
-            'x-oss-copy-source-range' => "bytes={$start}-{$end}"
-        ]);
+        ];
+        if ($start >= 0 && $end > 0) {
+            $headerData['x-oss-copy-source-range'] = "bytes={$start}-{$end}";
+        }
+        $this->setData(self::OSS_OSS_HEADER, $headerData);
         $res = $this->request([
             'partNumber' => $partNumber,
             'uploadId' => $uploadId
