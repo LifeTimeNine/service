@@ -19,9 +19,9 @@ class Objects extends BasicBusiness
      * @param   array   $config     配置
      * @return  Basics
      */
-    public function basics(array $cofnig = [])
+    public function basics(array $config = [])
     {
-        return Basics::instance($cofnig);
+        return Basics::instance($config);
     }
 
     /**
@@ -39,9 +39,9 @@ class Objects extends BasicBusiness
      * @param   array   $config     配置
      * @return  Acl
      */
-    public function acl(array $cofnig = [])
+    public function acl(array $config = [])
     {
-        return Acl::instance($cofnig);
+        return Acl::instance($config);
     }
 
     /**
