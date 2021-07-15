@@ -1,4 +1,11 @@
 <?php
+/*
+ * @Description   
+ * @Author        lifetime
+ * @Date          2021-07-15 10:49:45
+ * @LastEditTime  2021-07-15 10:49:53
+ * @LastEditors   lifetime
+ */
 
 namespace service\ali;
 
@@ -15,7 +22,7 @@ class Oss extends BasicBusiness
 {
     /**
      * Service相关操作
-     * @param   array   $config
+     * @param   array   $config 配置参数
      * @return  Service
      */
     public static function service($config = [])
@@ -25,19 +32,21 @@ class Oss extends BasicBusiness
 
     /**
      * Bucket相关操作
+     * @param   array   $config 配置参数
      * @return Bucket
      */
-    public static function bucket()
+    public static function bucket($config = [])
     {
-        return Bucket::instance();
+        return Bucket::instance($config);
     }
 
     /**
      * Object相关操作
+     * @param   array   $config 配置参数
      * @return  Objects
      */
-    public function object()
+    public function object($config = [])
     {
-        return Objects::instance();
+        return Objects::instance($config);
     }
 }

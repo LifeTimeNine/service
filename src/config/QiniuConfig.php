@@ -8,10 +8,10 @@ namespace service\config;
  */
 class QiniuConfig extends BasicConfig
 {
-    protected $defauleConfig = [];
+    protected $defaultConfig = [];
     public function __construct($config = [])
     {
         parent::__construct();
-        $this->config = array_merge($this->defauleConfig, $this->get('qiniu', []), $config);
+        self::$config = array_merge($this->defaultConfig, $this->get('qiniu', []), $config);
     }
 }

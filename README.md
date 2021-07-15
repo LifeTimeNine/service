@@ -1,40 +1,109 @@
-# 服务类库
+# service
 
-**适用于thinkphp5+**
-
-添加配置文件 `lifetime-service.php`  
-添加配置
-```php
-<?php
-  'ali' => [ // 阿里（支付宝）相关配置
-    // ···
-  ],
-  'wechat' => [ // 微信相关配置
-    // ···
-  ],
-  'byteDance' => [ // 字节跳动相关配置
-    // ···
-  ],
-  'cache_path' => '', // 缓存目录
-  'cache_callable' => [ // 自定义缓存操作方法（如果设置了此参数，缓存目录将不再生效）
-        'set' => null, // 写入缓存
-        'get' => null, // 获取缓存
-        'del' => null, // 删除缓存
-        'put' => null, // 写入文件
-    ]
->
-```
 本类库封装了一些常见的平台的部分接口  
->调用的逻辑为：平台::业务->功能->操作  
+调用的逻辑为：**平台::业务->功能->操作**  
+
 比如：微信公众平台获取用户信息
 ```php
-$order = WeCat::official()->user()->getUserInfo();
+$order = \service\WeChat::official()->user()->getUserInfo();
 ```
 
 目前包含的平台有:
 1. 支付宝和阿里云
 2. 微信
 3. 字节跳动
+4. 七牛云
+
+## 配置
+类库可以自动获取tp5.0、tp5.1、tp6.0和laravel的配置作为全局配置  
+比如 tp5.1，可以在config目录中添加一个 `service.php` 文件，加入如下配置
+```php
+<?php
+
+return [
+    // 阿里云（支付宝）相关参数
+    'ali' => [
+        // OSS相关配置
+        'accessKey_id' => '',
+        'accessKey_secret' => '',
+        'oss_endpoint' => '',
+        'oss_bucketName' => '',
+        // 支付相关参数
+        'sandbox' => true, // 是否是沙箱环境
+        'appid' => '20210001166', // 支付宝APPID (测试数据)
+        'public_key' => '', // 应用公钥
+        'private_key' => '', // 应用私钥
+        'alipay_public_key' => '', // 支付宝公钥
+    ],
+    // 微信相关参数
+    'wechat' => [
+        // 公众号
+        'official_appid' => '', // 公众号appid(测试数据)
+        'official_app_secret' => '', // 公众号sercet（测试数据）
+        // 小程序
+        'miniapp_appid' => '',
+        'miniapp_app_secret' => '',
+        'mch_id' => '', // 商户ID （测试数据）
+        'mch_key' => '', // 商户支付密钥 （测试数据）
+        'mch_key_v3' => '', // 商户支付密钥 v3(测试数据)
+        'ssl_cer' => '', // 证书cert.pem路径
+        'ssl_key' => '', // 证书key.pem路径
+    ],
+    // 字节跳动相关参数
+    'byteDance' => [
+        'miniapp_appid' => '', // 字节小程序APPID
+        'miniapp_secret' => '', // 字节小程序APP Secret
+        'miniapp_pay_mch_id' => '', // 字节小程序支付商户号
+        'miniapp_pay_appid' => '', // 字节小程序支付APPPID
+        'miniapp_pay_secret' => '', // 字节小程序支付secret
+    ],
+    // 类库运行相关参数
+    'cache_path' => '', // 缓存目录
+    'cache_callable' => [ // 自定义缓存操作方法（如果设置了此参数，缓存目录将不再生效）
+        'set' => null, // 写入缓存
+        'get' => null, // 获取缓存
+        'del' => null, // 删除缓存
+        'put' => null, // 写入文件
+    ]
+];
+
+```
+
+> 注意：默认获取配置的key为 `service`
+
+如果想更换这个key为 `my-service`，可以这样操作
+```php
+<?php
+  \service\Config::setKey('my-service');
+>
+```
+
+如果类库无法获取到全局配置，可以初始化配置
+```php
+<?php
+  $config = [
+    // 阿里云（支付宝）相关参数
+    'ali' => [
+        // OSS相关配置
+        'accessKey_id' => '',
+        'accessKey_secret' => '',
+        'oss_endpoint' => '',
+        'oss_bucketName' => '',
+        // 支付相关参数
+        'sandbox' => true, // 是否是沙箱环境
+        'appid' => '20210001166', // 支付宝APPID (测试数据)
+        'public_key' => '', // 应用公钥
+        'private_key' => '', // 应用私钥
+        'alipay_public_key' => '', // 支付宝公钥
+    ]
+  ];
+  \service\Config::init($config);
+>
+```
+
+> 注意：使用初始化方法之后，类库不会再从配置文件中获取配置；初始化必须在所有操作之前进行。
+
+## 支持的平台和业务如下
 
 ---
 <table border=0 cellpadding=0 cellspacing=0>
@@ -85,7 +154,7 @@ $order = WeCat::official()->user()->getUserInfo();
     <td>send - 发送模板消息</td>
   </tr>
   <tr>
-    <td rowspan=15>uer - 用户管理</td>
+    <td rowspan=15>user - 用户管理</td>
     <td>createTag - 创建标签</td>
   </tr>
   <tr>

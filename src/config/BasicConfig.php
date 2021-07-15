@@ -3,7 +3,7 @@
  * @Description   配置基类
  * @Author        lifetime
  * @Date          2020-12-09 22:36:36
- * @LastEditTime  2021-01-09 19:49:03
+ * @LastEditTime  2021-07-15 14:28:02
  * @LastEditors   lifetime
  */
 
@@ -18,18 +18,37 @@ class BasicConfig implements ArrayAccess
      * 当前配置值
      * @var array
      */
-    protected $config;
+    protected static $config;
+
+    /**
+     * 初始化的配置
+     * @var array
+     */
+    public static $initConfig = [];
+
+    /**
+     * 配置字段
+     * @var string
+     */
+    public static $key = 'service';
 
     /**
      * Config constructor.
      */
     public function __construct()
     {
-        $this->config = array_merge([], $this->getUserConfig('lifetime-service'));
+        if (empty(self::$config)) {
+            // 如果是 初始化的配置 就不在从配置文件中获取了
+            if (!empty(self::$initConfig)) {
+                self::$config = array_merge([], self::$initConfig);
+            } else {
+                self::$config = array_merge([], $this->getUserConfig(self::$key));
+            }
+            
+            if (!empty(self::$config['cache_path'])) Cache::$cache_path = self::$config['cache_path'];
 
-        if (!empty($this->config['cache_path'])) Cache::$cache_path = $this->config['cache_path'];
-
-        if (!empty($this->config['cache_callable']) && is_array($this->config['cache_callable'])) Cache::$cache_callable = array_merge(Cache::$cache_callable, $this->config['cache_callable']);
+            if (!empty(self::$config['cache_callable']) && is_array(self::$config['cache_callable'])) Cache::$cache_callable = array_merge(Cache::$cache_callable, self::$config['cache_callable']);
+        }
     }
 
     /**
@@ -61,9 +80,9 @@ class BasicConfig implements ArrayAccess
     public function merge(array $data, $append = false)
     {
         if ($append) {
-            return $this->config = array_merge($this->config, $data);
+            return self::$config = array_merge(self::$config, $data);
         }
-        return array_merge($this->config, $data);
+        return array_merge(self::$config, $data);
     }
 
     /**
@@ -74,9 +93,9 @@ class BasicConfig implements ArrayAccess
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
-            $this->config[] = $value;
+            self::$config[] = $value;
         } else {
-            $this->config[$offset] = $value;
+            self::$config[$offset] = $value;
         }
     }
 
@@ -87,7 +106,7 @@ class BasicConfig implements ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->config[$offset]);
+        return isset(self::$config[$offset]);
     }
 
     /**
@@ -97,9 +116,9 @@ class BasicConfig implements ArrayAccess
     public function offsetUnset($offset)
     {
         if (is_null($offset)) {
-            $this->config = [];
+            self::$config = [];
         } else {
-            unset($this->config[$offset]);
+            unset(self::$config[$offset]);
         }
     }
 
@@ -112,9 +131,9 @@ class BasicConfig implements ArrayAccess
     public function offsetGet($offset, $default = null)
     {
         if (is_null($offset)) {
-            return $this->config;
+            return self::$config;
         }
-        return isset($this->config[$offset]) ? $this->config[$offset] : $default;
+        return isset(self::$config[$offset]) ? self::$config[$offset] : $default;
     }
 
     /**
@@ -124,10 +143,22 @@ class BasicConfig implements ArrayAccess
      */
     public function getUserConfig($field)
     {
-        $config = [];
+        // 兼容 tp5.1 和 tp6.0
         if (class_exists("think\\facade\\Config")) {
-            $config = \think\facade\Config::pull($field);
+            if (is_callable([\think\Config::class, 'pull'])) {
+                return \think\facade\Config::pull($field);
+            } else {
+                return \think\facade\Config::get($field);
+            }
         }
-        return $config;
+        // 兼容 tp5.0
+        if (class_exists("think\\Config")) {
+            return \think\Config::get($field);
+        }
+        // 兼容 laravel
+        if (class_exists("Illuminate\\Support\Facades\\Config")) {
+            return \Illuminate\Support\Facades\Config::get($field);
+        }
+        return [];
     }
 }

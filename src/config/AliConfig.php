@@ -3,7 +3,7 @@
  * @Description   阿里相关配置
  * @Author        lifetime
  * @Date          2020-12-10 08:45:38
- * @LastEditTime  2021-01-09 19:49:27
+ * @LastEditTime  2021-07-15 14:26:11
  * @LastEditors   lifetime
  */
 
@@ -14,7 +14,7 @@ namespace service\config;
  */
 class AliConfig extends BasicConfig
 {
-    protected $defauleConfig = [
+    protected $defaultConfig = [
         'sandbox' => false, // 是否是沙箱,
         'format' => 'JSON', // 仅支持JSON
         'charset' => 'UTF-8', // 请求使用的编码格式
@@ -24,6 +24,6 @@ class AliConfig extends BasicConfig
     public function __construct($config = [])
     {
         parent::__construct();
-        $this->config = array_merge($this->defauleConfig, $this->get('ali', []), $config);
+        self::$config = array_merge($this->defaultConfig, $this->get('ali', []), $config);
     }
 }

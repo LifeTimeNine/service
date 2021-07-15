@@ -21,20 +21,22 @@ class Ali
 {
     /**
      * 支付宝支付
+     * @param   array   $config     配置参数
      * @return  Pay
      */
-    public static function pay()
+    public static function pay(array $config = [])
     {
-        return Pay::instance();
+        return Pay::instance($config);
     }
 
     /**
      * OSS相关操作
+     * @param   array   $config     配置参数
      * @return  Oss
      */
-    public static function oss()
+    public static function oss(array $config = [])
     {
-        return Oss::instance();
+        return Oss::instance($config);
     }
 
     /**

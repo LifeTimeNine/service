@@ -3,7 +3,7 @@
  * @Description   微信相关配置
  * @Author        lifetime
  * @Date          2020-12-17 15:50:38
- * @LastEditTime  2021-01-09 19:49:54
+ * @LastEditTime  2021-07-15 14:26:33
  * @LastEditors   lifetime
  */
 
@@ -11,7 +11,7 @@ namespace service\config;
 
 class WechatConfig extends BasicConfig
 {
-    protected $defauleConfig = [
+    protected $defaultConfig = [
         'official_appid' => '', // 公众号APPID
         'official_app_secret' => '', // 公众号secert
 
@@ -23,6 +23,6 @@ class WechatConfig extends BasicConfig
     public function __construct($config)
     {
         parent::__construct();
-        $this->config = array_merge($this->defauleConfig, $this->get('wechat', []), $config);
+        self::$config = array_merge($this->defaultConfig, $this->get('wechat', []), $config);
     }
 }

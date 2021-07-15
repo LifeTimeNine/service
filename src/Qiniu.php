@@ -12,10 +12,11 @@ class Qiniu
 {
     /**
      * 对象存储
+    * @param    array   $config     配置参数
      * @return  Storage
      */
-    public static function storage()
+    public static function storage(array $config = [])
     {
-        return Storage::instance();
+        return Storage::instance($config);
     }
 }

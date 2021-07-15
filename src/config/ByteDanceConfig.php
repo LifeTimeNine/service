@@ -3,7 +3,7 @@
  * @Description   字节跳动 配置
  * @Author        lifetime
  * @Date          2020-12-23 08:49:42
- * @LastEditTime  2021-01-09 19:49:43
+ * @LastEditTime  2021-07-15 14:26:19
  * @LastEditors   lifetime
  */
 namespace service\config;
@@ -13,7 +13,7 @@ namespace service\config;
  */
 class ByteDanceConfig extends BasicConfig
 {
-    protected $defauleConfig = [
+    protected $defaultConfig = [
         'cache_path' => '', // 缓存目录
         'miniapp_appid' => '', // 字节小程序APPID
         'miniapp_secret' => '', // 字节小程序APP Secret
@@ -22,6 +22,6 @@ class ByteDanceConfig extends BasicConfig
     public function __construct($config = [])
     {
         parent::__construct();
-        $this->config = array_merge($this->defauleConfig, $this->get('byteDance', []), $config);
+        self::$config = array_merge($this->defaultConfig, $this->get('byteDance', []), $config);
     }
 }

@@ -18,6 +18,12 @@ class Basic
     protected $config;
 
     /**
+     * 实例列表
+     * @var array
+     */
+    protected static $instanceList = [];
+
+    /**
      * 构造函数
      * @param   array   $config     配置
      */
@@ -36,6 +42,10 @@ class Basic
      */
     public static function instance(array $config = [])
     {
-        return new static($config);
+        $key = md5(get_called_class() . serialize($config));
+        if (!isset(self::$instanceList[$key])) {
+            self::$instanceList[$key] = new static($config);
+        }
+        return self::$instanceList[$key];
     }
 }

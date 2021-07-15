@@ -3,7 +3,7 @@
  * @Description   微信相关接口
  * @Author        lifetime
  * @Date          2021-01-15 17:13:59
- * @LastEditTime  2021-01-16 19:51:52
+ * @LastEditTime  2021-07-15 11:29:06
  * @LastEditors   lifetime
  */
 
@@ -54,8 +54,8 @@ class WeChat
      * @param   array   $config     配置
      * @return  MiniApp
      */
-    public static function miniapp()
+    public static function miniapp(array $config = [])
     {
-        return MiniApp::instance();
+        return MiniApp::instance($config);
     }
 }
