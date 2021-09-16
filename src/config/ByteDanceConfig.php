@@ -3,7 +3,7 @@
  * @Description   字节跳动 配置
  * @Author        lifetime
  * @Date          2020-12-23 08:49:42
- * @LastEditTime  2021-07-15 14:26:19
+ * @LastEditTime  2021-09-16 17:57:10
  * @LastEditors   lifetime
  */
 namespace service\config;
@@ -22,6 +22,6 @@ class ByteDanceConfig extends BasicConfig
     public function __construct($config = [])
     {
         parent::__construct();
-        self::$config = array_merge($this->defaultConfig, $this->get('byteDance', []), $config);
+        self::$config = array_merge($this->defaultConfig, self::$globalConfig['byteDance']??[], $config);
     }
 }

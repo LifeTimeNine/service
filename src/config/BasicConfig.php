@@ -3,7 +3,7 @@
  * @Description   配置基类
  * @Author        lifetime
  * @Date          2020-12-09 22:36:36
- * @LastEditTime  2021-07-15 14:28:02
+ * @LastEditTime  2021-09-16 17:54:30
  * @LastEditors   lifetime
  */
 
@@ -14,6 +14,11 @@ use service\tools\Cache;
 
 class BasicConfig implements ArrayAccess
 {
+    /**
+     * 全局配置
+     * @var array
+     */
+    protected static $globalConfig = [];
     /**
      * 当前配置值
      * @var array
@@ -40,14 +45,14 @@ class BasicConfig implements ArrayAccess
         if (empty(self::$config)) {
             // 如果是 初始化的配置 就不在从配置文件中获取了
             if (!empty(self::$initConfig)) {
-                self::$config = array_merge([], self::$initConfig);
+                self::$globalConfig = array_merge([], self::$initConfig);
             } else {
-                self::$config = array_merge([], $this->getUserConfig(self::$key));
+                self::$globalConfig = array_merge([], $this->getUserConfig(self::$key));
             }
             
-            if (!empty(self::$config['cache_path'])) Cache::$cache_path = self::$config['cache_path'];
+            if (!empty(self::$globalConfig['cache_path'])) Cache::$cache_path = self::$globalConfig['cache_path'];
 
-            if (!empty(self::$config['cache_callable']) && is_array(self::$config['cache_callable'])) Cache::$cache_callable = array_merge(Cache::$cache_callable, self::$config['cache_callable']);
+            if (!empty(self::$globalConfig['cache_callable']) && is_array(self::$globalConfig['cache_callable'])) Cache::$cache_callable = array_merge(Cache::$cache_callable, self::$globalConfig['cache_callable']);
         }
     }
 

@@ -12,6 +12,6 @@ class QiniuConfig extends BasicConfig
     public function __construct($config = [])
     {
         parent::__construct();
-        self::$config = array_merge($this->defaultConfig, $this->get('qiniu', []), $config);
+        self::$config = array_merge($this->defaultConfig, self::$globalConfig['qiniu']??[], $config);
     }
 }

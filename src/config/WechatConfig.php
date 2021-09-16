@@ -3,7 +3,7 @@
  * @Description   微信相关配置
  * @Author        lifetime
  * @Date          2020-12-17 15:50:38
- * @LastEditTime  2021-07-15 14:26:33
+ * @LastEditTime  2021-09-16 17:57:47
  * @LastEditors   lifetime
  */
 
@@ -23,6 +23,6 @@ class WechatConfig extends BasicConfig
     public function __construct($config)
     {
         parent::__construct();
-        self::$config = array_merge($this->defaultConfig, $this->get('wechat', []), $config);
+        self::$config = array_merge($this->defaultConfig, self::$globalConfig['wechat']??[], $config);
     }
 }
