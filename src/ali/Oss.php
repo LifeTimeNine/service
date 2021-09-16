@@ -3,7 +3,7 @@
  * @Description   
  * @Author        lifetime
  * @Date          2021-07-15 10:49:45
- * @LastEditTime  2021-07-15 10:49:53
+ * @LastEditTime  2021-09-16 12:44:29
  * @LastEditors   lifetime
  */
 
@@ -25,7 +25,7 @@ class Oss extends BasicBusiness
      * @param   array   $config 配置参数
      * @return  Service
      */
-    public static function service($config = [])
+    public function service($config = [])
     {
         return Service::instance($config);
     }
@@ -35,7 +35,7 @@ class Oss extends BasicBusiness
      * @param   array   $config 配置参数
      * @return Bucket
      */
-    public static function bucket($config = [])
+    public function bucket($config = [])
     {
         return Bucket::instance($config);
     }

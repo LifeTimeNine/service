@@ -12,7 +12,7 @@ class BasicBusiness
      * 缓存
      * @var array
      */
-    private $cache;
+    private static $cache = [];
     /**
      * 构造函数
      */
@@ -26,7 +26,8 @@ class BasicBusiness
      */
     public static function instance()
     {
-        if (!empty($this->cache)) return $this->cache;
-        return $this->cache = new static();
+        $key = md5(get_called_class());
+        if (isset(static::$cache[$key])) return static::$cache[$key];
+        return static::$cache[$key] = new static;
     }
 }
