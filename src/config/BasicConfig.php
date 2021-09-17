@@ -3,13 +3,14 @@
  * @Description   配置基类
  * @Author        lifetime
  * @Date          2020-12-09 22:36:36
- * @LastEditTime  2021-09-16 17:54:30
+ * @LastEditTime  2021-09-16 23:18:42
  * @LastEditors   lifetime
  */
 
 namespace service\config;
 
 use ArrayAccess;
+use service\Config;
 use service\tools\Cache;
 
 class BasicConfig implements ArrayAccess
@@ -24,34 +25,23 @@ class BasicConfig implements ArrayAccess
      * @var array
      */
     protected static $config;
-
     /**
-     * 初始化的配置
+     * 文件配置
      * @var array
      */
-    public static $initConfig = [];
-
-    /**
-     * 配置字段
-     * @var string
-     */
-    public static $key = 'service';
+    protected static $fileConfig;
 
     /**
      * Config constructor.
      */
     public function __construct()
     {
+        if (empty(self::$fileConfig)) {
+            self::$fileConfig = $this->getUserConfig(Config::getKey());
+        }
         if (empty(self::$config)) {
-            // 如果是 初始化的配置 就不在从配置文件中获取了
-            if (!empty(self::$initConfig)) {
-                self::$globalConfig = array_merge([], self::$initConfig);
-            } else {
-                self::$globalConfig = array_merge([], $this->getUserConfig(self::$key));
-            }
-            
+            self::$globalConfig = array_merge(self::$fileConfig, Config::all());
             if (!empty(self::$globalConfig['cache_path'])) Cache::$cache_path = self::$globalConfig['cache_path'];
-
             if (!empty(self::$globalConfig['cache_callable']) && is_array(self::$globalConfig['cache_callable'])) Cache::$cache_callable = array_merge(Cache::$cache_callable, self::$globalConfig['cache_callable']);
         }
     }
@@ -146,7 +136,7 @@ class BasicConfig implements ArrayAccess
      * @param   string  $field  配置字段
      * @return  array   配置信息
      */
-    public function getUserConfig($field)
+    protected function getUserConfig($field)
     {
         // 兼容 tp5.1 和 tp6.0
         if (class_exists("think\\facade\\Config")) {

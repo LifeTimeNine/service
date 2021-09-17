@@ -3,7 +3,7 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2021-01-17 17:33:57
+ * @LastEditTime  2021-09-16 23:44:04
  * @LastEditors   lifetime
  */
 
@@ -132,7 +132,6 @@ abstract class BasicPay
      */
     protected function trimCert($sign)
     {
-        // if (file_exists($sign)) $sign = file_get_contents($sign);
         return preg_replace(['/\s+/', '/\-{5}.*?\-{5}/'], '', $sign);
     }
 
