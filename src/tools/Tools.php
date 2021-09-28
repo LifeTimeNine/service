@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2021-01-24 17:14:09
+ * @LastEditTime  2021-09-28 09:28:19
  * @LastEditors   lifetime
  */
 
@@ -655,4 +655,16 @@ class Tools
         'xslt' => 'application/xslt+xml',
         'xul' => 'application/vnd.mozilla.xul+xml',
     );
+
+    /**
+     * 结束响应
+     */
+    public static function endResponse()
+    {
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } else {
+            exit;
+        }
+    }
 }

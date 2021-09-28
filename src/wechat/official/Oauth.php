@@ -3,7 +3,7 @@
  * @Description   微信公众号 网页授权
  * @Author        lifetime
  * @Date          2020-12-17 16:12:58
- * @LastEditTime  2021-01-16 22:58:07
+ * @LastEditTime  2021-09-28 09:29:47
  * @LastEditors   lifetime
  */
 
@@ -41,11 +41,10 @@ class Oauth extends BasicWeChat
             $redirectUri = urlencode($redirectUri);
         }
 
-        $scope = empty($scope) ? 'snsapi_userinfo' : 'snsapi_base';
+        $scope = $scope ? 'snsapi_userinfo' : 'snsapi_base';
 
         $url = "Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->config['official_appid']}&redirect_uri={$redirectUri}&response_type=code&scope={$scope}&state={$state}#wechat_redirect";
-        header($url);
-        die;
+        Tools::endResponse();
     }
 
     /**

@@ -3,7 +3,7 @@
  * @Description   微信相关接口
  * @Author        lifetime
  * @Date          2021-01-15 17:13:59
- * @LastEditTime  2021-07-15 11:29:06
+ * @LastEditTime  2021-09-28 09:06:09
  * @LastEditors   lifetime
  */
 
@@ -11,6 +11,7 @@ namespace service;
 
 use service\wechat\MiniApp;
 use service\wechat\Official;
+use service\wechat\Open;
 use service\wechat\Pay;
 use service\wechat\PayV3;
 
@@ -21,41 +22,46 @@ class WeChat
 {
     /**
      * 微信支付v2
-     * @param   array   $config     配置信息
      * @return  Pay
      */
-    public static function pay(array $config = [])
+    public static function pay()
     {
-        return Pay::instance($config);
+        return Pay::instance();
     }
 
     /**
      * 微信支付v3
-     * @param   array   $config     配置信息
      * @return   PayV3
      */
-    public static function payV3(array $config = [])
+    public static function payV3()
     {
-        return PayV3::instance($config);
+        return PayV3::instance();
     }
 
     /**
      * 微信开放平台
-     * @param   array   $config     配置信息
      * @return  Official
      */
-    public static function official(array $config = [])
+    public static function official()
     {
-        return Official::instance($config);
+        return Official::instance();
     }
 
     /**
      * 微信小程序
-     * @param   array   $config     配置
      * @return  MiniApp
      */
-    public static function miniapp(array $config = [])
+    public static function miniapp()
     {
-        return MiniApp::instance($config);
+        return MiniApp::instance();
+    }
+
+    /**
+     * 微信开放平台
+     * @return Open
+     */
+    public static function open()
+    {
+        return Open::instance();
     }
 }

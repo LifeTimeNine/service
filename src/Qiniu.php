@@ -15,8 +15,8 @@ class Qiniu
     * @param    array   $config     配置参数
      * @return  Storage
      */
-    public static function storage(array $config = [])
+    public static function storage()
     {
-        return Storage::instance($config);
+        return Storage::instance();
     }
 }
