@@ -27,19 +27,6 @@ class BasicSms extends Basic
     protected $signTemplateCode = false;
 
     /**
-     * 获取基础参数
-     * @return  array
-     */
-    protected function getBasicParams()
-    {
-        $params = $this->Params;
-        $params['AccessKeyId'] = $this->config['accessKey_id'];
-        $params['Timestamp'] = $this->getTime();
-        $params['SignatureNonce'] = Tools::createNoncestr();
-        return $params;
-    }
-
-    /**
      * 设置参数
      * @param   string  $key    参数的键
      * @param   mixed   $value  参数的值
