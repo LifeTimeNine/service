@@ -146,7 +146,7 @@ class Subscribe extends BasicShakeShop
 
     /**
      * 计算签名
-     * @param   string  $data
+     * @param   array  $data
      * @return  string
      */
     protected function buildPushSign($data)
@@ -154,7 +154,7 @@ class Subscribe extends BasicShakeShop
         $arr = [
             'app_key' => $this->config->get('app_key'),
             'method' => $_GET['method']??'',
-            'param_json' => $data,
+            'param_json' => json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE),
             'timestamp' => $data['timestamp']??null,
             'v' => $data['v']??null,
         ];
