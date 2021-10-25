@@ -29,7 +29,7 @@ class Subscribe extends BasicShakeShop
     public function check(callable $success, callable $fail)
     {
         // 获取并验证数据
-        $data = @file_get_contents('php://input');
+        $data = file_get_contents('php://input');
         if (empty($data)) {
             $this->setFailMsg('Empty data');
             $fail($this->returnFailMsg);
@@ -146,20 +146,13 @@ class Subscribe extends BasicShakeShop
 
     /**
      * 计算签名
-     * @param   array  $data
+     * @param   string  $originalData
      * @return  string
      */
-    protected function buildPushSign($data)
+    protected function buildPushSign($originalData)
     {
-        $arr = [
-            'app_key' => $this->config->get('app_key'),
-            'method' => $_GET['method']??'',
-            'param_json' => json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE),
-            'timestamp' => $data['timestamp']??null,
-            'v' => $data['v']??null,
-        ];
-        $signStr = $this->config->get('app_secret');
-        foreach($arr as $k => $v) $signStr .= $k . $v;
+        $signStr = $this->config->get('app_key');
+        $signStr .= $originalData;
         $signStr .= $this->config->get('app_secret');
         return hash_hmac('sha256', $signStr, $this->config->get('app_secret'));
     }
