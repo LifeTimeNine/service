@@ -4,7 +4,7 @@ namespace service\byteDance;
 
 use service\byteDance\shakeshop\Order;
 use service\byteDance\shakeshop\Product;
-use service\byteDance\shakeshop\Push;
+use service\byteDance\shakeshop\Subscribe;
 use service\tools\BasicBusiness;
 
 /**
@@ -13,13 +13,13 @@ use service\tools\BasicBusiness;
 class ShakeShop extends BasicBusiness
 {
     /**
-     * 消息推送相关
+     * 消息订阅相关
      * @param   array   $config     相关配置
-     * @return  \service\byteDance\shakeshop\Push
+     * @return  \service\byteDance\shakeshop\Subscribe
      */
-    public function puhs(array $config = [])
+    public function subscribe(array $config = [])
     {
-        return Push::instance($config);
+        return Subscribe::instance($config);
     }
     /**
      * 商品相关接口

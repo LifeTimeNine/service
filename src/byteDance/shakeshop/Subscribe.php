@@ -5,9 +5,9 @@ namespace service\byteDance\shakeshop;
 use service\byteDance\kernel\BasicShakeShop;
 
 /**
- * 消息推送相关
+ * 消息订阅相关
  */
-class Push extends BasicShakeShop
+class Subscribe extends BasicShakeShop
 {
     /**
      * 返回的失败Code
