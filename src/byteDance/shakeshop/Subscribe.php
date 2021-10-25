@@ -32,14 +32,18 @@ class Subscribe extends BasicShakeShop
         $originalData = file_get_contents('php://input');
         if (empty($originalData)) {
             $this->setFailMsg('Empty data');
-            $fail($this->returnFailMsg);
+            try{
+                $fail($this->returnFailMsg);
+            }catch(\Throwable $th) {}
             return $this->getFailMsg();
         }
         // 解析数据
         $data = json_decode($originalData, true);
         if (json_last_error() <> 0) {
             $this->setFailMsg('Data parse fail');
-            $fail($this->returnFailMsg);
+            try{
+                $fail($this->returnFailMsg);
+            }catch(\Throwable $th) {}
             return $this->getFailMsg();
         }
         // 如果是测试消息
@@ -51,7 +55,9 @@ class Subscribe extends BasicShakeShop
         // 验证 APPKey
         if (empty($header['app-id']) || $header['app-id'] <> $this->config->get('app_key')) {
             $this->setFailMsg('app_key inconsistent');
-            $fail($this->returnFailMsg);
+            try{
+                $fail($this->returnFailMsg);
+            }catch(\Throwable $th) {}
             return $this->getFailMsg();
         }
         // 获取签名
@@ -66,11 +72,15 @@ class Subscribe extends BasicShakeShop
         // 判断签名是否一致
         if ($sign <> $eventSign) {
             $this->setFailMsg('Signature verification failure');
-            $fail($this->returnFailMsg);
+            try{
+                $fail($this->returnFailMsg);
+            }catch(\Throwable $th) {}
             return $this->getFailMsg();
         }
         // 执行成功方法
-        $res = $success($data);
+        try {
+            $res = $success($data);
+        } catch (\Throwable $th) {}
         // 如果返回 false 则返回失败消息
         if ($res === false) {
             return $this->getFailMsg();
