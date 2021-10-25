@@ -42,7 +42,7 @@ class Subscribe extends BasicShakeShop
             return $this->getFailMsg();
         }
         // 如果是测试消息
-        if (count($data) == 1 && $data[0]['tag'] == 0 || $data[0]['msg_id'] == 0) {
+        if (count($data) == 1 && $data[0]['tag'] == 0 && $data[0]['msg_id'] == 0) {
             return $this->getSuccessMsg();
         }
         // 获取 Header
