@@ -57,10 +57,11 @@ class Subscribe extends BasicShakeShop
         // 获取签名
         $eventSign = $header['event-sign']??null;
         // 按照不同的方法生成签名
+        $signStr = $this->config->get('app_key') . $originalData . $this->config->get('app_secret');
         if (!empty($header['sign-method']) && $header['sign-method'] == 'MD5') {
-            $sign = md5($this->config->get('app_key') . $originalData . $this->config->get('app_secret'));
+            $sign = md5($signStr);
         } else {
-            $sign = hash_hmac('sha256', $this->config->get('app_key') . $originalData . $this->config->get('app_secret'), $this->config->get('app_secret'));
+            $sign = hash_hmac('sha256', $signStr, $this->config->get('app_secret'));
         }
         // 判断签名是否一致
         if ($sign <> $eventSign) {
