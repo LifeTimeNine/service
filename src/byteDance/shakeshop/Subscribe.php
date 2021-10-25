@@ -70,7 +70,7 @@ class Subscribe extends BasicShakeShop
             return $this->getFailMsg();
         }
         // 执行成功方法
-        $res = $success(json_decode($data, true));
+        $res = $success($data);
         // 如果返回 false 则返回失败消息
         if ($res === false) {
             return $this->getFailMsg();
