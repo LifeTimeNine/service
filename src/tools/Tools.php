@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2021-10-18 15:35:42
+ * @LastEditTime  2021-10-25 10:32:08
  * @LastEditors   lifetime
  */
 
@@ -691,5 +691,14 @@ class Tools
     public static function getUTCTime($timestamp = null, $format = 'Y-m-d\TH:i:s\Z')
     {
         return gmdate($format, $timestamp?:time());
+    }
+    /**
+     * 驼峰转下划线
+     * @param   string  $str
+     * @return string
+     */
+    public static function hump2underline($str)
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', "$1_$2", $str));
     }
 }
