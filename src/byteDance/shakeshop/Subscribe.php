@@ -35,6 +35,16 @@ class Subscribe extends BasicShakeShop
             $fail($this->returnFailMsg);
             return $this->getFailMsg();
         }
+        $data = json_decode($data, true);
+        if (json_last_error() <> 0) {
+            $this->setFailMsg('Data parse fail');
+            $fail($this->returnFailMsg);
+            return $this->getFailMsg();
+        }
+        // 如果是测试消息
+        if (count($data) == 1 && $data[0]['tag'] == 0 || $data[0]['msg_id'] == 0) {
+            return $this->getSuccessMsg();
+        }
         // 获取 Header
         $header = $this->getHeader();
         // 验证 APPKey
