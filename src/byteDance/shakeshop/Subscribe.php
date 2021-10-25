@@ -30,7 +30,7 @@ class Subscribe extends BasicShakeShop
     {
         // 获取并验证数据
         $originalData = file_get_contents('php://input');
-        if (empty($data)) {
+        if (empty($originalData)) {
             $this->setFailMsg('Empty data');
             $fail($this->returnFailMsg);
             return $this->getFailMsg();
