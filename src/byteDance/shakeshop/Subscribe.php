@@ -29,14 +29,14 @@ class Subscribe extends BasicShakeShop
     public function check(callable $success, callable $fail)
     {
         // 获取并验证数据
-        $data = file_get_contents('php://input');
+        $originalData = file_get_contents('php://input');
         if (empty($data)) {
             $this->setFailMsg('Empty data');
             $fail($this->returnFailMsg);
             return $this->getFailMsg();
         }
         // 解析数据
-        $data = json_decode($data, true);
+        $data = json_decode($originalData, true);
         if (json_last_error() <> 0) {
             $this->setFailMsg('Data parse fail');
             $fail($this->returnFailMsg);
@@ -57,10 +57,10 @@ class Subscribe extends BasicShakeShop
         // 获取签名
         $eventSign = $header['event-sign']??null;
         // 按照不同的方法生成签名
-        if (strtoupper($this->config->get('push_message_encrypt_method')) == 'MD5') {
-            $sign = $this->config->get('app_key') . $data . $this->config->get('app_secret');
+        if (!empty($header['sign-method']) && $header['sign-method'] == 'MD5') {
+            $sign = md5($this->config->get('app_key') . $originalData . $this->config->get('app_secret'));
         } else {
-            $sign = $this->buildPushSign($data);
+            $sign = hash_hmac('sha256', $this->config->get('app_key') . $originalData . $this->config->get('app_secret'), $this->config->get('app_secret'));
         }
         // 判断签名是否一致
         if ($sign <> $eventSign) {
@@ -142,18 +142,5 @@ class Subscribe extends BasicShakeShop
             }
         }
         return array_change_key_case($header);
-    }
-
-    /**
-     * 计算签名
-     * @param   string  $originalData
-     * @return  string
-     */
-    protected function buildPushSign($originalData)
-    {
-        $signStr = $this->config->get('app_key');
-        $signStr .= $originalData;
-        $signStr .= $this->config->get('app_secret');
-        return hash_hmac('sha256', $signStr, $this->config->get('app_secret'));
     }
 }
