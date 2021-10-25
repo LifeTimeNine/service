@@ -35,6 +35,7 @@ class Subscribe extends BasicShakeShop
             $fail($this->returnFailMsg);
             return $this->getFailMsg();
         }
+        // 解析数据
         $data = json_decode($data, true);
         if (json_last_error() <> 0) {
             $this->setFailMsg('Data parse fail');
