@@ -118,11 +118,6 @@ abstract class BasicShakeShop
      */
     protected function setMethodName($funcName, $autoBuild = true)
     {
-        if ($autoBuild) {
-            $this->publicParams['method'] = lcfirst(basename(str_replace('\\', '/', get_called_class()))) . ".{$funcName}";
-        } else {
-            $this->publicParams['method'] = $funcName;
-        }
         // 解决单例参数保留问题
         $this->params = [];
         $this->publicParams = [
@@ -132,6 +127,11 @@ abstract class BasicShakeShop
             'timestamp' => '',
             'v' => 2,
         ];
+        if ($autoBuild) {
+            $this->publicParams['method'] = lcfirst(basename(str_replace('\\', '/', get_called_class()))) . ".{$funcName}";
+        } else {
+            $this->publicParams['method'] = $funcName;
+        }
         return $this;
     }
 
