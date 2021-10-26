@@ -123,6 +123,8 @@ abstract class BasicShakeShop
         } else {
             $this->publicParams['method'] = $funcName;
         }
+        // 解决单例参数保留问题
+        $this->params = [];
         return $this;
     }
 
