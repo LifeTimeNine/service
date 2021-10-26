@@ -125,6 +125,13 @@ abstract class BasicShakeShop
         }
         // 解决单例参数保留问题
         $this->params = [];
+        $this->publicParams = [
+            'app_key' => '',
+            'method' => '',
+            'param_json' => '',
+            'timestamp' => '',
+            'v' => 2,
+        ];
         return $this;
     }
 
