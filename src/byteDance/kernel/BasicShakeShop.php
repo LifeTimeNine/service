@@ -92,9 +92,6 @@ abstract class BasicShakeShop
                 throw new InvalidArgumentException("Missing Config [{$v}]");
             }
         }
-        
-        $this->publicParams['app_key'] = $this->config->get('app_key');
-
         return $this;
     }
 
@@ -189,6 +186,7 @@ abstract class BasicShakeShop
      */
     protected function bulidSign($params = [])
     {
+        $this->publicParams['app_key'] = $this->config->get('app_key');
         $this->recKsort($params);
         $this->publicParams['param_json'] = json_encode($params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
         $this->publicParams['timestamp'] = date('Y-m-d H:i:s');
