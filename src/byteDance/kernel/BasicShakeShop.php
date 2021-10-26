@@ -66,15 +66,7 @@ abstract class BasicShakeShop
         $this->platformConfig = new ByteDanceConfig($config);
 
         $default = $this->platformConfig->get('shakeshop')['default']??null;
-        $this->config = new DataArray($this->platformConfig->get('shakeshop')['shops'][$default] ?? []);
-
-        foreach ($this->mustConfig as $v) {
-            if (empty($this->config->get($v))) {
-                throw new InvalidArgumentException("Missing Config [{$v}]");
-            }
-        }
-        
-        $this->publicParams['app_key'] = $this->config->get('app_key');
+        $this->shop($default);
     }
 
     /**
