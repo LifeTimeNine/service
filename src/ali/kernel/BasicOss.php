@@ -114,7 +114,15 @@ class BasicOss extends Basic
      * 数据
      * @var array
      */
-    private $data = [];
+    protected $data = [];
+
+    /**
+     * 初始化数据
+     */
+    protected function initData()
+    {
+        $this->data = [];
+    }
 
     /**
      * 获取指定时间戳的时间

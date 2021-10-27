@@ -29,6 +29,7 @@ class Basics extends BasicOss
      */
     public function put(string $name = '',$data, string $fileName, string $acl='', string $storageClass='', string $disposition = '', string $cache = '', int $expires = null, string $etag = '', string $encode = '', bool $overwrite = null)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -65,6 +66,7 @@ class Basics extends BasicOss
      */
     public function webPut(string $name = '', string $fileName,string $success_redirect = '',string $success_status = '200',string $acl = '',int $expire=3600, bool $overwrite = null)
     {
+        $this->initData();
         $name = $this->getName($name);
         $endpoint = $this->getEndponit();
         $time = time() + $expire;
@@ -118,6 +120,7 @@ class Basics extends BasicOss
      */
     public function get(string $name='', string $fileName, string $saveDir='', string $range='', string $content_type='', string $content_lanuage='', string $expires='', string $cache_control='', string $disposition='', string $encodeing = '')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -153,6 +156,7 @@ class Basics extends BasicOss
      */
     public function copy(string $name='',string $sourceBucket = '',string $sourceFileName,string $putFileName,string $acl='',string $storageClass='',string $overwrite=null)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -187,6 +191,7 @@ class Basics extends BasicOss
      */
     public function append(string $name='',string $fileName,string $position,string $data,string $mimeType, string $acl='',string $storageClass='',string $cache='',string $disposition='',string $encode='',string $expires='')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -218,6 +223,7 @@ class Basics extends BasicOss
      */
     public function delete(string $name='',string $fileName)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -238,6 +244,7 @@ class Basics extends BasicOss
      */
     public function deleteMultiple(string $name='',array $fileNameList,bool $quiet = false)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -264,6 +271,7 @@ class Basics extends BasicOss
      */
     public function head(string $name='',string $fileName)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -283,6 +291,7 @@ class Basics extends BasicOss
      */
     public function getMeta(string $name='',string $fileName)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());

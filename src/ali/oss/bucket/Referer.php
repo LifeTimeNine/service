@@ -20,6 +20,7 @@ class Referer extends BasicOss
      */
     public function put(string $name = '', bool $emptyReferer = true, array $refererList = [])
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -49,6 +50,7 @@ class Referer extends BasicOss
      */
     public function get(string $name = '')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());

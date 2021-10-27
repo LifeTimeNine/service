@@ -3,7 +3,7 @@
  * @Description   微信 APP支付 V3.0
  * @Author        lifetime
  * @Date          2020-12-22 15:23:40
- * @LastEditTime  2020-12-29 17:42:07
+ * @LastEditTime  2021-10-27 16:57:27
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v3;
@@ -31,6 +31,7 @@ class App extends BasicPayV3
      */
     public function pay(array $options, string $notify_url)
     {
+        $this->initOptions();
         $this->options->set('notify_url', $notify_url);
 
         $url = '/v3/pay/transactions/app';

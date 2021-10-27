@@ -28,6 +28,7 @@ class Basics extends BasicOss
      */
     public function put(string $name, string $acl = 'private', string $storageClass = 'Standard', string $disaster = 'LRS')
     {
+        $this->initData();
         $this->setData(self::OSS_METHOD, self::OSS_HTTP_PUT);
         $this->setData(self::OSS_CONTENT_TYPE, self::OSS_CONTENT_TYPE_XML);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -57,6 +58,7 @@ class Basics extends BasicOss
      */
     public function delete(string $name)
     {
+        $this->initData();
         if (empty($name)) throw new InvalidArgumentException("Missing Options [name]");
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -81,6 +83,7 @@ class Basics extends BasicOss
      */
     public function get(string $name = '', string $endpoint='', string $delimiter='', string $marker='', int $max_keys = 100, string $prefix = '', string $encoding_type = 'url')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
@@ -113,6 +116,7 @@ class Basics extends BasicOss
      */
     public function getV2(string $name='', string $endpoint = '', string $delimiter = '', string $start_after='', string $continuation_token='', int $max_keys=100, string $prefix='', string $encoding_type = 'url', bool $fetch_owner = false)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
@@ -141,6 +145,7 @@ class Basics extends BasicOss
      */
     public function getInfo(string $name = '', string $endpoint = '')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));
@@ -161,6 +166,7 @@ class Basics extends BasicOss
      */
     public function getLocation(string $name = '', string $endpoint = '')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit($endpoint));

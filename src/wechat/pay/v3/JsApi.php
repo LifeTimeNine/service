@@ -3,7 +3,7 @@
  * @Description   微信JSApi支付
  * @Author        lifetime
  * @Date          2020-12-28 21:18:08
- * @LastEditTime  2020-12-29 09:02:48
+ * @LastEditTime  2021-10-27 16:57:39
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v3;
@@ -32,6 +32,7 @@ class JsApi extends BasicPayV3
      */
     public function pay(array $options, string $notify_url)
     {
+        $this->initOptions();
         $this->options->set('notify_url', $notify_url);
 
         $url = '/v3/pay/transactions/jsapi';

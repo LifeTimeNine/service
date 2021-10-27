@@ -17,12 +17,20 @@ class BasicSms extends Basic
      */
     protected $endpoint = 'http://dysmsapi.aliyuncs.com';
 
-    private $params = [
-        'Format' => 'json',
-        'SignatureVersion' => '1.0',
-        'Version' => '2017-05-25',
-        'SignatureMethod' => 'HMAC-SHA1'
-    ];
+    private $params = [];
+
+    /**
+     * 初始化参数
+     */
+    protected function initParam()
+    {
+        $this->params = [
+            'Format' => 'json',
+            'SignatureVersion' => '1.0',
+            'Version' => '2017-05-25',
+            'SignatureMethod' => 'HMAC-SHA1'
+        ];
+    }
 
     protected $signTemplateCode = false;
 

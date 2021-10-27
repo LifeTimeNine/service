@@ -23,6 +23,7 @@ class Sms extends BasicSms
      */
     public function send(string $phones, array $param,string $signName=null,string $templateCode=null,string $extendCode=null,string $outId=null)
     {
+        $this->initParam();
         $this->setParam('Action', 'SendSms');
         $this->setParam('PhoneNumbers', $phones);
         if (empty($signName)) $signName = $this->config['sms_signName'];
@@ -43,6 +44,7 @@ class Sms extends BasicSms
      */
     public function sendBatch(array $data, string $templateCode='')
     {
+        $this->initParam();
         $number = []; $signName = []; $param = []; $extendCode = [];
         foreach($data as $k => $v)
         {
@@ -72,6 +74,7 @@ class Sms extends BasicSms
      */
     public function addTemplate(int $type,string $name,string $content,string $remark)
     {
+        $this->initParam();
         $this->setParam('Action', 'AddSmsTemplate');
         $this->setParam('TemplateType', $type);
         $this->setParam('TemplateName', $name);
@@ -87,6 +90,7 @@ class Sms extends BasicSms
      */
     public function queryTemplate(string $code)
     {
+        $this->initParam();
         $this->setParam('Action', 'QuerySmsTemplate');
         $this->setParam('TemplateCode', $code);
         return $this->request();
@@ -103,6 +107,7 @@ class Sms extends BasicSms
      */
     public function modifyTemplate(string $code,int $type,string $name,string $content,string $remark)
     {
+        $this->initParam();
         $this->setParam('Action', 'ModifySmsTemplate');
         $this->setParam('TemplateCode', $code);
         $this->setParam('TemplateType', $type);
@@ -119,6 +124,7 @@ class Sms extends BasicSms
      */
     public function deleteTemplate(string $code)
     {
+        $this->initParam();
         $this->setParam('Action', 'DeleteSmsTemplate');
         $this->setParam('TemplateCode', $code);
         return $this->request();

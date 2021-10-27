@@ -19,6 +19,7 @@ class Worm extends BasicOss
      */
     public function init(string $name = '', int $day)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -42,6 +43,7 @@ class Worm extends BasicOss
      */
     public function abort(string $name = '')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -62,6 +64,7 @@ class Worm extends BasicOss
      */
     public function complete(string $name = '', string $wormId)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -82,6 +85,7 @@ class Worm extends BasicOss
      */
     public function exend(string $name = '', string $wormId, int $day)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -105,6 +109,7 @@ class Worm extends BasicOss
      */
     public function get(string $name = '', string $wormId)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());

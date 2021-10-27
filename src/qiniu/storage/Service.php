@@ -18,6 +18,7 @@ class Service extends Storage
      */
     public function get(array $tags = [])
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_GET);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->setData(self::S_PATH, '/buckets');

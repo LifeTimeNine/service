@@ -3,7 +3,7 @@
  * @Description   微信H5支付 V3.0
  * @Author        lifetime
  * @Date          2020-12-22 09:40:58
- * @LastEditTime  2020-12-29 17:41:29
+ * @LastEditTime  2021-10-27 16:57:34
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v3;
@@ -39,6 +39,7 @@ class H5 extends BasicPayV3
      */
     public function pay(array $options, string $notify_url)
     {
+        $this->initOptions();
         $this->options->set('notify_url', $notify_url);
         $this->options->merge(['scene_info' => ['payer_client_ip' => $_SERVER['REMOTE_ADDR']]], true);
 
