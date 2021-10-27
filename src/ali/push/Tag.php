@@ -23,6 +23,7 @@ class Tag extends BasicPush
      */
     public function bind(int $appKey, $clientKey, string $keyType, $tagName)
     {
+        $this->initParam();
         $this->setParam('Action', 'BindTag');
         $this->setParam('AppKey', $appKey);
         $this->setParam('ClientKey', is_array($clientKey) ? implode(',', $clientKey) : $clientKey);
@@ -41,6 +42,7 @@ class Tag extends BasicPush
      */
     public function query(int $appKey, $clientKey, string $keyType)
     {
+        $this->initParam();
         $this->setParam('Action', 'QueryTags');
         $this->setParam('AppKey', $appKey);
         $this->setParam('ClientKey', $clientKey);
@@ -60,6 +62,7 @@ class Tag extends BasicPush
      */
     public function unbind(int $appKey, $clientKey, string $keyType, $tagName)
     {
+        $this->initParam();
         $this->setParam('Action', 'UnbindTag');
         $this->setParam('AppKey', $appKey);
         $this->setParam('ClientKey', is_array($clientKey) ? implode(',', $clientKey) : $clientKey);
@@ -78,6 +81,7 @@ class Tag extends BasicPush
      */
     public function remove(int $appKey, string $tagName)
     {
+        $this->initParam();
         $this->setParam('Action', 'RemoveTag');
         $this->setParam('AppKey', $appKey);
         $this->setParam('TagName', $tagName);

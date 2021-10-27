@@ -21,6 +21,7 @@ class Push extends BasicPush
      */
     public function massPush(int $appKey, array $optional = [])
     {
+        $this->initParam();
         $this->setOptionalParamsKeys([
             'Body','DeviceType','PushType','Target','TargetValue','JobKey','iOSSilentNotification',
             'StoreOffline','iOSSubtitle','AndroidNotificationHuaweiChannel','AndroidNotificationChannel',
@@ -56,6 +57,7 @@ class Push extends BasicPush
      */
     public function push(int $appKey, string $title, string $body, string $deviceType, string $pushType, string $target, $targetValue, array $optional = [])
     {
+        $this->initParam();
         $this->setOptionalParamsKeys([
             'JobKey','StoreOffline','PushTime','ExpireTime','iOSApnsEnv','iOSRemind',
             'iOSRemindBody','iOSBadge','iOSBadgeAutoIncrement','iOSSilentNotification','iOSMusic',
@@ -101,6 +103,7 @@ class Push extends BasicPush
      */
     public function continuouslyPush(int $appKey, string $messageId, string $target, $targetValue)
     {
+        $this->initParam();
         $this->setParam('Action', 'ContinuouslyPush');
         $this->setParam('AppKey', $appKey);
         $this->setParam('MessageId', $messageId);
@@ -125,6 +128,7 @@ class Push extends BasicPush
      */
     public function cancelPush(int $appKey, string $messageId)
     {
+        $this->initParam();
         $this->setParam('Action', 'CancelPush');
         $this->setParam('AppKey', $appKey);
         $this->setParam('MessageId', $messageId);

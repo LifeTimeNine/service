@@ -21,6 +21,7 @@ class Account extends BasicPush
      */
     public function queryDevicesByAccount(int $appKey, string $account)
     {
+        $this->initParam();
         $this->setParam('Action', 'QueryDevicesByAccount');
         $this->setParam('Account', $account);
         $this->setParam('AppKey', $appKey);

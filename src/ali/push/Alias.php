@@ -22,6 +22,7 @@ class Alias extends BasicPush
      */
     public function bind(int $appKey, $alias, string $deviceId)
     {
+        $this->initParam();
         $this->setParam('Action', 'BindAlias');
         $this->setParam('AppKey', $appKey);
         $this->setParam('AliasName', is_array($alias) ? implode(',', $alias) : $alias);
@@ -39,6 +40,7 @@ class Alias extends BasicPush
      */
     public function query(int $appKey, string $deviceId)
     {
+        $this->initParam();
         $this->setParam('Action', 'QueryAliases');
         $this->setParam('AppKey', $appKey);
         $this->setParam('DeviceId', $deviceId);
@@ -55,6 +57,7 @@ class Alias extends BasicPush
      */
     public function queryDevicesByAlias(int $appKey, $alias)
     {
+        $this->initParam();
         $this->setParam('Action', 'QueryDevicesByAlias');
         $this->setParam('Alias', $alias);
         $this->setParam('AppKey', $appKey);
@@ -72,6 +75,7 @@ class Alias extends BasicPush
      */
     public function unbind(int $appKey, string $deviceId, $alias)
     {
+        $this->initParam();
         $this->setParam('Action', 'UnbindAlias');
         $this->setParam('AppKey', $appKey);
         $this->setParam('DeviceId', $deviceId);

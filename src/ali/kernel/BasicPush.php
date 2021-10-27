@@ -2,7 +2,6 @@
 
 namespace service\ali\kernel;
 
-use service\exceptions\InvalidArgumentException;
 use service\exceptions\InvalidResponseException;
 use service\tools\Tools;
 
@@ -22,19 +21,27 @@ class BasicPush extends Basic
      * 请求参数
      * @var array
      */
-    protected $params = [
-        'Format' => 'JSON',
-        'RegionId' => 'cn-hangzhou',
-        'Version' => '2016-08-01',
-        'SignatureMethod' => 'HMAC-SHA1',
-        'SignatureVersion' => '1.0'
-    ];
+    protected $params = [];
 
     /**
      * 可选参数参数 Key
      * @var
      */
     protected $optionalParamsKeys = [];
+
+    /**
+     * 初始化参数
+     */
+    public function initParam()
+    {
+        $this->params = [
+            'Format' => 'JSON',
+            'RegionId' => 'cn-hangzhou',
+            'Version' => '2016-08-01',
+            'SignatureMethod' => 'HMAC-SHA1',
+            'SignatureVersion' => '1.0'
+        ];
+    }
 
     /**
      * 设置参数
