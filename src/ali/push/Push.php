@@ -78,14 +78,14 @@ class Push extends BasicPush
         $this->setParam('DeviceType', $deviceType);
         $this->setParam('PushType', $pushType);
         $this->setParam('Target', $target);
-        if ($target == 'ALL' || $target == 'TBD' || $target == 'TAG') {
-            $this->setParam('TargetValue', $targetValue);
+        if ($target == Options::TARGET_ALL) {
+            $this->setParam('TargetValue', Options::TARGET_ALL);
+        } elseif($target == Options::TARGET_TBD) {
+            $this->setParam('TargetValue', Options::TARGET_TBD);
+        } elseif ($target == Options::TARGET_TAG) {
+            $this->setParam('TargetValue', is_string($targetValue)?$targetValue:json_encode($targetValue, JSON_UNESCAPED_UNICODE));
         } else {
-            if (is_array($targetValue)) {
-                $this->setParam('TargetValue', implode(',', $targetValue));
-            } else {
-                $this->setParam('TargetValue', $targetValue);
-            }
+            $this->setParam('TargetValue', is_string($targetValue)?$targetValue:implode(',',$targetValue));
         }
         return $this->request();
     }
