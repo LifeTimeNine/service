@@ -107,7 +107,6 @@ class BasicOss extends Basic
     protected function __construct($config = [])
     {
         parent::__construct($config);
-        $this->setData(self::OSS_DATE, $this->getDate());
     }
 
     /**
@@ -122,6 +121,7 @@ class BasicOss extends Basic
     protected function initData()
     {
         $this->data = [];
+        $this->setData(self::OSS_DATE, $this->getDate());
     }
 
     /**
