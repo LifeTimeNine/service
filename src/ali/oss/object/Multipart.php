@@ -25,6 +25,7 @@ class Multipart extends BasicOss
      */
     public function init(string $name='',string $fileName,string $cache='',string $disposition='',string $encodeing='',int $expires=null,bool $overwrite=null,string $storageClass='')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -55,6 +56,7 @@ class Multipart extends BasicOss
      */
     public function part(string $name='',string $fileName,string $partNumber,string $uploadId,$data)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -80,6 +82,7 @@ class Multipart extends BasicOss
      */
     public function webParams(string $name='',string $fileName,string $partNumber,string $uploadId)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $endpoint = $this->getEndponit();
@@ -113,6 +116,7 @@ class Multipart extends BasicOss
      */
     public function copy(string $name='',string $fileName,string $partNumber,string $uploadId,string $sourceBucket='',string $sourceFileName,int $start = 0, int $end = null)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -144,6 +148,7 @@ class Multipart extends BasicOss
      */
     public function complete(string $name='',string $fileName,string $uploadId,array $uploadData)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -173,6 +178,7 @@ class Multipart extends BasicOss
      */
     public function abort(string $name='',string $fileName,string $uploadId)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -197,6 +203,7 @@ class Multipart extends BasicOss
      */
     public function list(string $name='',string $delimiter='',string $max_uploads='',string $key_marker='',string $prefix='')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -221,6 +228,7 @@ class Multipart extends BasicOss
      */
     public function listParts(string $name='',string $fileName,string $uploadId)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());

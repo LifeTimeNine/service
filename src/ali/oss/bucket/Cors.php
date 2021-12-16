@@ -28,6 +28,7 @@ class Cors extends BasicOss
      */
     public function put(string $name = '',array $data)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -63,6 +64,7 @@ class Cors extends BasicOss
      */
     public function get(string $name = '')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -80,6 +82,7 @@ class Cors extends BasicOss
      */
     public function delete(string $name = '')
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());

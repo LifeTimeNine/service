@@ -16,7 +16,10 @@ class ByteDanceConfig extends BasicConfig
     protected $defaultConfig = [
         'cache_path' => '', // 缓存目录
         'miniapp_appid' => '', // 字节小程序APPID
-        'miniapp_secret' => '', // 字节小程序APP Secret
+        'miniapp_secret' => '', // 字节小程序APP Secret,
+        'shakeshop' => [
+            'default' => '',
+        ]
     ];
 
     public function __construct($config = [])

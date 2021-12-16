@@ -51,6 +51,18 @@ return [
         'miniapp_pay_mch_id' => '', // 字节小程序支付商户号
         'miniapp_pay_appid' => '', // 字节小程序支付APPPID
         'miniapp_pay_secret' => '', // 字节小程序支付secret
+
+        // 抖店
+        'shakeshop' => [
+            'default' => 'dev',
+            'shops' => [
+                'dev' => [
+                    'app_key' => '',
+                    'app_secret' => '',
+                    'shop_id' => '',
+                ]
+            ]
+        ]
     ],
     'cache_path' => env('runtime_path') . 'service' . DIRECTORY_SEPARATOR, // 缓存目录
     'cache_callable' => [ // 自定义缓存操作方法（如果设置了此参数，缓存目录将不再生效）

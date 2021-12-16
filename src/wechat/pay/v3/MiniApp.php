@@ -3,7 +3,7 @@
  * @Description   小程序支付
  * @Author        lifetime
  * @Date          2020-12-22 15:44:33
- * @LastEditTime  2020-12-30 10:41:20
+ * @LastEditTime  2021-10-27 16:57:45
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v3;
@@ -31,6 +31,7 @@ class MiniApp extends BasicPayV3
      */
     public function pay(array $options, string $notify_url)
     {
+        $this->initOptions();
         $this->options->set('notify_url', $notify_url);
 
         $url = '/v3/pay/transactions/jsapi';

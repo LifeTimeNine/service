@@ -3,7 +3,7 @@
  * @Description   支付宝支付基类
  * @Author        lifetime
  * @Date          2020-12-13 21:45:42
- * @LastEditTime  2021-09-16 23:44:04
+ * @LastEditTime  2021-10-27 16:22:06
  * @LastEditors   lifetime
  */
 
@@ -78,8 +78,6 @@ abstract class BasicPay
         } else {
             $this->gateway = 'https://openapi.alipay.com/gateway.do';
         }
-        $this->applyOptions();
-        $this->bizContent = new DataArray([]);
     }
 
     /**
@@ -107,6 +105,15 @@ abstract class BasicPay
         $key = md5(get_called_class() . serialize($config));
         if (isset(self::$cache[$key])) return self::$cache[$key];
         return self::$cache[$key] = new static($config);
+    }
+
+    /**
+     * 初始化参数
+     */
+    protected function initParam()
+    {
+        $this->applyOptions();
+        $this->bizContent = new DataArray([]);
     }
 
     /**

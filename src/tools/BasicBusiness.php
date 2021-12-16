@@ -26,9 +26,9 @@ class BasicBusiness
      */
     public static function instance()
     {
-        $key = md5(get_called_class());
+        $key = md5(get_called_class() . serialize(func_get_args()));
         if (!isset(self::$instanceList[$key])) {
-            self::$instanceList[$key] = new static();
+            self::$instanceList[$key] = new static(...func_get_args());
         }
         return self::$instanceList[$key];
     }

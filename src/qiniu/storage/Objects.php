@@ -21,6 +21,7 @@ class Objects extends Storage
      */
     public function setStatus(string $bucketName = '', string $fileName, bool $status)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $status = $status ? 1 : 0;
@@ -39,6 +40,7 @@ class Objects extends Storage
      */
     public function setLifecycle(string $bucketName = '', string $fileName, int $day)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $this->setData(self::S_PATH, "/deleteAfterDays/{$this->urlBase64("{$this->getBucketName($bucketName)}:{$fileName}")}/{$day}");
@@ -56,6 +58,7 @@ class Objects extends Storage
      */
     public function setStorageType(string $bucketName = '', string $fileName,int $type)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $this->checkStorageType($type);
@@ -74,6 +77,7 @@ class Objects extends Storage
      */
     public function thawArchive(string $bucketName = '', string $fileName,int $day)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $this->setData(self::S_PATH, "/restoreAr/{$this->urlBase64("{$this->getBucketName($bucketName)}:{$fileName}")}/freezeAfterDays/{$day}");
@@ -90,6 +94,7 @@ class Objects extends Storage
      */
     public function getMetaData(string $bucketName = '', string $fileName)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_GET);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $this->setData(self::S_PATH, "/stat/{$this->urlBase64("{$this->getBucketName($bucketName)}:{$fileName}")}");
@@ -106,6 +111,7 @@ class Objects extends Storage
      */
     public function setMetaData(string $bucketName = '', string $fileName, string $mime)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         if(!Tools::checkMimeType($mime)) throw new InvalidArgumentException("Unknown file mime {$mime}");
@@ -126,6 +132,7 @@ class Objects extends Storage
      */
     public function move(string $bucketName = '', string $fileName,string $toBucketName='',string $toFileName,bool $force=false)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $force = $force ? 'true' : 'false';
@@ -146,6 +153,7 @@ class Objects extends Storage
      */
     public function copy(string $bucketName = '', string $fileName,string $toBucketName='',string $toFileName,bool $force=false)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $force = $force ? 'true' : 'false';
@@ -163,6 +171,7 @@ class Objects extends Storage
      */
     public function delete(string $bucketName = '', string $fileName)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
         $this->setData(self::S_PATH, "/delete/{$this->urlBase64("{$this->getBucketName($bucketName)}:{$fileName}")}");
@@ -182,6 +191,7 @@ class Objects extends Storage
      */
     public function list(string $bucketName='',string $marker='',int $limit=1000,string $prefix='',string $delimiter='')
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_GET);
         $this->setData(self::S_HOST, self::S_HOST_RSF);
         $this->setData(self::S_PATH, "/list");
@@ -202,6 +212,7 @@ class Objects extends Storage
      */
     public function batch(array $data)
     {
+        $this->initParam();
         $body = $this->parseBatchData($data);
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_RS);
@@ -221,6 +232,7 @@ class Objects extends Storage
      */
     public function upload(string $bucketName='',string $fileName,$data,int $storageType=0)
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->checkStorageType($storageType);
@@ -257,6 +269,7 @@ class Objects extends Storage
      */
     public function WebUpload(string $bucketName='',string $fileName,int $storageType=0, int $expire=3600)
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->checkStorageType($storageType);
@@ -296,6 +309,7 @@ class Objects extends Storage
      */
     public function initMultipart(string $bucketName='',string $fileName,int $storageType=0)
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->checkStorageType($storageType);
@@ -322,6 +336,7 @@ class Objects extends Storage
      */
     public function uploadPart(string $bucketName='',string $fileName,string $uploadId,int $partNumber,$data)
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->setData(self::S_METHOD, self::S_PUT);
@@ -347,6 +362,7 @@ class Objects extends Storage
      */
     public function webPartParams(string $bucketName='',string $fileName,string $uploadId,int $partNumber)
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->setData(self::S_METHOD, self::S_PUT);
@@ -379,6 +395,7 @@ class Objects extends Storage
      */
     public function partList(string $bucketName='',string $fileName,string $uploadId,int $max_parts=1000,string $marker='')
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->setData(self::S_METHOD, self::S_GET);
@@ -404,6 +421,7 @@ class Objects extends Storage
      */
     public function completePart(string $bucketName='',string $fileName,string $uploadId,array $data)
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->setData(self::S_METHOD, self::S_POST);
@@ -431,6 +449,7 @@ class Objects extends Storage
      */
     public function stopPart(string $bucketName='',string $fileName,string $uploadId)
     {
+        $this->initParam();
         $this->checkRegion($this->config['storage_region']);
         $region =  self::S_REGION_LIST[$this->config['storage_region']][2];
         $this->setData(self::S_METHOD, self::S_DELETE);

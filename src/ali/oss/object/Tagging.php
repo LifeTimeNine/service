@@ -20,6 +20,7 @@ class Tagging extends BasicOss
      */
     public function put(string $name='',string $fileName,array $tagData)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -48,6 +49,7 @@ class Tagging extends BasicOss
      */
     public function get(string $name='',string $fileName)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());
@@ -67,6 +69,7 @@ class Tagging extends BasicOss
      */
     public function delete(string $name='',string $fileName)
     {
+        $this->initData();
         $name = $this->getName($name);
         $this->setData(self::OSS_BUCKET_NAME, $name);
         $this->setData(self::OSS_ENDPOINT, $this->getEndponit());

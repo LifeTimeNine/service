@@ -3,7 +3,7 @@
  * @Description   微信支付V3基类
  * @Author        lifetime
  * @Date          2020-12-28 10:33:06
- * @LastEditTime  2020-12-30 13:52:09
+ * @LastEditTime  2021-10-27 16:58:22
  * @LastEditors   lifetime
  */
 
@@ -25,6 +25,10 @@ class BasicPayV3
      * @var DataArray
      */
     protected $config;
+    /**
+     * @var string
+     */
+    protected $appId;
 
     /**
      * 缓存
@@ -57,16 +61,22 @@ class BasicPayV3
     protected function __construct($config = [])
     {
         $this->config = new WechatConfig($config);
-
-        $this->options = new DataArray([]);
-        if (empty($this->config['mch_id'])) throw new InvalidArgumentException("Missing Config [mch_id]");
-        $this->options->set('mchid', $this->config['mch_id']);
         if (empty($this->config['mch_key'])) throw new InvalidArgumentException('Missinng Config [mch_key]');
-
         if (empty($this->config['ssl_key']) || !file_exists($this->config['ssl_key'])) throw new InvalidArgumentException('Missing Config [ssl_key]');
         if (empty($this->config['ssl_cert']) || !file_exists($this->config['ssl_cert'])) throw new InvalidArgumentException('Missing Config [ssl_cert]');
 
         $this->mustOptions = new DataArray(['description', 'out_trade_no', 'amount' => ['total'], 'notify_url']);
+    }
+
+    /**
+     * 初始化参数
+     */
+    protected function initOptions()
+    {
+        $this->options = new DataArray([]);
+        if (empty($this->config['mch_id'])) throw new InvalidArgumentException("Missing Config [mch_id]");
+        $this->options->set('mchid', $this->config['mch_id']);
+        $this->options->set('appid', $this->appId);
     }
 
     /**
@@ -90,7 +100,7 @@ class BasicPayV3
         if (empty($this->config[$key])) {
             throw new InvalidArgumentException("Missing Config [{$key}]");
         } else {
-            $this->options->set('appid', $this->config[$key]);
+            $this->appId = $this->config[$key];
         }
     }
 
@@ -243,6 +253,7 @@ class BasicPayV3
      */
     public function query(array $options)
     {
+        $this->initOptions();
         $url = '';
         if (!empty($options['transaction_id'])) {
             $url = "/v3/pay/transactions/id/{$options['transaction_id']}";
@@ -262,6 +273,7 @@ class BasicPayV3
      */
     public function close(string $out_trade_no)
     {
+        $this->initOptions();
         if (empty($out_trade_no)) throw new InvalidArgumentException('Missing Options [out_trade_no]');
 
         $url = "/v3/pay/transactions/out-trade-no/{$out_trade_no}/close";

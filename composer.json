@@ -1,7 +1,7 @@
 {
     "name": "lifetime/service",
     "description": "service",
-    "version": "1.9.0",
+    "version": "1.11.5",
     "homepage": "https://github.com/LifeTimeNine/service.git",
     "license": "MIT",
     "authors": [{

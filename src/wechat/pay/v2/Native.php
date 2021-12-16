@@ -3,7 +3,7 @@
  * @Description   Native支付
  * @Author        lifetime
  * @Date          2020-12-21 16:27:38
- * @LastEditTime  2020-12-28 20:34:31
+ * @LastEditTime  2021-10-27 16:33:57
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v2;
@@ -32,6 +32,7 @@ class Native extends BasicPay
      */
     public function pay(array $options, string $notify_url, int $qrcodeWith = 200)
     {
+        $this->initOptions();
         $this->options->set('notify_url', $notify_url);
 
         $this->options->set('trade_type', 'NATIVE');

@@ -4,7 +4,7 @@
  * @Author: Lifetime
  * @Date: 2020-12-20 11:50:10
  * @LastEditors   lifetime
- * @LastEditTime  2020-12-30 10:47:24
+ * @LastEditTime  2021-10-27 16:59:05
  */
 
 namespace service\wechat\kernel;
@@ -23,6 +23,11 @@ class BasicPay
      * @var DataArray
      */
     protected $config;
+    /**
+     * appId
+     * @var string
+     */
+    protected $appId;
 
     /**
      * 缓存
@@ -50,6 +55,14 @@ class BasicPay
     {
         $this->config = new WechatConfig($config);
 
+        $this->mustOptions = new DataArray(['out_trade_no', 'total_fee', 'body', 'notify_url']);
+    }
+
+    /**
+     * 初始化参数
+     */
+    protected function initOptions()
+    {
         $this->options = new DataArray([]);
 
         if (empty($this->config['mch_id'])) throw new InvalidArgumentException("Missing Config [mch_id]");
@@ -60,10 +73,8 @@ class BasicPay
         if (empty($this->config['sign_type'])) throw new InvalidArgumentException("Missing Config [sign_type]");
         $this->options->set('sign_type', $this->config['sign_type']);
         
+        $this->options->set('appid', $this->appId);
         $this->options->set('nonce_str', Tools::createNoncestr());
-
-        $this->mustOptions = new DataArray(['out_trade_no', 'total_fee', 'body', 'notify_url']);
-        
     }
 
     /**
@@ -162,7 +173,7 @@ class BasicPay
         if (empty($this->config[$key])) {
             throw new InvalidArgumentException("Missing Config [{$key}]");
         } else {
-            $this->options->set('appid', $this->config[$key]);
+            $this->appId = $this->config[$key];
         }
     }
 
@@ -199,6 +210,7 @@ class BasicPay
      */
     public function query(array $options)
     {
+        $this->initOptions();
         if (empty($options['transaction_id']) && empty($options['out_trade_no'])) {
             throw new InvalidArgumentException("Missing Options [transaction_id  OR out_trade_no]");
         }
@@ -219,6 +231,7 @@ class BasicPay
      */
     public function reverse(array $options)
     {
+        $this->initOptions();
         if (empty($options['transaction_id']) && empty($options['out_trade_no'])) {
             throw new InvalidArgumentException("Missing Options [transaction_id  OR out_trade_no]");
         }
@@ -235,6 +248,7 @@ class BasicPay
      */
     public function refund(array $options)
     {
+        $this->initOptions();
         if (empty($options['transaction_id']) && empty($options['out_trade_no'])) {
             throw new InvalidArgumentException("Missing Options [transaction_id  OR out_trade_no]");
         }
@@ -264,6 +278,7 @@ class BasicPay
      */
     public function refundQuery(array $options)
     {
+        $this->initOptions();
         if (empty($options['transaction_id']) && empty($options['out_trade_no']) && empty($options['out_refund_no']) && empty($options['refund_id'])) {
             throw new InvalidArgumentException("Missing Options [transaction_id  OR out_trade_no OR out_refund_no OR refund_id]");
         }

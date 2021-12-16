@@ -27,7 +27,7 @@ class Pay extends BasicPay
     public function page(array $order, string $notify_url, string $return_url = null)
     {
         $this->checkOrder($order);
-
+        $this->initParam();
         $this->options->set('method', 'alipay.trade.page.pay');
         $this->bizContent->set('product_code', 'FAST_INSTANT_TRADE_PAY');
 
@@ -47,7 +47,7 @@ class Pay extends BasicPay
     public function wap(array $order, string $notify_url, string $return_url = null)
     {
         $this->checkOrder($order);
-
+        $this->initParam();
         $this->options->set('method', 'alipay.trade.wap.pay');
         $this->bizContent->set('product_code', 'FAST_INSTANT_TRADE_PAY');
 
@@ -66,7 +66,7 @@ class Pay extends BasicPay
     public function app(array $order, string $notify_url)
     {
         $this->checkOrder($order);
-        
+        $this->initParam();
         $this->options->set('method', 'alipay.trade.app.pay');
         $this->options->set('alipay_sdk', 'alipay-sdk-php-20200415');
         $this->bizContent->set('product_code', 'QUICK_MSECURITY_PAY');
@@ -106,7 +106,7 @@ class Pay extends BasicPay
         if (empty($options['out_trade_no']) && empty($options['trade_no'])) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");
         }
-
+        $this->initParam();
         $this->options->set('method', 'alipay.trade.query');
 
         list($data, $checkRes) = $this->requestAli($options);
@@ -132,7 +132,7 @@ class Pay extends BasicPay
         if (empty($options['out_request_no'])) {
             throw new InvalidArgumentException("Missing options [out_request_no]");
         }
-
+        $this->initParam();
         $this->options->set('method', 'alipay.trade.refund');
 
         list($data, $checkRes) = $this->requestAli($options);
@@ -154,7 +154,7 @@ class Pay extends BasicPay
         if (empty($options['out_request_no'])) {
             throw new InvalidArgumentException("Missing options [out_request_no]");
         }
-
+        $this->initParam();
         $this->options->set('method', 'alipay.trade.fastpay.refund.query');
 
         list($data, $checkRes) = $this->requestAli($options);

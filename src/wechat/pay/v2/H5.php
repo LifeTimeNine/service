@@ -3,7 +3,7 @@
  * @Description   微信H5支付
  * @Author        lifetime
  * @Date          2020-12-22 09:40:58
- * @LastEditTime  2020-12-30 15:08:24
+ * @LastEditTime  2021-10-27 16:33:40
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v2;
@@ -33,6 +33,7 @@ class H5 extends BasicPay
      */
     public function pay(array $options, string $notify_url)
     {
+        $this->initOptions();
         $this->options->set('notify_url', $notify_url);
 
         $this->options->set('trade_type', 'MWEB');

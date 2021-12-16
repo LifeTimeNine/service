@@ -20,6 +20,7 @@ class Bucket extends Storage
      */
     public function setSource(string $bucketName='',string $accessUrl,string $host = '')
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->setData(self::S_PATH, "/image/{$this->getBucketName($bucketName)}/from/{$this->urlBase64($accessUrl)}/host/{$this->urlBase64($host)}");
@@ -36,6 +37,7 @@ class Bucket extends Storage
      */
     public function create(string $bucketName,string $region = '华东')
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->checkRegion($region);
@@ -51,6 +53,7 @@ class Bucket extends Storage
      */
     public function delete(string $bucketName)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->setData(self::S_PATH, "/drop/{$bucketName}");
@@ -65,6 +68,7 @@ class Bucket extends Storage
      */
     public function getDomain(string $bucketName = '')
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_GET);
         $this->setData(self::S_HOST, self::S_HOST_API);
         $this->setData(self::S_PATH, "/v6/domain/list?tbl={$this->getBucketName($bucketName)}");
@@ -79,6 +83,7 @@ class Bucket extends Storage
      */
     public function setAccessType(string $bucketName = '',bool $private)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_POST);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->setData(self::S_PATH, "/private");
@@ -99,6 +104,7 @@ class Bucket extends Storage
      */
     public function setTags(string $bucketName = '', array $tags)
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_PUT);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->setData(self::S_PATH, "/bucketTagging");
@@ -125,6 +131,7 @@ class Bucket extends Storage
      */
     public function getTgas(string $bucketName = '')
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_GET);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->setData(self::S_PATH, "/bucketTagging?bucket={$this->getBucketName($bucketName)}");
@@ -138,6 +145,7 @@ class Bucket extends Storage
      */
     public function deleteTags(string $bucketName = '')
     {
+        $this->initParam();
         $this->setData(self::S_METHOD, self::S_DELETE);
         $this->setData(self::S_HOST, self::S_HOST_UC);
         $this->setData(self::S_PATH, "/bucketTagging?bucket={$this->getBucketName($bucketName)}");

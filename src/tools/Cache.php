@@ -3,7 +3,7 @@
  * @Description   缓存类
  * @Author        lifetime
  * @Date          2020-12-22 17:07:22
- * @LastEditTime  2020-12-23 18:34:34
+ * @LastEditTime  2021-10-25 10:17:08
  * @LastEditors   lifetime
  */
 namespace service\tools;
@@ -40,14 +40,14 @@ class Cache
      * @return string
      * @throws CacheException
      */
-    public static function set($name, $value = '', $expired = 3600)
+    public static function set($name, $value = '', $expired = 0)
     {
         if (is_callable(self::$cache_callable['set'])) {
             return call_user_func_array(self::$cache_callable['set'], func_get_args());
         }
         $file = self::_getCacheName($name);
-        $data = ['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)];
-        if (!file_put_contents($file, serialize($data))) {
+        $data = ['name' => $name, 'value' => $value, 'expired' => $expired ? time() + intval($expired) : 0];
+        if (!@file_put_contents($file, serialize($data))) {
             throw new CacheException('local cache error.', '0');
         }
         return $file;
@@ -64,7 +64,7 @@ class Cache
             return call_user_func_array(self::$cache_callable['get'], func_get_args());
         }
         $file = self::_getCacheName($name);
-        if (file_exists($file) && ($content = file_get_contents($file))) {
+        if (file_exists($file) && ($content = @file_get_contents($file))) {
             $data = unserialize($content);
             if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
                 return $data['value'];

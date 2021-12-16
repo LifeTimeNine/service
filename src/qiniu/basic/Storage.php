@@ -19,6 +19,14 @@ class Storage extends Basic
     private $data = [];
 
     /**
+     * 初始化参数
+     */
+    protected function initParam()
+    {
+        $this->data = [];
+    }
+
+    /**
      * 设置请求数据
      * @param   string  $key    键
      * @param   mixed   $value  值

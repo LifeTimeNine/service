@@ -17,27 +17,22 @@ class BasicSms extends Basic
      */
     protected $endpoint = 'http://dysmsapi.aliyuncs.com';
 
-    private $params = [
-        'Format' => 'json',
-        'SignatureVersion' => '1.0',
-        'Version' => '2017-05-25',
-        'SignatureMethod' => 'HMAC-SHA1'
-    ];
-
-    protected $signTemplateCode = false;
+    private $params = [];
 
     /**
-     * 获取基础参数
-     * @return  array
+     * 初始化参数
      */
-    protected function getBasicParams()
+    protected function initParam()
     {
-        $params = $this->Params;
-        $params['AccessKeyId'] = $this->config['accessKey_id'];
-        $params['Timestamp'] = $this->getTime();
-        $params['SignatureNonce'] = Tools::createNoncestr();
-        return $params;
+        $this->params = [
+            'Format' => 'json',
+            'SignatureVersion' => '1.0',
+            'Version' => '2017-05-25',
+            'SignatureMethod' => 'HMAC-SHA1'
+        ];
     }
+
+    protected $signTemplateCode = false;
 
     /**
      * 设置参数

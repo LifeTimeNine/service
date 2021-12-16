@@ -23,9 +23,9 @@ $order = \service\WeChat::official()->user()->getUserInfo();
 return [
     // 阿里云（支付宝）相关参数
     'ali' => [
-        // OSS相关配置
         'accessKey_id' => '',
         'accessKey_secret' => '',
+        // OSS相关配置
         'oss_endpoint' => '',
         'oss_bucketName' => '',
         // 支付相关参数

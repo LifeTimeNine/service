@@ -3,7 +3,7 @@
  * @Description   工具类
  * @Author        lifetime
  * @Date          2020-12-22 14:41:40
- * @LastEditTime  2021-09-28 09:28:19
+ * @LastEditTime  2021-10-25 10:32:08
  * @LastEditors   lifetime
  */
 
@@ -666,5 +666,39 @@ class Tools
         } else {
             exit;
         }
+    }
+
+    /**
+     * 数组转URL参数(值 进行urlencode编码)
+     * @param   array   $arr
+     * @return string
+     */
+    public static function arr2url($arr)
+    {
+        $urlArr = [];
+        foreach($arr as $k => $v)
+        {
+            $urlArr[] = "{$k}=" . urlencode($v);
+        }
+        return implode('&', $urlArr);
+    }
+
+    /**
+     * 获取UTC时间
+     * @param   int     $timestamp  时间戳
+     * @param   string  $format     格式
+     */
+    public static function getUTCTime($timestamp = null, $format = 'Y-m-d\TH:i:s\Z')
+    {
+        return gmdate($format, $timestamp?:time());
+    }
+    /**
+     * 驼峰转下划线
+     * @param   string  $str
+     * @return string
+     */
+    public static function hump2underline($str)
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', "$1_$2", $str));
     }
 }
