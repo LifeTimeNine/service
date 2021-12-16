@@ -21,7 +21,7 @@ class Basic
      * 缓存
      * @var array
      */
-    protected $cache = [];
+    protected static $cache = [];
 
     /**
      * 构造函数
