@@ -122,6 +122,7 @@ class BasicOss extends Basic
     protected function initData()
     {
         $this->data = [];
+        $this->setData(self::OSS_DATE, $this->getDate());
     }
 
     /**
