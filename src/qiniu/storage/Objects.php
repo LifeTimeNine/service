@@ -322,7 +322,7 @@ class Objects extends Storage
             'deadline' => time() + 3600,
             'fileType' => $storageType,
         ]);
-        return $this->request($this->buildUploadSign());
+        return $this->request("UpToken {$this->buildUploadSign()}");
     }
 
     /**
