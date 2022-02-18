@@ -372,6 +372,9 @@ class Objects extends Storage
         $this->setData(self::S_UPLOAD_STARTEGY, [
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 3600,
+            'returnBody' => Tools::arr2json([
+                'etag' => '$(etag)'
+            ])
         ]);
         $header = ['Authorization' => "UpToken {$this->buildUploadSign()}"];
         $url = "{$this->getProtocol()}{$this->getData(self::S_HOST)}{$this->getData(self::S_PATH)}";
