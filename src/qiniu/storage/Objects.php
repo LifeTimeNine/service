@@ -373,7 +373,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 3600,
         ]);
-        $header = $this->bulidHeader($this->buildUploadSign(), false);
+        $header = ['Authorization' => "UpToken {$this->buildUploadSign()}"];
         $url = "{$this->getProtocol()}{$this->getData(self::S_HOST)}{$this->getData(self::S_PATH)}";
         $filePath = "{$this->getProtocol()}{$this->getDomain()}/{$fileName}";
         return [
