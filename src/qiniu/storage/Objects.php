@@ -348,7 +348,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 3600,
         ]);
-        return $this->request($this->buildUploadSign());
+        return $this->request("UpToken {$this->buildUploadSign()}");
     }
 
     /**
@@ -411,7 +411,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 10,
         ]);
-        return $this->request($this->buildUploadSign());
+        return $this->request("UpToken {$this->buildUploadSign()}");
     }
 
     /**
@@ -441,7 +441,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 10,
         ]);
-        return $this->request($this->buildUploadSign());
+        return $this->request("UpToken {$this->buildUploadSign()}");
     }
 
     /**
@@ -462,7 +462,7 @@ class Objects extends Storage
             'scope' => "{$this->getBucketName($bucketName)}:{$fileName}",
             'deadline' => time() + 10,
         ]);
-        $this->request($this->buildUploadSign());
+        $this->request("UpToken {$this->buildUploadSign()}");
         return true;
     }
 
