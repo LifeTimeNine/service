@@ -3,13 +3,14 @@
  * @Description   微信小程序相关接口
  * @Author        lifetime
  * @Date          2021-01-16 19:46:31
- * @LastEditTime  2021-01-19 13:49:37
+ * @LastEditTime  2022-02-28 19:02:51
  * @LastEditors   lifetime
  */
 namespace service\wechat;
 
 use service\tools\BasicBusiness;
 use service\wechat\miniapp\Login;
+use service\wechat\miniapp\PhoneNumber;
 use service\wechat\miniapp\UserInfo;
 
 /**
@@ -36,5 +37,15 @@ class MiniApp extends BasicBusiness
     public function userInfo(array $config = [])
     {
         return UserInfo::instance($config);
+    }
+
+    /**
+     * 手机号功能
+     * @param   array   $config     配置
+     * @return  PhoneNumber
+     */
+    public function phoneNumber(array $config = [])
+    {
+        return PhoneNumber::instance($config);
     }
 }
