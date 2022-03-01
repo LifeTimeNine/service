@@ -3,7 +3,7 @@
  * @Description   用户手机号相关接口
  * @Author        lifetime
  * @Date          2022-02-28 18:54:11
- * @LastEditTime  2022-02-28 19:00:42
+ * @LastEditTime  2022-03-01 22:07:34
  * @LastEditors   lifetime
  */
 
@@ -26,6 +26,9 @@ class PhoneNumber extends BasicMiniApp
     public function getUserPhoneNumber(string $code)
     {
         if (empty($code)) throw new InvalidArgumentException('Missing Options [code]');
-        return $this->request('https://api.weixin.qq.com/wxa/business/getuserphonenumber', 'GET', ['data' => ['code' => $code]]);
+        return $this->request('https://api.weixin.qq.com/wxa/business/getuserphonenumber', 'POST', [
+            'headers' => ['content-type' => 'application/json'],
+            'data' => json_encode(['code' => $code])
+        ]);
     }
 }
