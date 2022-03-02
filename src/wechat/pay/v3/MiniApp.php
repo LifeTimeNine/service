@@ -3,7 +3,7 @@
  * @Description   小程序支付
  * @Author        lifetime
  * @Date          2020-12-22 15:44:33
- * @LastEditTime  2021-10-27 16:57:45
+ * @LastEditTime  2022-03-02 16:34:56
  * @LastEditors   lifetime
  */
 namespace service\wechat\pay\v3;
@@ -21,7 +21,7 @@ class MiniApp extends BasicPayV3
     {
         parent::__construct($config);
         $this->setAppId('miniapp_appid');
-        $this->setMustOptions(['openid']);
+        $this->setMustOptions(['payer' => ['openid']]);
     }
     /**
      * 下单支付
