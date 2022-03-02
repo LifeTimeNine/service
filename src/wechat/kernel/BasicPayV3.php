@@ -3,7 +3,7 @@
  * @Description   微信支付V3基类
  * @Author        lifetime
  * @Date          2020-12-28 10:33:06
- * @LastEditTime  2021-10-27 16:58:22
+ * @LastEditTime  2022-03-02 17:27:34
  * @LastEditors   lifetime
  */
 
@@ -168,7 +168,7 @@ class BasicPayV3
         if ($type == OPENSSL_ALGO_SHA256) {
             openssl_sign($dataStr, $sign, $this->getApiPrivateKey(), OPENSSL_ALGO_SHA256);
         } else {
-            openssl_sign($dataStr, $sign, $this->getApiPrivateKey());
+            openssl_sign($dataStr, $sign, $this->getApiPrivateKey(), 'sha256WithRSAEncryption');
         }
         return base64_encode($sign);
     }
