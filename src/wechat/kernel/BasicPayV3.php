@@ -3,7 +3,7 @@
  * @Description   微信支付V3基类
  * @Author        lifetime
  * @Date          2020-12-28 10:33:06
- * @LastEditTime  2022-03-02 17:27:34
+ * @LastEditTime  2022-03-02 20:42:41
  * @LastEditors   lifetime
  */
 
@@ -11,6 +11,7 @@ namespace service\wechat\kernel;
 
 use service\config\WechatConfig;
 use service\exceptions\InvalidArgumentException;
+use service\exceptions\InvalidResponseException;
 use service\tools\Cache;
 use service\tools\DataArray;
 use service\tools\Tools;
@@ -220,7 +221,7 @@ class BasicPayV3
         } else {
             $body = json_encode($body, 256);
         }
-        $result = Tools::request($method, "{$this->apiDomain}{$url}", [
+        $result = Tools::json2arr(Tools::request($method, "{$this->apiDomain}{$url}", [
             'headers' => [
                 "Authorization: {$this->getAuthoriztionStr($method,$signUrl,$body)}",
                 'Content-Type: application/json',
@@ -229,8 +230,11 @@ class BasicPayV3
             ],
             'data' => $body,
             'query' => $query
-        ]);
-        return Tools::json2arr($result);
+        ]));
+        if (!empty($result['code'])) {
+            throw new InvalidResponseException($result['message'], $result['code']);
+        }
+        return $result;
     }
 
     /**
