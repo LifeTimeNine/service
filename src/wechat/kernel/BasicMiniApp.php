@@ -3,7 +3,7 @@
  * @Description   微信小程序基类
  * @Author        lifetime
  * @Date          2021-01-15 18:12:47
- * @LastEditTime  2021-01-16 20:54:31
+ * @LastEditTime  2022-03-04 19:44:34
  * @LastEditors   lifetime
  */
 namespace service\wechat\kernel;
@@ -32,6 +32,12 @@ class BasicMiniApp
      * @var static
      */
     protected static $cache;
+
+    /**
+     * access_token 失效返回的状态码
+     * @var array
+     */
+    protected $failure_code = ['40014', '40001', '41001', '42001'];
 
     /**
      * 构造函数
@@ -97,6 +103,10 @@ class BasicMiniApp
         $query['access_token'] = $this->getAccessToken();
         $options['query'] = $query;
         $result = Tools::json2arr(Tools::request($method, $url, $options));
+        if (!empty($result['errcode']) || in_array($result['code'], $this->failure_code)) {
+            $options['query']['access_token'] = $this->getAccessToken(true);
+            $result = Tools::json2arr(Tools::request($method, $url, $options));
+        }
         if (!empty($result['errcode'])) throw new InvalidRequestException($result['errmsg'], $result['errcode'], $result);
         return $result;
     }
