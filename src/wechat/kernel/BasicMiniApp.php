@@ -3,7 +3,7 @@
  * @Description   微信小程序基类
  * @Author        lifetime
  * @Date          2021-01-15 18:12:47
- * @LastEditTime  2022-03-04 19:44:34
+ * @LastEditTime  2022-03-08 14:59:39
  * @LastEditors   lifetime
  */
 namespace service\wechat\kernel;
@@ -103,7 +103,7 @@ class BasicMiniApp
         $query['access_token'] = $this->getAccessToken();
         $options['query'] = $query;
         $result = Tools::json2arr(Tools::request($method, $url, $options));
-        if (!empty($result['errcode']) || in_array($result['code'], $this->failure_code)) {
+        if (!empty($result['errcode']) || in_array($result['errcode'], $this->failure_code)) {
             $options['query']['access_token'] = $this->getAccessToken(true);
             $result = Tools::json2arr(Tools::request($method, $url, $options));
         }
